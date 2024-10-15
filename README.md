@@ -11,23 +11,22 @@
 
 ## Eslogan
 
-```markdown
+
 > [!IMPORTANT]
 > Supera tus retos, alcanza nuevas metas
-```
 
 ## 1. Planificación del Proyecto
 ### Objetivo del Proyecto
 El objetivo de la aplicación es permitir a los usuarios crear, gestionar y participar en retos (simples o complejos) para alcanzar objetivos personales. Los retos pueden ser completados de forma individual o en grupo, y la aplicación ofrece recompensas por el progreso, estadísticas, comentarios y notificaciones. Los usuarios también podrán interactuar con amigos y compartir sus logros.
 
-> [!TIP]  
-> **Tecnologías Utilizadas:**  
-    > - Backend: Spring Boot (Java)  
-    > - Base de Datos: H2 para producción, MySQL para producción   
-    > - Frontend: Thymeleaf   
-    > - Control de Versiones: Git   
-    > - Servidor: Tomcat embebido en Spring Boot   
-    > - Java: 17 LTS     
+> [!TIP]
+> **Tecnologías Utilizadas:**
+> - Backend: Spring Boot (Java)
+> - Base de Datos: H2 para producción, MySQL para producción   
+> - Frontend: Thymeleaf   
+> - Control de Versiones: Git   
+> - Servidor: Tomcat embebido en Spring Boot   
+> - Java: 17 LTS     
 
 > [!WARNING]
 > **Módulos del Proyecto:**
