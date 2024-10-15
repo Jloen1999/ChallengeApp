@@ -1,376 +1,278 @@
-Índice
+# ChallengeApp
 
-# Planificación y análisis
+<img src="src/main/resources/logoRedondeado.png" width="200" height="200" style="display: block; margin: 0 auto">
 
-## **Objetivo del Proyecto:**
+## Integrantes
 
-El objetivo de esta aplicación web es proporcionar una plataforma donde los usuarios puedan crear, unirse y seguir su progreso en **retos de hábitos** comunitarios. Cada usuario puede participar en diferentes desafíos personales (ejercicio, lectura, meditación, etc.), ver su progreso y el de otros usuarios, y compartir sus avances dentro de una comunidad de soporte. La idea es fomentar la motivación y la constancia a través de la competencia amistosa y la colaboración social.
+- Alfredo Mituy Okenve Obiang
+- José Luis Obiang Ela Nanguang
+## Profesor
+- Luis Vicente Calderita Estévez 
 
----
+## Eslogan
 
-## **Funcionalidades Principales de la Aplicación:**
-
-1. **Registro e inicio de sesión de usuarios**:
-    - Los usuarios podrán registrarse con un correo y contraseña.
-    - Autenticación y autorización con Spring Security.
-    - Permitir que los usuarios inicien sesión y gestionen su perfil.
-2. **Creación y gestión de retos**:
-    - Los usuarios podrán crear retos personalizados, especificando el objetivo, la duración y la periodicidad (diaria, semanal).
-    - Se podrán definir retos públicos (disponibles para todos) o privados (solo accesibles para amigos o invitados).
-3. **Unirse a retos**:
-    - Los usuarios podrán buscar y unirse a retos públicos.
-    - En los retos privados, los usuarios recibirán una invitación del creador.
-4. **Seguimiento del progreso**: 
-    - Los usuarios podrán registrar su progreso (completar días del reto) e ingresar actualizaciones diarias.
-    - Visualización gráfica de su avance y del avance grupal de todos los participantes del reto.
-5. **Comentarios y soporte social**:
-    - Cada reto tendrá una sección de comentarios para que los usuarios puedan interactuar, motivarse y compartir consejos.
-6. **Historial de retos completados**:
-    - Los usuarios podrán ver su historial de retos completados en su perfil, con las recompensas (insignias) obtenidas.
-7. **Sistema de recompensas**:
-    - Los usuarios ganarán insignias y reconocimientos al completar retos, visibles en su perfil.
-
----
-
-### **Diagrama de Caso de Uso:**
-
-```
-+---------------------------------------------+
-|             Diagrama de Caso de Uso         |
-+---------------------------------------------+
-|                 Usuario                     |
-+---------------------------------------------+
-| - Registrarse                               |
-| - Iniciar Sesión                            |
-| - Ver lista de retos                        |
-| - Unirse a un reto                          |
-| - Crear un reto                             |
-| - Registrar progreso en un reto             |
-| - Ver su progreso y el de otros             |
-| - Comentar en un reto                       |
-| - Ver perfil con historial de retos         |
-+---------------------------------------------+
-
-+---------------------------------------------+
-|                 Administrador               |
-+---------------------------------------------+
-| - Gestionar usuarios (bloquear/eliminar)    |
-| - Eliminar retos inapropiados               |
-+---------------------------------------------+
-
+```markdown
+> [!IMPORTANT]
+> Supera tus retos, alcanza nuevas metas
 ```
 
-### **Explicación de Casos de Uso:**
+## 1. Planificación del Proyecto
+### Objetivo del Proyecto
+El objetivo de la aplicación es permitir a los usuarios crear, gestionar y participar en retos (simples o complejos) para alcanzar objetivos personales. Los retos pueden ser completados de forma individual o en grupo, y la aplicación ofrece recompensas por el progreso, estadísticas, comentarios y notificaciones. Los usuarios también podrán interactuar con amigos y compartir sus logros.
 
-1. **Registrarse**: El usuario crea una cuenta proporcionando un correo y una contraseña.
-2. **Iniciar sesión**: El usuario accede al sistema con sus credenciales.
-3. **Ver lista de retos**: El usuario puede ver todos los retos públicos disponibles, filtrando por categoría (ejercicio, lectura, etc.).
-4. **Unirse a un reto**: El usuario se une a un reto y comienza a registrar su progreso.
-5. **Crear un reto**: El usuario define un nuevo reto, seleccionando el objetivo, la duración y si es público o privado.
-6. **Registrar progreso en un reto**: El usuario actualiza su progreso en el reto al completar cada actividad diaria/semanal.
-7. **Ver su progreso y el de otros**: El usuario puede ver visualmente su progreso y el de otros participantes en el reto.
-8. **Comentar en un reto**: El usuario puede participar en discusiones dentro de un reto.
-9. **Ver perfil con historial de retos**: El usuario revisa sus retos completados, los retos activos y las insignias obtenidas.
+> [!TIP]  
+> **Tecnologías Utilizadas:**  
+    > - Backend: Spring Boot (Java)  
+    > - Base de Datos: H2 para producción, MySQL para producción   
+    > - Frontend: Thymeleaf   
+    > - Control de Versiones: Git   
+    > - Servidor: Tomcat embebido en Spring Boot   
+    > - Java: 17 LTS     
 
----
+> [!WARNING]
+> **Módulos del Proyecto:**
+> 1.	Gestión de Usuarios: Registro, login, perfil, amigos.
+> 2.	Gestión de Retos: Crear retos, gestionar subtareas, seguimiento de progreso.
+> 3.	Estadísticas y Recompensas: Visualización del progreso y estadísticas, obtención de recompensas.
+> 4.	Comentarios y Notificaciones: Comentarios en retos y notificaciones sobre el progreso.
+> 5.	Sistema de Amigos: Agregar amigos, ver su progreso y participar en retos juntos.  
 
-### **Diagrama Entidad-Relación (ER)**:
+> [!NOTE]  
+> **Cronograma Actual:**  
+> ![Cronograma.png](src%2Fmain%2Fresources%2FCronograma.png)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/68661776-795c-4e20-885a-94a336b99b9f/dcec1e41-f741-4582-8f8d-4f693822ca05/image.png)
 
-![image.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/68661776-795c-4e20-885a-94a336b99b9f/e0df4379-62f3-47ed-a607-068a57286c97/image.png)
+## 2. Análisis del Proyecto
+### Requerimientos Funcionales
+> [!IMPORTANT]
+> - Registro y Login: El sistema debe permitir a los usuarios registrarse, iniciar sesión y gestionar su perfil.
+> - Creación de Retos: Los usuarios pueden crear retos simples o complejos.
+> - Seguimiento de Progreso: Los usuarios pueden actualizar el progreso de los retos, tanto en retos simples como en retos complejos con subtareas.
+> - Comentarios y Notificaciones: Los usuarios pueden comentar en retos y recibir notificaciones sobre su progreso y actividades de amigos.
+> - Estadísticas y Recompensas: El sistema debe mostrar estadísticas personales y ofrecer recompensas en función del progreso en los retos.  
 
-[Diagrama ER](https://www.notion.so/Diagrama-ER-2626710c1c1d44559c857fca27203ebe?pvs=21)
+### Requerimientos No Funcionales
+> [!TIP]
+> - Seguridad: Implementar validación de usuarios y seguridad de las sesiones (Spring Security).
+> - El usuario podrá filtrar retos según la ubicación del usuario, el tipo de reto, nombre, etc.
+> - El usuario podrá cambiar el color de fondo de la página web (oscuro, claro).
+> - El usuario podrá elegir el idioma de la página web.
+> - El usuario podrá recibir notificaciones sobre su progreso y las medallas o recompensas que vaya obteniendo  
 
-### **Entidades y Relaciones:**
+### Casos de Uso Detallados
+**1. Caso de Uso CU01: Registro de Usuario**
+- ID: CU01
+- Nombre: Registro de Usuario
+- Actor Principal: Usuario
+- Descripción: Permite a un usuario registrarse en la plataforma proporcionando los datos requeridos.
+- Precondiciones:
+  - El usuario debe acceder al sistema sin haber iniciado sesión.
+- Flujo Principal:
+  - El usuario accede a la página de registro.
+  - El sistema presenta un formulario de registro con los campos: nombre, correo, contraseña, ubicación.
+  - El usuario llena el formulario y lo envía.
+  - El sistema valida que los campos no estén vacíos y que el correo no esté en uso.
+  - El sistema registra al usuario y guarda los datos en la base de datos.
+  - El sistema confirma la creación del perfil con un mensaje y redirige al inicio de sesión.
+    
+- Postcondiciones:
+    - El usuario se registra en el sistema.
+- Excepciones:
+  - El correo ya está registrado: El sistema muestra un mensaje de error. 
+  - Datos inválidos o incompletos: El sistema muestra un mensaje de error.
+________________________________________  
 
-1. **Usuario**:
-    - Los usuarios pueden unirse a múltiples retos y pueden crear retos.
-    - Cada usuario tiene un perfil con un nombre, correo y contraseña.
-2. **Reto**:
-    - Un reto puede tener múltiples participantes y comentarios.
-    - Los retos tienen un nombre, descripción, duración y tipo (público o privado).
-3. **Progreso_Reto**:
-    - Esta tabla relaciona usuarios y retos para hacer un seguimiento del progreso de cada usuario en cada reto.
-    - Cada entrada contiene el usuario, el reto, el progreso actual y la fecha de la última actualización.
-4. **Comentario**:
-    - Los comentarios se asocian con un reto y un usuario, permitiendo que los participantes interactúen.
-    - Cada comentario incluye el texto y la fecha de publicación.
+**2. Caso de Uso CU02: Inicio de Sesión**
+- ID: CU02
+- Nombre: Inicio de Sesión
+- Actor Principal: Usuario
+- Descripción: Permite a un usuario registrado iniciar sesión proporcionando su correo y contraseña.
+- Precondiciones:
+  - El usuario debe estar registrado en el sistema.
+- Flujo Principal:
+  - El usuario accede a la página de inicio de sesión.
+  - El sistema presenta un formulario de inicio de sesión.
+  - El usuario ingresa su correo y contraseña y envía el formulario.
+  - El sistema valida las credenciales ingresadas.
+  - Si las credenciales son correctas, el sistema redirige al panel principal del usuario.
+- Postcondiciones:
+    - El usuario está autenticado y tiene acceso a su perfil y a todas las funcionalidades asociadas.
+- Excepciones:
+    - Credenciales incorrectas: El sistema muestra un mensaje de error.
+    - Usuario no registrado: El sistema muestra un mensaje de error.
+________________________________________  
+**3. Caso de Uso CU03: Crear Reto Simple**
+- ID: CU03
+- Nombre: Crear Reto Simple
+- Actor Principal: Usuario
+- Descripción: El usuario puede crear un reto simple proporcionando los datos necesarios.
+- Precondiciones:
+  - El usuario debe haber iniciado sesión.
+- Flujo Principal:
+  - El usuario selecciona la opción "Crear Reto".
+  - El sistema muestra un formulario con campos como nombre, descripción, duración, y tipo de reto.
+  - El usuario elige "Reto Simple", completa el formulario e ingresa los datos de progreso en formato de subtareas o cantidades (por ejemplo, "Leer 5 libros").
+  - El usuario confirma la creación del reto.
+  - El sistema guarda el reto simple en la base de datos y muestra un mensaje de confirmación.
+- Postcondiciones:
+  - El reto se guarda y aparece en la lista de retos activos del usuario.
+- Excepciones:
+  - El usuario no está autenticado: El sistema redirige al inicio de sesión.
+  - Datos inválidos: El sistema muestra un mensaje de error.
+________________________________________  
 
----
+**4. Caso de Uso CU04: Crear Reto Complejo**
+- ID: CU04
+- Nombre: Crear Reto Complejo
+- Actor Principal: Usuario
+- Descripción: El usuario puede crear un reto complejo que contiene una lista de subtareas.
+- Precondiciones:
+  - El usuario debe haber iniciado sesión.
+- Flujo Principal:
+  - El usuario selecciona "Crear Reto".
+  - El sistema presenta un formulario con los campos para ingresar el nombre, descripción, duración y tipo de reto.
+  - El usuario selecciona "Reto Complejo", e ingresa las subtareas del reto.
+  - El usuario define cada subtarea con su nombre, descripción, y fecha de creación.
+  - El usuario confirma la creación del reto complejo.
+  - El sistema guarda el reto complejo y las subtareas asociadas en la base de datos.
+- Postcondiciones:
+ - El reto complejo se guarda y aparece en la lista de retos activos del usuario.
+- Excepciones:
+ - Datos incompletos o inválidos: El sistema muestra un mensaje de error.
+ 
+**5. Caso de Uso CU05: Anotar Progreso en Reto Simple**
+- ID: CU05
+- Nombre: Anotar Progreso en Reto Simple
+- Actor Principal: Usuario
+- Descripción: El usuario puede actualizar su progreso en un reto simple.
+- Precondiciones:
+ - El usuario debe estar autenticado y tener un reto simple activo.
+- Flujo Principal:
+- El usuario selecciona el reto simple en el que quiere anotar progreso.
+- El sistema muestra el estado actual del progreso.
+- El usuario ingresa el nuevo progreso (por ejemplo, aumentar la cantidad de libros leídos).
+- El sistema actualiza el progreso en la base de datos.
+- El sistema confirma la actualización del progreso y muestra el nuevo porcentaje de completitud.
+- Postcondiciones:
+  - El progreso del reto simple se actualiza.
+- Excepciones:
+  - Progreso inválido: El sistema muestra un mensaje de error.
+________________________________________  
+**6. Caso de Uso CU06: Anotar Progreso en Subtarea de Reto Complejo**
+- ID: CU06
+- Nombre: Anotar Progreso en Subtarea de Reto Complejo
+- Actor Principal: Usuario
+- Descripción: El usuario actualiza el estado de una subtarea en un reto complejo.
+- Precondiciones:
+  - El usuario debe estar autenticado y tener un reto complejo activo.
+- Flujo Principal:
+  - El usuario selecciona el reto complejo.
+  - El sistema muestra la lista de subtareas y su estado actual.
+  - El usuario marca una subtarea como completada.
+  - El sistema actualiza el estado de la subtarea y recalcula el progreso del reto.
+  - El sistema guarda los cambios y muestra el nuevo progreso.
+- Postcondiciones:
+  - El estado de la subtarea y el progreso del reto complejo se actualizan.
+- Excepciones:
+  - Error en la actualización de la subtarea: El sistema muestra un mensaje de error.
+________________________________________  
+**7. Caso de Uso CU07: Agregar Amigos**
+- ID: CU07
+- Nombre: Agregar Amigos
+- Actor Principal: Usuario
+- Descripción: Permite a un usuario agregar a otro como amigo en la plataforma.
+- Precondiciones:
+  - El usuario debe estar autenticado.
+- Flujo Principal:
+  - El usuario busca a otro usuario por nombre o correo.
+  - El sistema muestra una lista de coincidencias.
+  - El usuario selecciona "Agregar Amigo".
+  - El sistema envía una solicitud de amistad al otro usuario.
+  - Cuando el otro usuario acepta, la amistad se registra en el sistema.
+- Postcondiciones:
+  - Los usuarios quedan conectados como amigos.
+- Excepciones:
+  - El usuario ya es amigo del destinatario: El sistema muestra un mensaje de advertencia.
+________________________________________  
+**8. Caso de Uso CU08: Visualizar Estadísticas**
+- ID: CU08
+- Nombre: Visualizar Estadísticas
+- Actor Principal: Usuario
+- Descripción: Permite al usuario visualizar sus estadísticas personales sobre los retos.
+- Precondiciones:
+  - El usuario debe haber participado en retos.
+- Flujo Principal:
+  - El usuario selecciona "Ver Estadísticas".
+  - El sistema muestra las estadísticas del usuario (total de retos, retos completados, progreso promedio, etc.).
+  - El usuario puede filtrar las estadísticas por periodo (semanal, mensual, anual).
+- Postcondiciones:
+  - El sistema muestra las estadísticas personales del usuario.
+- Excepciones:
+  - No hay retos completados: El sistema muestra un mensaje indicando la falta de datos.
+________________________________________  
+**9. Caso de Uso CU09: Obtener Recompensas**
+- ID: CU09
+- Nombre: Obtener Recompensas
+- Actor Principal: Usuario
+- Descripción: El usuario recibe recompensas por completar retos.
+- Precondiciones:
+  - El usuario debe haber completado un reto.
+- Flujo Principal:
+  - El usuario completa un reto.
+  - El sistema evalúa si el reto completado es elegible para una recompensa.
+  - El sistema otorga una recompensa al usuario (medallas, puntos, etc.).
+  - El sistema guarda la recompensa en el perfil del usuario.
+- Postcondiciones:
+  - El usuario recibe una recompensa que se almacena en su perfil.
+- Excepciones:
+  - El reto no es elegible para recompensa: El sistema muestra un mensaje explicativo.
+________________________________________  
+**10. Caso de Uso CU10: Gestión de Notificaciones**
+- ID: CU10
+- Nombre: Gestión de Notificaciones
+- Actor Principal: Usuario
+- Descripción: El usuario puede recibir y gestionar notificaciones sobre retos, amigos, y recompensas.
+- Precondiciones:
+  - El usuario debe haber iniciado sesión.
+- Flujo Principal:
+  - El sistema envía notificaciones al usuario (nuevos retos, progreso, aceptación de amigos).
+  - El usuario accede a su bandeja de notificaciones.
+  - El sistema muestra las notificaciones no leídas.
+  - El usuario marca las notificaciones como leídas o las elimina.
+- Postcondiciones:
+  - Las notificaciones son gestionadas correctamente.
+- Excepciones:
+  - Error en la carga de notificaciones: El sistema muestra un mensaje de error.
 
-# Desarrollo
+```mermaid
+graph TD
+    A[Funcionalidades y Requisitos de ChallengeApp] --> B[Registro e Inicio de Sesión]
+    B --> B1[Registro con: Nombre de Usuario, Correo Electrónico, Contraseña]
+    B --> B2[Iniciar Sesión con: Correo Electrónico y Contraseña]
 
-## Base de Datos
+    A --> C[Gestión de Retos]
+    C --> C1[Crear nuevos retos]
+    C1 --> C1a[Indicar nivel de complejidad: Simple o Complejo]
+    C1 --> C1b[Indicar tipo de reto: Público o Privado]
+    C --> C2[Gestionar retos creados]
+    C --> C3[Unirse a retos]
+    C --> C4[Marcar progreso en los retos]
+    C --> C5[Acceder a historial de retos completados y creados]
 
-```sql
--- Creación de la base de datos
-CREATE DATABASE IF NOT EXISTS retos_db;
-USE retos_db;
+    A --> D[Interacción Social]
+    D --> D1[Hacer comentarios en retos]
+    D --> D2[Leer comentarios de otros usuarios]
+    D --> D3[Añadir amigos para retos privados]
+  
+    A --> E[Gamificación]
+    E --> E1[Recibir recompensas e insignias]
+    E --> E2[Ver estadísticas del progreso en retos]
 
--- Creación de la tabla Usuario
-CREATE TABLE Usuario (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    correo VARCHAR(100) NOT NULL UNIQUE,
-    contraseña VARCHAR(100) NOT NULL,
-    perfil_info TEXT,
-    ubicacion VARCHAR(255),
-    CONSTRAINT UC_Usuario UNIQUE (correo)
-);
-
--- Creación de la tabla Reto
-CREATE TABLE Reto (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT NOT NULL,
-    duracion INT NOT NULL,
-    estado INT NOT NULL,
-    fecha_creacion DATE NOT NULL,
-    fecha_finalizacion DATE NOT NULL,
-    porcentaje_progreso DOUBLE,
-    creador_id BIGINT,
-    FOREIGN KEY (creador_id) REFERENCES Usuario(id)
-);
-
--- Creación de la tabla RetoSimple (hereda de Reto)
-CREATE TABLE RetoSimple (
-    id BIGINT PRIMARY KEY,
-    progreso JSON, -- Almacena un array de progreso en formato JSON
-    FOREIGN KEY (id) REFERENCES Reto(id)
-);
-
--- Creación de la tabla RetoComplejo (hereda de Reto)
-CREATE TABLE RetoComplejo (
-    id BIGINT PRIMARY KEY,
-    subtarea_actual BIGINT, -- ID de la subtarea actual
-    FOREIGN KEY (id) REFERENCES Reto(id)
-);
-
--- Creación de la tabla Subtarea (relacionada con RetoComplejo)
-CREATE TABLE Subtarea (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255) NOT NULL,
-    estado ENUM('PENDIENTE', 'COMPLETADA') NOT NULL,
-    fecha_creacion DATE NOT NULL,
-    fecha_finalizada DATE,
-    reto_complejo_id BIGINT,
-    FOREIGN KEY (reto_complejo_id) REFERENCES RetoComplejo(id)
-);
-
--- Creación de la tabla ProgresoReto (relacionada con Usuario y Reto)
-CREATE TABLE ProgresoReto (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    progreso_actual DOUBLE NOT NULL,
-    fecha_actualizacion DATE NOT NULL,
-    usuario_id BIGINT,
-    reto_id BIGINT,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
-    FOREIGN KEY (reto_id) REFERENCES Reto(id)
-);
-
--- Creación de la tabla Recompensa (relacionada con Usuario y Reto)
-CREATE TABLE Recompensa (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255) NOT NULL,
-    tipo VARCHAR(100) NOT NULL,
-    puntos INT NOT NULL,
-    usuario_id BIGINT,
-    reto_id BIGINT,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
-    FOREIGN KEY (reto_id) REFERENCES Reto(id)
-);
-
--- Creación de la tabla Estadistica (relacionada con Usuario)
-CREATE TABLE Estadistica (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    total_retos INT NOT NULL,
-    retos_completados INT NOT NULL,
-    retos_fallidos INT NOT NULL,
-    progreso_promedio DOUBLE NOT NULL,
-    tiempo_promedio DOUBLE NOT NULL,
-    usuario_id BIGINT,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
-);
-
--- Creación de la tabla Notificacion (relacionada con Usuario y Reto)
-CREATE TABLE Notificacion (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    mensaje TEXT NOT NULL,
-    leido BOOLEAN DEFAULT FALSE,
-    fecha_envio DATE NOT NULL,
-    usuario_id BIGINT,
-    reto_id BIGINT,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
-    FOREIGN KEY (reto_id) REFERENCES Reto(id)
-);
-
--- Creación de la tabla Comentario (relacionada con Usuario y Reto)
-CREATE TABLE Comentario (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    texto TEXT NOT NULL,
-    fecha DATE NOT NULL,
-    usuario_id BIGINT,
-    reto_id BIGINT,
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
-    FOREIGN KEY (reto_id) REFERENCES Reto(id)
-);
-
--- Creación de la tabla de relaciones de amigos entre usuarios
-CREATE TABLE Amigos (
-    usuario_id BIGINT,
-    amigo_id BIGINT,
-    PRIMARY KEY (usuario_id, amigo_id),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id),
-    FOREIGN KEY (amigo_id) REFERENCES Usuario(id)
-);
-
--- Creación de la tabla de participantes en retos
-CREATE TABLE ParticipantesReto (
-    reto_id BIGINT,
-    usuario_id BIGINT,
-    PRIMARY KEY (reto_id, usuario_id),
-    FOREIGN KEY (reto_id) REFERENCES Reto(id),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
-);
-
--- Creación de la tabla SubtareaParticipante (relaciona Subtarea con Usuario)
-CREATE TABLE SubtareaParticipante (
-    subtarea_id BIGINT,
-    usuario_id BIGINT,
-    PRIMARY KEY (subtarea_id, usuario_id),
-    FOREIGN KEY (subtarea_id) REFERENCES Subtarea(id),
-    FOREIGN KEY (usuario_id) REFERENCES Usuario(id)
-);
-
+    style A fill:#f9f,stroke:#333,stroke-width:2px;
+    style B fill:#bbf,stroke:#333,stroke-width:2px;
+    style C fill:#cfc,stroke:#333,stroke-width:2px;
+    style D fill:#ffc,stroke:#333,stroke-width:2px;
+    style E fill:#ffccbb,stroke:#333,stroke-width:2px;
 ```
 
-```sql
-INSERT INTO Usuario (nombre, correo, contraseña, perfil_info, ubicacion) VALUES
-('Juan Pérez', 'juan.perez@example.com', 'password123', 'Amante de los retos físicos y mentales', 'Madrid'),
-('Ana Gómez', 'ana.gomez@example.com', 'password456', 'Interesada en libros y retos creativos', 'Barcelona'),
-('Luis Fernández', 'luis.fernandez@example.com', 'password789', 'Entusiasta del deporte', 'Valencia'),
-('María Torres', 'maria.torres@example.com', 'password101', 'Aficionada a los desafíos culinarios', 'Sevilla'),
-('Pedro García', 'pedro.garcia@example.com', 'password202', 'Fanático de los viajes y la aventura', 'Bilbao');
 
-INSERT INTO Reto (nombre, descripcion, duracion, estado, fecha_creacion, fecha_finalizacion, porcentaje_progreso, creador_id) VALUES
-('Leer 5 libros en un mes', 'Desafío literario para completar 5 libros en un mes', 30, 1, '2024-01-01', '2024-01-31', 0.0, 2),
-('Correr 100 km en 10 días', 'Desafío de resistencia física para correr 100 km en total', 10, 2, '2024-02-01', '2024-02-10', 0.0, 1),
-('Cocinar 10 recetas nuevas', 'Desafío de creatividad en la cocina', 15, 1, '2024-01-15', '2024-01-30', 0.0, 4),
-('Explorar 5 nuevas ciudades', 'Desafío de aventura y viajes para conocer 5 nuevas ciudades', 60, 1, '2024-03-01', '2024-04-30', 0.0, 5),
-('Participar en 3 carreras de 5 km', 'Desafío físico para completar 3 carreras de 5 km cada una', 20, 1, '2024-01-10', '2024-01-30', 0.0, 3);
-
-INSERT INTO RetoSimple (id, progreso) VALUES
-(1, JSON_ARRAY(0, 0, 0, 0, 0)), -- Progreso por libros en el reto de lectura
-(2, JSON_ARRAY(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)), -- Progreso por cada km
-(3, JSON_ARRAY(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)), -- Progreso por receta
-(4, JSON_ARRAY(0, 0, 0, 0, 0)), -- Progreso por cada ciudad
-(5, JSON_ARRAY(0, 0, 0)); -- Progreso por cada carrera
-
-INSERT INTO RetoComplejo (id, subtarea_actual) VALUES
-(6, NULL), -- Un reto complejo aún no iniciado
-(7, NULL), -- Otro reto complejo aún no iniciado
-(8, NULL), -- Otro reto complejo
-(9, NULL), -- Un reto complejo más
-(10, NULL); -- Otro ejemplo
-
-INSERT INTO Subtarea (descripcion, estado, fecha_creacion, fecha_finalizada, reto_complejo_id) VALUES
-('Leer el primer libro', 'PENDIENTE', '2024-01-01', NULL, 6),
-('Leer el segundo libro', 'PENDIENTE', '2024-01-01', NULL, 6),
-('Preparar un maratón', 'PENDIENTE', '2024-01-15', NULL, 7),
-('Completar la primera carrera', 'PENDIENTE', '2024-01-10', NULL, 8),
-('Visitar una ciudad nueva', 'PENDIENTE', '2024-02-01', NULL, 9);
-
-INSERT INTO ProgresoReto (progreso_actual, fecha_actualizacion, usuario_id, reto_id) VALUES
-(25.0, '2024-01-05', 1, 2), -- Juan tiene un progreso del 25% en su reto de correr 100 km
-(50.0, '2024-01-07', 2, 1), -- Ana ha completado 2 de 5 libros en su reto
-(0.0, '2024-01-05', 3, 5), -- Luis aún no ha empezado su reto de carreras
-(10.0, '2024-01-04', 4, 3), -- María ha cocinado 1 receta de las 10
-(0.0, '2024-01-03', 5, 4); -- Pedro aún no ha visitado ninguna ciudad
-
-INSERT INTO Recompensa (descripcion, tipo, puntos, usuario_id, reto_id) VALUES
-('Medalla de Bronce', 'Medalla', 10, 1, 2),
-('Libro electrónico gratuito', 'Libro', 20, 2, 1),
-('Descuento en tienda de deporte', 'Descuento', 30, 3, 5),
-('Cupón de 20% en utensilios de cocina', 'Cupón', 15, 4, 3),
-('Bono de viaje', 'Descuento', 50, 5, 4);
-
-INSERT INTO Estadistica (total_retos, retos_completados, retos_fallidos, progreso_promedio, tiempo_promedio, usuario_id) VALUES
-(5, 3, 1, 70.0, 15.0, 1),
-(3, 2, 0, 80.0, 20.0, 2),
-(2, 1, 0, 60.0, 18.0, 3),
-(1, 0, 1, 10.0, 10.0, 4),
-(4, 2, 1, 75.0, 25.0, 5);
-
-INSERT INTO Notificacion (mensaje, leido, fecha_envio, usuario_id, reto_id) VALUES
-('¡Has avanzado un 25% en tu reto de correr 100 km!', FALSE, '2024-01-05', 1, 2),
-('¡Has leído 2 de 5 libros!', FALSE, '2024-01-07', 2, 1),
-('¡Primera receta cocinada!', TRUE, '2024-01-04', 4, 3),
-('No has iniciado tu reto de carreras', FALSE, '2024-01-05', 3, 5),
-('No has visitado ninguna ciudad aún', FALSE, '2024-01-03', 5, 4);
-
-INSERT INTO Comentario (texto, fecha, usuario_id, reto_id) VALUES
-('Estoy disfrutando mucho este reto', '2024-01-05', 1, 2),
-('Los libros seleccionados son increíbles', '2024-01-07', 2, 1),
-('Espero poder cocinar todas las recetas a tiempo', '2024-01-04', 4, 3),
-('Este reto es difícil, pero motivador', '2024-01-05', 3, 5),
-('Aún no he comenzado, pero planeo hacerlo pronto', '2024-01-03', 5, 4);
-
-INSERT INTO Amigos (usuario_id, amigo_id) VALUES
-(1, 2), -- Juan es amigo de Ana
-(2, 3), -- Ana es amiga de Luis
-(3, 4), -- Luis es amigo de María
-(4, 5), -- María es amiga de Pedro
-(5, 1); -- Pedro es amigo de Juan
-
-INSERT INTO ParticipantesReto (reto_id, usuario_id) VALUES
-(1, 2), -- Ana está participando en el reto de lectura
-(2, 1), -- Juan está participando en el reto de correr
-(3, 4), -- María está participando en el reto de cocina
-(4, 5), -- Pedro está participando en el reto de viajar
-(5, 3); -- Luis está participando en el reto de carreras
-
-INSERT INTO SubtareaParticipante (subtarea_id, usuario_id) VALUES
-(1, 2), -- Ana está en la subtarea del primer libro
-(2, 2), -- Ana está en la subtarea del segundo libro
-(3, 1), -- Juan está en la subtarea de preparación de maratón
-(4, 3), -- Luis está en la subtarea de completar la primera carrera
-(5, 5); -- Pedro está en la subtarea de visitar una nueva ciudad
-```
-
----
-
-# Adicionales
-
-## Herramientas de desarrollo
-
-- **Java y JDK:** lenguaje de programación y kit de desarrollo
-- **Maven:** herramienta de automatización de construcción utilizada principalmente en proyectos de desarrollo de software Java. Facilita la gestión de dependencias, la compilación del código y el empaquetado de aplicaciones.
-- **Tomcat:** servidor web de código abierto y contenedor de servlets desarrollado por Apache Software Foundation, usado principalmente para ejecutar aplicaciones Java en entornos web, no es una base de datos como se indica erróneamente en el texto seleccionado
-- **MYSQL:** base de datos relacional para las operaciones relacionales DDL, DML, DCL, DQL
-- **JPA ORM Hibernate:**
-- **Spring**
-- **Spring Boot**
-- **GIT:** Para llevar un control de versiones del proyecto.
-- **XAMPP:** Para levantar el servidor de Apache para la administración de la base de datos.
-
----
-
-## Acciones
-
-- Retos diarios/mensuales
-- Encontrar retos cerca de ti
-- Retar a tus amigos
-- Crear nuevo reto
-    - Se asigna tiempo para completar
-    - Nivel de dificultad
-- Ranking de retos completados
-- Unirse a retos
-
-# Tareas asignadas
-
-| Alfredo | Obiang |
-| --- | --- |
-| Modelo ER | Fichero SQL |
-| Diagrama de clases | Inicio del código |
-|  |  |
