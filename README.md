@@ -274,7 +274,9 @@ graph TD
     style E fill:#ffccbb,stroke:#333,stroke-width:2px;
 ```
 
-# 3. Capa de Diseño  
+# 3. Capa de Diseño
+## Prototipo
+![Página de inicio sin login](/src/main/resources/static/images/InicioSL.png)
 ## 1. Diagrama de clases  
 ![Diagrama de clases](src/main/resources/static/images/DiagramaClases.png)
 ## 2. Diagrama de clases JPA  

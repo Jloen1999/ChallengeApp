@@ -12,11 +12,11 @@ public class Notificacion {
     private Boolean leido;
     private Date fechaEnvio;
 
-    @ManyToOne
+    @ManyToOne // Muchas notificaciones pueden ser enviadas por un usuario
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne // El usuario puede recibir muchas notificaciones de un reto
     @JoinColumn(name = "reto_id")
     private Reto reto;
 

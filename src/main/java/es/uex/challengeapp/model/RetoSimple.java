@@ -1,18 +1,16 @@
 package es.uex.challengeapp.model;
 
-import jakarta.persistence.*;
-import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.persistence.Entity;
 
 @Entity
 public class RetoSimple extends Reto {
-    @Lob
-    private JsonNode progresoArray;
+    private int progreso;
 
-    public JsonNode getProgresoArray() {
-        return progresoArray;
+    public int getProgresoArray() {
+        return progreso;
     }
 
-    public void setProgresoArray(JsonNode progresoArray) {
-        this.progresoArray = progresoArray;
+    public void setProgresoArray(int progreso) {
+        this.progreso = progreso;
     }
 }

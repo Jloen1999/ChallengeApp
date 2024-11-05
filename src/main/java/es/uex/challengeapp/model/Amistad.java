@@ -6,14 +6,14 @@ import java.io.Serializable;
 @Entity
 public class Amistad implements Serializable {
     @Id
-    @ManyToOne
+    @ManyToOne // Un usuario puede tener muchas amistades
     @JoinColumn(name = "usuario_id1")
-    private Usuario usuario1;
+    private Usuario usuario1; //
 
     @Id
-    @ManyToOne
+    @ManyToOne // Un
     @JoinColumn(name = "usuario_id2")
-    private Usuario usuario2;
+    private Usuario usuario2; // Usuario con el que se ha establecido la amistad
 
     public Usuario getUsuario1() {
         return usuario1;

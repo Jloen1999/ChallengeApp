@@ -36,7 +36,7 @@ CREATE TABLE Reto (
 
 CREATE TABLE RetoSimple (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    progreso_array JSON,
+    progreso int,
     FOREIGN KEY (id) REFERENCES Reto(id)
 );
 
