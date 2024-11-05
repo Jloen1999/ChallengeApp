@@ -1,6 +1,6 @@
 # ChallengeApp
 
-<img src="src/main/resources/static/images/cronograma.png" width="200" height="200" style="display: block; margin: 0 auto">
+<img src="src/main/resources/static/images/logo.png" width="200" height="200" style="display: block; margin: 0 auto">
 
 ## Integrantes
 
@@ -38,7 +38,7 @@ El objetivo de la aplicación es permitir a los usuarios crear, gestionar y part
 
 > [!NOTE]  
 > **Cronograma Actual:**  
-> ![Cronograma]()
+> ![Cronograma](src/main/resources/static/images/cronograma.png)
 
 
 ## 2. Análisis del Proyecto
