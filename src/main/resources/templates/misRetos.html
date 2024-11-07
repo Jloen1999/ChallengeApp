@@ -3,7 +3,7 @@
       class="no-js"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Inicio de sesión - ChallengeApp</title>
+    <title>Retos</title>
 
     <!-- Metadatos generales -->
     <meta name="author"
@@ -31,7 +31,7 @@
 
     <!-- Estilos CSS -->
     <link rel="stylesheet"
-          href="/css/stylesSignInUp.css">
+          href="/css/stylesReto.css">
     <link rel="stylesheet"
           href="/css/normalize.css">
     <link rel="stylesheet"
@@ -101,64 +101,36 @@
         </div>
     </nav>
 </header>
+
 <main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
-    <div class="card p-4 shadow-lg w-50 h-50">
-        <h2 class="text-center mb-4">Registro de Usuario</h2>
-        <form th:action="@{/usuario/registro}"
-              th:object="${usuario}"
-              method="post">
-            <div class="form-group">
-                <label for="name">Nombre</label>
-                <input type="text"
-                       id="name"
-                       th:field="*{nombre}"
-                       class="form-control"
-                       required>
-            </div>
-            <div class="form-group">
-                <label for="email">Correo</label>
-                <input type="email"
-                       id="email"
-                       th:field="*{correo}"
-                       class="form-control"
-                       required>
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password"
-                       id="password"
-                       th:field="*{contrasena}"
-                       class="form-control"
-                       required>
-            </div>
-            <div class="form-group">
-                <label for="ubicacion">Ubicación</label>
-                <input type="text"
-                       id="ubicacion"
-                       th:field="*{ubicacion}"
-                       class="form-control">
-            </div>
-            <button type="submit"
-                    class="btn btn-primary w-100 mt-3">Ingresar
-            </button>
-            <p class="text-center mt-3">¿Ya tienes cuenta? <a href="/usuario/login"
-                                                              class="link-primary">Iniciar sesión</a></p>
-            <div th:if="${error}"
-                 class="text-danger"
-                 th:text="${error}"></div>
-        </form>
+    <div class="card p-4 shadow-lg w-50">
+        <h2 class="text-center">Mis Retos</h2>
+        <div class="list-group mt-4">
+            <a href="/usuario/reto"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Leer 5 libros en una semana<span class="badge bg-success">Completado</span>
+            </a>
+            <a href="/usuario/reto"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Correr 10 km <span class="badge bg-warning text-dark">En Progreso</span>
+            </a>
+            <a href="/usuario/reto"
+               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                Aprender Kotlin <span class="badge bg-danger">No Completado</span>
+            </a>
+        </div>
     </div>
 </main>
 
-<footer class="bg-dark text-white text-center w-100 position-sticky bottom-0">
+<footer class="footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
     <div>
         <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
         <p class="d-flex justify-content-center">
             <a href="#"
-               class="me-3">Términos de Uso</a>
-            |
+               class="me-3">Términos de Uso</a> |
             <a href="#"
-               class="ms-3">Política de Privacidad</a></p>
+               class="ms-3">Política de Privacidad</a>
+        </p>
         <div class="social-icons">
             <i class="bi bi-whatsapp mx-2"></i>
             <i class="bi bi-instagram mx-2"></i>
@@ -167,6 +139,8 @@
     </div>
 </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </body>
 </html>

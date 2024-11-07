@@ -1,0 +1,16 @@
+.navbar, .footer {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.btn-success {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-5px);
+}
+
+.card{
+    height: 60vh !important;
+}

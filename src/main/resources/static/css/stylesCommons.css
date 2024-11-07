@@ -1,8 +1,8 @@
-body, html {
-    font-family: Roboto, sans-serif;
-    border: 0;
-    margin: 0;
+body {
+    font-family: 'Roboto', sans-serif;
     height: 100vh;
+    background: rgb(61, 60, 71);
+    background: linear-gradient(90deg, rgba(61, 60, 71, 1) 0%, rgba(17, 18, 17, 1) 100%, rgba(0, 212, 255, 1) 100%);
 }
 
 .header {
@@ -15,25 +15,6 @@ body, html {
     width: 4em;
 }
 
-.main-section {
-    background: rgb(61, 60, 71);
-    background: linear-gradient(90deg, rgba(61, 60, 71, 1) 0%, rgba(17, 18, 17, 1) 100%, rgba(0, 212, 255, 1) 100%);
-}
-
-main {
-    display: grid;
-    grid-template-columns: max(25vw) minmax(50vw, 1fr);
-}
-
-.list-group-item {
-    font-size: 0.8em;
-}
-
-.section-left {
-    background: rgb(61, 60, 71);
-    background: linear-gradient(90deg, rgba(61, 60, 71, 1) 0%, rgba(160, 173, 210, 1) 100%, rgba(0, 212, 255, 1) 100%);
-}
-
 
 .card, .form-control, .btn {
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
@@ -44,6 +25,20 @@ main {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
+.social-icons i {
+    font-size: 24px;
+    color: #B0BEC5;
+    margin: 0 10px;
+    transition: color 0.3s ease-in-out;
+}
+
+.social-icons i:hover {
+    color: #FFFFFF;
+}
+
+.navbar, .footer {
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
 
 a {
     color: #4a90e2;
@@ -69,6 +64,7 @@ a:hover::after {
     width: 100%;
 }
 
+
 @media (max-width: 768px) {
     .navbar-nav {
         display: flex !important;
@@ -77,16 +73,26 @@ a:hover::after {
         align-items: center;
     }
 
-    .btn-search{
+    .btn-search {
         width: 70vw !important;
     }
 
-    .icon-profile{
+    .icon-profile {
         margin-top: -100px
     }
+
     a:hover::after {
         width: 100%;
     }
 
 }
 
+.btn-outline-primary {
+    transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-5px);
+}

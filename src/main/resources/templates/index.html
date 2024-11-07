@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="es"
-      class="no-js">
+      class="no-js"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Retos</title>
+    <title>Inicio</title>
 
     <!-- Metadatos generales -->
     <meta name="author"
@@ -57,11 +58,12 @@
     <nav class="navbar navbar-expand-md">
         <div class="container-fluid">
 
-            <h1><a href="index.html"
-                   class="fs-5 text-decoration-none text-white"><img src="/images/logo.png"
-                                                                     alt="Logo de la página web Retos"
-                                                                     class="logo-image"> ChallengeApp</a></h1>
-            <button class="navbar-toggler"
+            <h1><a href="/"
+                   class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
+                                                                                  alt="Logo de la página web Retos"
+                                                                                  class="logo-image"> ChallengeApp</a>
+            </h1>
+            <button class="navbar-toggler mb-5"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarNav"
@@ -70,19 +72,26 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse"
+            <div class="collapse navbar-collapse pb-5"
                  id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active row row-cols-2"
-                           aria-current="page"
-                           href="#"><i class="bi bi-bar-chart-fill col"></i>Estadísticas</a>
+                <ul class="navbar-nav ms-md-auto align-items-md-center">
+                    <li class="nav-item btn-search">
+                        <form class="d-flex"
+                              role="search">
+                            <input class="form-control me-2"
+                                   type="search"
+                                   placeholder="Buscar Reto"
+                                   aria-label="Search">
+                            <button class="btn btn-outline-success"
+                                    type="submit">Buscar
+                            </button>
+                        </form>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link row row-cols-2"
-                           href="usuario/login">
-                            <i class="bi bi-person-circle fs-3 col"></i>Identificarse</a>
+                    <li class="nav-item icon-profile ms-md-3">
+                        <a class="nav-link"
+                           href="/usuario/login">
+                            <i class="bi bi-person-circle fs-1 col"></i></a>
                     </li>
                 </ul>
             </div>
@@ -90,60 +99,101 @@
     </nav>
 </header>
 
-<main>
-    <section class="section-left d-flex flex-column min-vh-100">
+<main class="vh-100">
+    <section class="section-left d-flex flex-column">
         <a href="#"
            class="list-group-item list-group-item-action fs-3 p-0 text-warning"><i class="bi bi-dash"></i>General</a>
-        <a href="#"
-           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-plus-circle-fill"></i><span class="m-2">Crear
+        <a href="/usuario/crearReto"
+           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-x-circle text-danger"></i><span class="m-2">Crear
                 Reto</span></a>
+        <a href="#"
+           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-geo-alt-fill"></i><span class="m-2">Buscar cerca de mí</span></a>
+        <a href="/usuario/estadisticas"
+           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-bar-chart-fill"></i><span class="m-2">Estadísticas</span></a>
+        <a href="/usuario/estadisticas"
+           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-award-fill"></i><span class="m-2">Retos Populares</span></a>
+        <a href="/usuario/misRetos"
+           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-stars"></i><span class="m-2">Nuevos retos</span></a>
+
+
 
     </section>
     <section class="container-fluid main-section">
-        <div class="card mx-4 mt-2"
-             style="width: 18rem;">
-            <img src="/images/jugando.jpg"
-                 class="card-img-top"
-                 alt="Imagen de un chico jugando">
-            <div class="card-body">
-                <h5 class="card-title">Reto 1</h5>
-                <p class="card-text">Ganar a un jugador de nivel 10 en el juego de carreras de coche</p>
-                <a href="#"
-                   class="btn btn-primary">Ir al Reto</a>
-            </div>
+        <h1 class="text-center text-warning">Retos</h1>
+        <div class="row justify-content-center row-cols- row-cols-lg-3 row-cols-md-2 row-cols-1 row-gap-2">
+            <article class="card mx-4 mt-2 col"
+                     style="width: 18rem;">
+                <img src="/images/jugando.jpg"
+                     class="card-img-top h-50 object-fit-cover"
+                     alt="Imagen de un chico jugando">
+                <div class="card-body">
+                    <h5 class="card-title">Reto 1</h5>
+                    <p class="card-text">Ganar a un jugador de nivel 10 en el juego de carreras de coche</p>
+                    <a href="#"
+                       class="btn btn-primary">Ir al Reto</a>
+                </div>
+            </article>
+
+            <article class="card mx-4 mt-2 col"
+                     style="width: 18rem;">
+                <img src="/images/enBici.jpg"
+                     class="card-img-top h-50 object-fit-cover"
+                     alt="Imagen de un chico jugando">
+                <div class="card-body">
+                    <h5 class="card-title">Reto 2</h5>
+                    <p class="card-text">Recorrer 10 km en bicicleta en menos de 30 minutos</p>
+                    <a href="#"
+                       class="btn btn-primary">Ir al Reto</a>
+                </div>
+            </article>
+
+            <article class="card mx-4 mt-2 col"
+                     style="width: 18rem;">
+                <img src="/images/notasMusicales.jpg"
+                     class="card-img-top h-50 object-fit-cover"
+                     alt="Imagen de un chico jugando">
+                <div class="card-body">
+                    <h5 class="card-title">Reto 3</h5>
+                    <p class="card-text">Aprender a tocar la canción de la película de Disney "Frozen" en 1 mes</p>
+                    <a href="#"
+                       class="btn btn-primary">Ir al Reto</a>
+                </div>
+            </article>
+
+            <article class="card mx-4 mt-2 col"
+                     style="width: 18rem;">
+                <img src="/images/Senderismo.jpg"
+                     class="card-img-top h-50 object-fit-cover"
+                     alt="Imagen de un chico jugando">
+                <div class="card-body">
+                    <h5 class="card-title">Reto 4</h5>
+                    <p class="card-text">Caminar 20 km en menos de 3 horas</p>
+                    <a href="#"
+                       class="btn btn-primary">Ir al Reto</a>
+                </div>
+            </article>
         </div>
 
-        <div class="card mx-4 mt-2"
-             style="width: 18rem;">
-            <img src="/images/enBici.jpg"
-                 class="card-img-top"
-                 alt="Imagen de un chico jugando">
-            <div class="card-body">
-                <h5 class="card-title">Reto 2</h5>
-                <p class="card-text">Recorrer 10 km en bicicleta en menos de 30 minutos</p>
-                <a href="#"
-                   class="btn btn-primary">Ir al Reto</a>
-            </div>
-        </div>
-
-        <div class="card mx-4 mt-2"
-             style="width: 18rem;">
-            <img src="/images/natacion.jpg"
-                 class="card-img-top"
-                 alt="Imagen de un chico jugando">
-            <div class="card-body">
-                <h5 class="card-title">Reto 3</h5>
-                <p class="card-text">Nadar 1 km en menos de 20 minutos</p>
-                <a href="#"
-                   class="btn btn-primary">Ir al Reto</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="section-right">
 
     </section>
 </main>
+<!-- Footer -->
+<footer class="bg-dark text-center position-sticky w-100 bottom-0 text-white">
+    <div>
+        <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
+        <p class="d-flex justify-content-center">
+            <a href="#"
+               class="me-3">Términos de Uso</a>
+            |
+            <a href="#"
+               class="ms-3">Política de Privacidad</a></p>
+        <div class="social-icons">
+            <i class="bi bi-whatsapp mx-2"></i>
+            <i class="bi bi-instagram mx-2"></i>
+            <i class="bi bi-twitter mx-2"></i>
+        </div>
+    </div>
+</footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>

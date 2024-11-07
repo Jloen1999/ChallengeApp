@@ -1,5 +1,6 @@
 package es.uex.challengeapp.controller;
 
+import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,36 @@ public class UsuarioController {
         return "registro";
     }
 
+    @GetMapping("/dashboard")
+    public String mostrarPerfilUsuario() {
+        return "dashboard";
+    }
+
+    @GetMapping("/estadisticas")
+    public String mostrarEstadisticasUsuario() {
+        return "estadisticas";
+    }
+
+    @GetMapping("/misRetos")
+    public String mostrarRetosUsuario() {
+        return "misRetos";
+    }
+
+    @GetMapping("/reto")
+    public String mostrarReto() {
+        return "reto";
+    }
+
+    @GetMapping("/amigos")
+    public String mostrarAmigos() {
+        return "amigos";
+    }
+
+    @GetMapping("/notificaciones")
+    public String mostrarNotificacionesUsuario() {
+        return "notificaciones";
+    }
+
     @PostMapping("/registro")
     public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
         Usuario registrado = usuarioService.registrarUsuario(usuario);
@@ -36,6 +67,14 @@ public class UsuarioController {
         model.addAttribute("usuario", new Usuario());
         return "login";
     }
+
+    @GetMapping("/crearReto")
+    public String mostrarFormularioCrearReto(Model model){
+        model.addAttribute("reto", new Reto());
+        return "crearReto";
+    }
+
+
 
     @PostMapping("/login")
     public String login(@RequestParam String correo, @RequestParam String contrasena, Model model) {
