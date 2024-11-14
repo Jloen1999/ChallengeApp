@@ -12,78 +12,77 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
-    @Autowired
-    private UsuarioService usuarioService;
+	@Autowired
+	private UsuarioService usuarioService;
 
-    @GetMapping("/registro")
-    public String mostrarFormularioRegistro(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "registro";
-    }
+	@GetMapping("/registro")
+	public String mostrarFormularioRegistro(Model model) {
+		model.addAttribute("usuario", new Usuario());
+		return "registro";
+	}
 
-    @GetMapping("/dashboard")
-    public String mostrarPerfilUsuario() {
-        return "dashboard";
-    }
+	@GetMapping("/dashboard")
+	public String mostrarPerfilUsuario() {
+		return "dashboard";
+	}
 
-    @GetMapping("/estadisticas")
-    public String mostrarEstadisticasUsuario() {
-        return "estadisticas";
-    }
+	@GetMapping("/estadisticas")
+	public String mostrarEstadisticasUsuario() {
+		return "estadisticas";
+	}
 
-    @GetMapping("/misRetos")
-    public String mostrarRetosUsuario() {
-        return "misRetos";
-    }
+	@GetMapping("/misRetos")
+	public String mostrarRetosUsuario() {
+		return "misRetos";
+	}
 
-    @GetMapping("/reto")
-    public String mostrarReto() {
-        return "reto";
-    }
+	@GetMapping("/reto")
+	public String mostrarReto() {
+		return "reto";
+	}
 
-    @GetMapping("/amigos")
-    public String mostrarAmigos() {
-        return "amigos";
-    }
+	@GetMapping("/amigos")
+	public String mostrarAmigos() {
+		return "amigos";
+	}
 
-    @GetMapping("/notificaciones")
-    public String mostrarNotificacionesUsuario() {
-        return "notificaciones";
-    }
+	@GetMapping("/notificaciones")
+	public String mostrarNotificacionesUsuario() {
+		return "notificaciones";
+	}
 
-    @PostMapping("/registro")
-    public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
-        Usuario registrado = usuarioService.registrarUsuario(usuario);
-        if (registrado != null) {
-            model.addAttribute("mensaje", "Usuario registrado con éxito. Inicia sesión.");
-            return "redirect:/usuario/login";
-        }
-        model.addAttribute("error", "Error al registrar usuario.");
-        return "registro";
-    }
+	@PostMapping("/registro")
+	public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
+		Usuario registrado = usuarioService.registrarUsuario(usuario);
+		if (registrado != null) {
+			model.addAttribute("mensaje", "Usuario registrado con éxito. Inicia sesión.");
+			return "redirect:/usuario/login";
+		}
+		model.addAttribute("error", "Error al registrar usuario.");
+		return "registro";
+	}
 
-    @GetMapping("/login")
-    public String mostrarFormularioLogin(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        return "login";
-    }
+	@GetMapping("/login")
+	public String mostrarFormularioLogin(Model model) {
+		model.addAttribute("usuario", new Usuario());
+		return "login";
+	}
 
-    @GetMapping("/crearReto")
-    public String mostrarFormularioCrearReto(Model model){
-        model.addAttribute("reto", new Reto());
-        return "crearReto";
-    }
+	@GetMapping("/crearReto")
+	public String mostrarFormularioCrearReto(Model model) {
+		model.addAttribute("reto", new Reto());
+		return "crearReto";
+	}
 
-
-
-    @PostMapping("/login")
-    public String login(@RequestParam String correo, @RequestParam String contrasena, Model model) {
-        Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
-        if (usuario != null) {
-            model.addAttribute("usuario", usuario);
-            return "panel"; // Página principal del usuario
-        }
-        model.addAttribute("error", "Correo o contraseña incorrectos.");
-        return "login";
-    }
+	@PostMapping("/dashboard")
+	public String login(@RequestParam String correo, @RequestParam String contrasena, Model model) {
+		Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
+		if (usuario != null) {
+			model.addAttribute("usuario", usuario);
+			return "dashboard"; // Página principal del usuario
+		}
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("error", "Correo o contraseña incorrectos.");
+		return "login";
+	}
 }

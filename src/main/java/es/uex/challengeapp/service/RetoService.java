@@ -8,5 +8,4 @@ public interface RetoService {
 
 	List<Reto> getNovedososRetos();
 
-	List<Reto> getRetos(int userId);
 }

@@ -18,8 +18,4 @@ public class RetoServiceImpl implements RetoService{
         return retoRepository.findByNovedadTrue();
     }
     
-    @Override
-    public List<Reto> getRetos(int userId){
-    	return retoRepository.getAllRetosByUser(userId);
-    }
 }
