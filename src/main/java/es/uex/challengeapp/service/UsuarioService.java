@@ -1,23 +1,10 @@
 package es.uex.challengeapp.service;
 
 import es.uex.challengeapp.model.Usuario;
-import es.uex.challengeapp.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-@Service
-public class UsuarioService {
+public interface UsuarioService {
 
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+	Usuario registrarUsuario(Usuario usuario);
 
-    public Usuario registrarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
-
-    public Usuario autenticarUsuario(String correo, String contrasena) {
-        return usuarioRepository.findByCorreo(correo)
-            .filter(u -> u.getContrasena().equals(contrasena))
-            .orElse(null);
-    }
+	Usuario autenticarUsuario(String correo, String contrasena);
 }
