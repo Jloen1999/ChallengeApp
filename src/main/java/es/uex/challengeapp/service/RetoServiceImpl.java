@@ -17,5 +17,15 @@ public class RetoServiceImpl implements RetoService{
     public List<Reto> getNovedososRetos() {
         return retoRepository.findByNovedadTrue();
     }
+
+	@Override
+	public Reto crearReto(Reto reto) {
+		return retoRepository.save(reto);
+	}
+
+	@Override
+	public List<Reto> obtenerRetosPorUsuario(Long usuarioId) {
+		return retoRepository.findAllByCreadorId(usuarioId);
+	}
     
 }

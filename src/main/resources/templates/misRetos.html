@@ -61,7 +61,7 @@
     <nav class="navbar navbar-expand-md">
         <div class="container-fluid">
 
-            <h1><a href="/"
+            <h1><a href="/usuario/home"
                    class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
                                                                                   alt="Logo de la página web Retos"
                                                                                   class="logo-image"> ChallengeApp</a>
@@ -105,19 +105,18 @@
 <main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
     <div class="card p-4 shadow-lg w-50">
         <h2 class="text-center">Mis Retos</h2>
-        <div class="list-group mt-4">
-            <a href="/usuario/reto"
-               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                Leer 5 libros en una semana<span class="badge bg-success">Completado</span>
-            </a>
-            <a href="/usuario/reto"
-               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                Correr 10 km <span class="badge bg-warning text-dark">En Progreso</span>
-            </a>
-            <a href="/usuario/reto"
-               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                Aprender Kotlin <span class="badge bg-danger">No Completado</span>
-            </a>
+        <div th:each="reto : ${retos}"
+        	 class="list-group mt-4">
+                <a th:href="@{/usuario/reto}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <span th:text="${reto.nombre}">Nombre del Reto</span>
+                    <!-- ME LO MUESTRA SIEMPRE ROJO A PESAR DE QUE CAPTURA BIEN EL ESTADO -->
+                    <span th:classappend="${reto.estado == 'FALLIDO' ? 'badge bg-danger' :
+                      reto.estado == 'COMPLETADO' ? 'badge bg-success' :
+                      reto.estado == 'EN_PROGRESO' ? 'badge bg-warning text-dark' :
+                      'badge bg-primary'}"
+      					th:text="${reto.estado}">Estado</span>
+                </a>
         </div>
     </div>
 </main>

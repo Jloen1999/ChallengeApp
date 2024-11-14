@@ -104,16 +104,19 @@
 
 <main class="vh-100 mx-4">
     <div class="container my-5 card p-4 shadow-lg">
+    <!-- HAY QUE AÑADIR UN CALENDARIO PARA SELECCIONAR FECHA DE FINALIZACIÓN, U OTRO MEDIDA-->
         <h2 class="text-center">Crear Nuevo Reto</h2>
         <form class="mt-4"
                 th:action="@{/usuario/crearReto}"
-                th:object="${reto}">
+                th:object="${reto}"
+                method="post">
             <div class="mb-3">
                 <label for="nombreReto"
                        class="form-label">Nombre del Reto</label>
                 <input type="text"
                        class="form-control"
                        id="nombreReto"
+                       th:field="*{nombre}"
                        required>
             </div>
             <div class="mb-3">
@@ -121,6 +124,7 @@
                        class="form-label">Descripción</label>
                 <textarea class="form-control"
                           id="descripcion"
+                          th:field="*{descripcion}"
                           rows="3"
                           required></textarea>
             </div>
@@ -130,6 +134,7 @@
                 <input type="number"
                        class="form-control"
                        id="duracion"
+                       th:field="*{duracion}"
                        required>
             </div>
             <div class="mb-3">
@@ -137,14 +142,18 @@
                        class="form-label">Tipo de Reto</label>
                 <select class="form-select"
                         id="tipoReto"
+                        th:field="*{tipo}"
                         required>
-                    <option value="simple">Reto Simple</option>
-                    <option value="complejo">Reto Complejo</option>
+                    <option value="SIMPLE">Reto Simple</option>
+                    <option value="COMPLEJO">Reto Complejo</option>
                 </select>
             </div>
             <button type="submit"
                     class="btn btn-primary w-100">Crear Reto
             </button>
+            
+            <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
+            <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
         </form>
     </div>
 </main>

@@ -59,7 +59,7 @@
     <nav class="navbar navbar-expand-md">
         <div class="container-fluid">
 
-            <h1><a href="/"
+            <h1><a href="/usuario/home"
                    class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
                                                                                   alt="Logo de la página web Retos"
                                                                                   class="logo-image"> ChallengeApp</a>
@@ -102,7 +102,7 @@
 
 <main class="container vh-100">
     <div class="text-center mb-5 text-white">
-        <h1>Bienvenido a ChallengeApp</h1>
+        <h1>¡Bienvenido a ChallengeApp <b th:text="${nombreUsuario}"></b>!</h1>
         <p>Gestiona tus retos y alcanza tus metas</p>
         <a class="btn btn-primary mt-3" href="/usuario/crearReto"><i class="bi bi-plus-circle"></i> Crear Reto</a>
     </div>
