@@ -10,5 +10,6 @@ import es.uex.challengeapp.model.Reto;
 @Repository
 public interface RetoRepository extends JpaRepository<Reto, Long> {
 	List<Reto> findByNovedadTrue();
+
 	List<Reto> findAllByCreadorId(Long creadorId);
 }

@@ -10,11 +10,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
+import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Reto.Estado;
 import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -28,6 +29,8 @@ public class UsuarioController {
 
 	@Autowired
 	private RetoService retoService;
+	@Autowired
+	private NotificacionService notificacionService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -42,7 +45,7 @@ public class UsuarioController {
 			model.addAttribute("nombreUsuario", userActual.getNombre());
 			return "dashboard";
 		}
-		return "redirect:/usuario/login";
+		return "redirect:/login";
 	}
 
 	@GetMapping("/estadisticas")
@@ -58,7 +61,7 @@ public class UsuarioController {
 			model.addAttribute("retos", retos);
 			return "misRetos";
 		}
-		return "redirect:/usuario/login";
+		return "redirect:/login";
 	}
 
 	@GetMapping("/reto")
@@ -67,55 +70,33 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/amigos")
-	public String mostrarAmigos() {
-		return "amigos";
-	}
-
-	@GetMapping("/home")
-	public String mostrarInicio() {
-		return "home";
+	public String mostrarAmigos(HttpSession session) {
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		if (userActual != null) {
+			return "amigos";
+		}
+		return "redirect:/login";
 	}
 
 	@GetMapping("/notificaciones")
-	public String mostrarNotificacionesUsuario() {
-		return "notificaciones";
-	}
-
-	@PostMapping("/registro")
-	public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
-		Usuario registrado = usuarioService.registrarUsuario(usuario);
-		if (registrado != null) {
-			model.addAttribute("mensaje", "Usuario registrado con éxito. Inicia sesión.");
-			return "redirect:/usuario/login";
+	public String mostrarNotificacionesUsuario(Model model, HttpSession session) {
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		if (userActual != null) {
+			List<Notificacion> notificaciones=notificacionService.obtenerNotificacionesPorUsuario(Long.valueOf(userActual.getId()));
+			model.addAttribute("notificaciones",notificaciones);
+			return "notificaciones";
 		}
-		model.addAttribute("error", "Error al registrar usuario.");
-		return "registro";
-	}
-
-	@GetMapping("/login")
-	public String mostrarFormularioLogin(Model model) {
-		model.addAttribute("usuario", new Usuario());
-		return "login";
+		return "redirect:/login";
 	}
 
 	@GetMapping("/crearReto")
-	public String mostrarFormularioCrearReto(Model model) {
-		model.addAttribute("reto", new Reto());
-		return "crearReto";
-	}
-
-	@PostMapping("/home")
-	public String login(@RequestParam String correo, @RequestParam String contrasena, Model model,
-			HttpSession session) {
-		Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
-		if (usuario != null) {
-			session.setAttribute("userActual", usuario);
-			model.addAttribute("usuario", usuario);
-			return "home"; // Página principal del usuario
+	public String mostrarFormularioCrearReto(Model model, HttpSession session) {
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		if (userActual != null) {
+			model.addAttribute("reto", new Reto());
+			return "crearReto";
 		}
-		model.addAttribute("usuario", new Usuario());
-		model.addAttribute("error", "Correo o contraseña incorrectos.");
-		return "login";
+		return "redirect:/login";
 	}
 
 	@PostMapping("/crearReto")
@@ -130,6 +111,7 @@ public class UsuarioController {
 			Reto creado = retoService.crearReto(reto);
 			if (creado != null) {
 				model.addAttribute("mensaje", "Reto añadido correctamente.");
+				generarNotificacion(userActual, reto, "CREACION_RETO");
 			} else {
 				model.addAttribute("error", "Error al crear el reto.");
 			}
@@ -137,5 +119,26 @@ public class UsuarioController {
 			return "crearReto";
 		}
 		return "redirect:/login";
+	}
+
+	private void generarNotificacion(Usuario userActual, Reto reto, String tipoNotificacion) {
+		Notificacion notificacion = new Notificacion();
+
+		String mensaje = "";
+		if ("CREACION_RETO".equals(tipoNotificacion)) {
+			mensaje = "¡Has creado un nuevo reto: " + reto.getNombre() + "!";
+		} else if ("UNION_RETO".equals(tipoNotificacion)) {
+			mensaje = "Te has unido al reto: " + reto.getNombre() + "!";
+		}
+
+		notificacion.setMensaje(mensaje);
+		notificacion.setLeido(false);
+		notificacion.setFechaEnvio(new Date(System.currentTimeMillis()));
+
+		notificacion.setUsuario(userActual);
+		notificacion.setReto(reto);
+
+		notificacionService.crearNotificacion(notificacion);
+
 	}
 }

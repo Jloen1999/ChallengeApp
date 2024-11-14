@@ -90,7 +90,7 @@
 
                     <li class="nav-item icon-profile ms-md-3">
                         <a class="nav-link"
-                           href="/usuario/login">
+                           href="/usuario/dashboard">
                             <i class="bi bi-person-circle fs-1 col"></i></a>
                     </li>
                 </ul>
@@ -104,21 +104,17 @@
     	<!-- ¿POR QUÉ ESTO ES UN ENLACE?-->
         <a href="#"
            class="list-group-item list-group-item-action fs-3 p-0 text-warning"><i class="bi bi-dash"></i>General</a>
-        <!--
         <a href="/usuario/crearReto"
-           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-x-circle text-danger"></i><span class="m-2">Crear
+           class="list-group-item list-group-item-action text-warning ms-3" th:if="${estaLogueado}"><i class="bi bi-x-circle text-danger"></i><span class="m-2">Crear
                 Reto</span></a>
         <a href="#"
-           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-geo-alt-fill"></i><span class="m-2">Buscar cerca de mí</span></a>
-
+           class="list-group-item list-group-item-action text-warning ms-3" th:if="${estaLogueado}"><i class="bi bi-geo-alt-fill"></i><span class="m-2">Buscar cerca de mí</span></a>
         <a href="/usuario/estadisticas"
            class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-bar-chart-fill"></i><span class="m-2">Estadísticas</span></a>
         <a href="#"
            class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-award-fill"></i><span class="m-2">Retos Populares</span></a>
-        <!--
         <a href="/usuario/misRetos"
-           class="list-group-item list-group-item-action text-warning ms-3"><i class="bi bi-stars"></i><span class="m-2">Nuevos retos</span></a>
-        -->
+           class="list-group-item list-group-item-action text-warning ms-3" th:if="${estaLogueado}"><i class="bi bi-stars"></i><span class="m-2">Nuevos retos</span></a>
 
     </section>
     <section class="container-fluid main-section">
