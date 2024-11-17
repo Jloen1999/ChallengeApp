@@ -1,5 +1,11 @@
 package es.uex.challengeapp.service;
 
-public interface ComentarioService {
+import java.util.List;
 
+import es.uex.challengeapp.model.Comentario;
+
+public interface ComentarioService {
+	Comentario hacerComentario(Comentario comentario);
+
+	List<Comentario> obtenerComentariosPorReto(Long retoId);
 }

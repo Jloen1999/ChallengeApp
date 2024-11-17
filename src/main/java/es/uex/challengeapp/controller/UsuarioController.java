@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.uex.challengeapp.model.Comentario;
 import es.uex.challengeapp.model.Notificacion;
+import es.uex.challengeapp.model.ParticipantesReto;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Reto.Estado;
 import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.service.ComentarioService;
 import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
 import es.uex.challengeapp.service.RetoService;
@@ -32,12 +35,15 @@ public class UsuarioController {
 
 	@Autowired
 	private RetoService retoService;
-	
+
 	@Autowired
 	private NotificacionService notificacionService;
-	
+
 	@Autowired
 	private ParticipantesRetoService participantesRetoService;
+
+	@Autowired
+	private ComentarioService comentarioService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -81,17 +87,6 @@ public class UsuarioController {
 			return "retosCreados";
 		}
 		return "redirect:/login";
-	}
-
-	@GetMapping("/reto/{id}")
-	public String mostrarReto(@PathVariable Integer id, Model model) {
-		Reto reto = retoService.obtenerReto(Long.valueOf(id));
-		if (reto != null) {
-			List<Usuario> participantes=participantesRetoService.obteneParticipantesDeReto(Long.valueOf(id));
-			model.addAttribute("reto", reto);
-			model.addAttribute("participantes",participantes);
-		}
-		return "reto";
 	}
 
 	@GetMapping("/amigos")
@@ -146,25 +141,66 @@ public class UsuarioController {
 		}
 		return "redirect:/login";
 	}
-	
+
 	@GetMapping("/unirse")
 	public String unirseAunReto(@RequestParam Integer retoId, Model model, HttpSession session) {
-	    Usuario userActual = (Usuario) session.getAttribute("userActual");
-	    if (userActual != null) {
-	        Reto reto = retoService.obtenerReto(Long.valueOf(retoId));
-	        if (reto != null) {
-	            participantesRetoService.unirseAReto(Long.valueOf(userActual.getId()), Long.valueOf(retoId));
-	            generarNotificacion(userActual, reto, "UNION_RETO");
-	            model.addAttribute("mensaje", "Te has unido correctamente");
-	            return "reto/" + retoId;
-	        }
-	    }
-	    return "redirect:/login";
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		if (userActual != null) {
+			Reto reto = retoService.obtenerReto(Long.valueOf(retoId));
+			if (reto != null) {
+				boolean yaUnido = participantesRetoService.unidoAlReto(Long.valueOf(userActual.getId()),
+						Long.valueOf(retoId));
+
+				if (yaUnido) {
+					model.addAttribute("mensaje", "Ya estás unido a este reto.");
+					return "redirect:/usuario/reto/" + retoId;
+				}
+
+				ParticipantesReto participantesReto = new ParticipantesReto();
+				participantesReto.setUsuario(userActual);
+				participantesReto.setReto(reto);
+
+				participantesRetoService.unirseAReto(participantesReto);
+				generarNotificacion(userActual, reto, "UNION_RETO");
+				model.addAttribute("mensaje", "Te has unido correctamente");
+				return "redirect:/usuario/reto/" + retoId;
+			}
+		}
+		return "redirect:/login";
 	}
 
-	
-	
-	//FUNCIONES PRIVADAS AUXLIARES
+	@GetMapping("/reto/{id}")
+	public String mostrarReto(@PathVariable Integer id, Model model) {
+		Reto reto = retoService.obtenerReto(Long.valueOf(id));
+		if (reto != null) {
+			List<Usuario> participantes = participantesRetoService.obteneParticipantesDeReto(Long.valueOf(id));
+			List<Comentario> comentarios = comentarioService.obtenerComentariosPorReto(Long.valueOf(id));
+			model.addAttribute("reto", reto);
+			model.addAttribute("participantes", participantes);
+			model.addAttribute("comentarios", comentarios);
+		}
+		return "reto";
+	}
+
+	@PostMapping("/comentar")
+	public String comentar(@RequestParam String comentarioTexto, @RequestParam Integer retoId, HttpSession session) {
+		Usuario usuarioActual = (Usuario) session.getAttribute("userActual");
+		if (usuarioActual != null) {
+			Comentario comentario = new Comentario();
+			comentario.setTexto(comentarioTexto);
+			comentario.setFecha(new Date(System.currentTimeMillis()));
+			comentario.setUsuario(usuarioActual);
+			Reto reto = retoService.obtenerReto(Long.valueOf(retoId));
+			if (reto != null) {
+				comentario.setReto(reto);
+				comentarioService.hacerComentario(comentario);
+				return "redirect:/usuario/reto/" + retoId;
+			}
+		}
+		return "redirect:/login";
+	}
+
+	// FUNCIONES PRIVADAS AUXLIARES
 	private void generarNotificacion(Usuario userActual, Reto reto, String tipoNotificacion) {
 		Notificacion notificacion = new Notificacion();
 

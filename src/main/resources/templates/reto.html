@@ -161,29 +161,37 @@
         </div>
 
         <!-- Sección de comentarios -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header bg-info text-white">
-                        <h4 class="card-title"><i class="bi bi-chat-dots me-2"></i> Comentarios</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="comentario" class="form-label">Deja tu comentario:</label>
-                            <textarea class="form-control" id="comentario" rows="3"
-                                placeholder="Escribe aquí..."></textarea>
-                        </div>
-                        <button class="btn btn-primary mb-3">Enviar</button>
-                        <hr>
-                        <div class="mb-3">
-                            <p><strong>Usuario 1:</strong> Este reto es genial, me encanta la idea.</p>
-                            <p><strong>Usuario 2:</strong> Yo también quiero participar.</p>
-                            <p><strong>Usuario 3:</strong> Gran iniciativa, ¡a leer!</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <form action="/usuario/comentar" method="POST">
+		    <div class="row">
+		        <div class="col-12">
+		            <div class="card">
+		                <div class="card-header bg-info text-white">
+		                    <h4 class="card-title"><i class="bi bi-chat-dots me-2"></i> Comentarios</h4>
+		                </div>
+		                <div class="card-body">
+		                    <div class="mb-3">
+		                        <label for="comentario" class="form-label">Deja tu comentario:</label>
+		                        <textarea class="form-control" id="comentario" name="comentarioTexto" rows="3" placeholder="Escribe aquí..."></textarea>
+		                    </div>
+		                    <input type="hidden" name="retoId" th:value="${reto.id}" /> <!-- Asegúrate de que el retoId esté disponible -->
+		                    <button class="btn btn-primary mb-3" type="submit">Enviar</button>
+		                    <hr>
+		                    <div class="mb-3">
+		                        <p class="list-group-item"><strong>Usuario 1:</strong> Este reto es genial, me encanta la idea.</p>
+		                        <ul class="list-group">
+								    <li th:each="comentario : ${comentarios}" class="list-group-item">
+								        <strong th:text="${comentario.usuario.nombre}">Usuario</strong>: 
+								        <span th:text="${comentario.texto}"></span>
+								        <br>
+								        <small class="text-muted" th:text="${#dates.format(comentario.fecha, 'yyyy-MM-dd HH:mm')}">Fecha del comentario</small>
+								    </li>
+								</ul>
+		                    </div>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		</form>
     </main>
 
 

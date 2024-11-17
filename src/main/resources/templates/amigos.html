@@ -81,7 +81,33 @@
 <main class="container my-5 vh-100">
     <div class="text-center mb-5">
         <h2 class="text-white">Mis Amigos</h2>
+        <a class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#modalAñadirAmigo"><i class="bi bi-person-plus"></i> Añadir amigo</a>
     </div>
+    
+    <!-- Modal -->
+	<div class="modal fade" id="modalAñadirAmigo" tabindex="-1" aria-labelledby="modalAñadirAmigoLabel" aria-hidden="true">
+	    <div class="modal-dialog modal-dialog-centered">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="modalAñadirAmigoLabel">Añadir Amigo</h5>
+	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	            </div>
+	            <div class="modal-body">
+	                <!-- Formulario para añadir amigo -->
+	                <form action="/usuario/amigos/anadirAmigo" method="POST">
+	                    <div class="mb-3">
+	                        <label for="nombreAmigo" class="form-label">Nombre del amigo</label>
+	                        <input type="text" class="form-control" id="nombreAmigo" name="nombreAmigo" required>
+	                    </div>
+	                    <div class="text-end">
+	                        <button type="submit" class="btn btn-primary">Añadir</button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+    
     <div class="row">
         <div class="col-md-4 mb-4">
             <div class="card">
@@ -89,7 +115,10 @@
                     <i class="bi bi-person-circle fs-1"></i>
                     <h5 class="card-title">Nombre del Amigo</h5>
                     <p class="card-text">email@ejemplo.com</p>
-                    <a href="/usuario/dashboard" class="btn btn-primary">Ver Perfil</a>
+                    <div class="d-flex justify-content-center mt-3">
+			            <a href="/usuario/dashboard" class="btn btn-primary">Ver Perfil</a>
+			            <a href="/usuario/borrarAmigo" class="btn btn-danger ms-2"><i class="bi bi-person-dash"></i> Borrar</a>
+			        </div>
                 </div>
             </div>
         </div>
