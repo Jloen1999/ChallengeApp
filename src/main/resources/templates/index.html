@@ -120,6 +120,20 @@
     <section class="container-fluid main-section">
         <h1 class="text-center text-warning">Retos</h1>
         <div class="row justify-content-center row-cols- row-cols-lg-3 row-cols-md-2 row-cols-1 row-gap-2">
+            <th:block th:each="reto : ${retos}">
+		        <article class="card mx-4 mt-2 col" style="width: 18rem;">
+		            <img th:src="@{/images/{image}(image=${reto.url})}"
+		                 class="card-img-top h-50 object-fit-cover"
+		                 alt="Imagen de un reto">
+		            <div class="card-body">
+		                <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+		                <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
+		                <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
+		                   class="btn btn-primary">Ir al Reto</a>
+		            </div>
+		        </article>
+		    </th:block>
+            
             <article class="card mx-4 mt-2 col"
                      style="width: 18rem;">
                 <img src="/images/jugando.jpg"
@@ -128,7 +142,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Reto 1</h5>
                     <p class="card-text">Ganar a un jugador de nivel 10 en el juego de carreras de coche</p>
-                    <a href="/usuario/reto"
+                    <a href="/usuario/retoPrueba"
                        class="btn btn-primary">Ir al Reto</a>
                 </div>
             </article>

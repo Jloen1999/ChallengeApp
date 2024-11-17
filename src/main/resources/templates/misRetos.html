@@ -107,7 +107,7 @@
         <h2 class="text-center">Mis Retos</h2>
         <div th:each="reto : ${retos}"
         	 class="list-group mt-4">
-                <a th:href="@{/usuario/reto}"
+                <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                     <span th:text="${reto.nombre}">Nombre del Reto</span>
                     <!-- ME LO MUESTRA SIEMPRE AZUL A PESAR DE QUE CAPTURA BIEN EL ESTADO -->

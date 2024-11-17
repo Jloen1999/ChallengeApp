@@ -8,14 +8,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Reto.Estado;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.NotificacionService;
+import es.uex.challengeapp.service.ParticipantesRetoService;
 import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -29,8 +32,12 @@ public class UsuarioController {
 
 	@Autowired
 	private RetoService retoService;
+	
 	@Autowired
 	private NotificacionService notificacionService;
+	
+	@Autowired
+	private ParticipantesRetoService participantesRetoService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -53,19 +60,37 @@ public class UsuarioController {
 		return "estadisticas";
 	}
 
+	// TODO
 	@GetMapping("/misRetos")
 	public String mostrarRetosUsuario(Model model, HttpSession session) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
-			List<Reto> retos = retoService.obtenerRetosPorUsuario(Long.valueOf(userActual.getId()));
+			List<Reto> retos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(userActual.getId()));
 			model.addAttribute("retos", retos);
 			return "misRetos";
 		}
 		return "redirect:/login";
 	}
 
-	@GetMapping("/reto")
-	public String mostrarReto() {
+	@GetMapping("/retosCreados")
+	public String mostrarRetosCreados(Model model, HttpSession session) {
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		if (userActual != null) {
+			List<Reto> retos = retoService.obtenerRetosCreadosPorUsuario(Long.valueOf(userActual.getId()));
+			model.addAttribute("retos", retos);
+			return "retosCreados";
+		}
+		return "redirect:/login";
+	}
+
+	@GetMapping("/reto/{id}")
+	public String mostrarReto(@PathVariable Integer id, Model model) {
+		Reto reto = retoService.obtenerReto(Long.valueOf(id));
+		if (reto != null) {
+			List<Usuario> participantes=participantesRetoService.obteneParticipantesDeReto(Long.valueOf(id));
+			model.addAttribute("reto", reto);
+			model.addAttribute("participantes",participantes);
+		}
 		return "reto";
 	}
 
@@ -82,8 +107,9 @@ public class UsuarioController {
 	public String mostrarNotificacionesUsuario(Model model, HttpSession session) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
-			List<Notificacion> notificaciones=notificacionService.obtenerNotificacionesPorUsuario(Long.valueOf(userActual.getId()));
-			model.addAttribute("notificaciones",notificaciones);
+			List<Notificacion> notificaciones = notificacionService
+					.obtenerNotificacionesPorUsuario(Long.valueOf(userActual.getId()));
+			model.addAttribute("notificaciones", notificaciones);
 			return "notificaciones";
 		}
 		return "redirect:/login";
@@ -120,7 +146,25 @@ public class UsuarioController {
 		}
 		return "redirect:/login";
 	}
+	
+	@GetMapping("/unirse")
+	public String unirseAunReto(@RequestParam Integer retoId, Model model, HttpSession session) {
+	    Usuario userActual = (Usuario) session.getAttribute("userActual");
+	    if (userActual != null) {
+	        Reto reto = retoService.obtenerReto(Long.valueOf(retoId));
+	        if (reto != null) {
+	            participantesRetoService.unirseAReto(Long.valueOf(userActual.getId()), Long.valueOf(retoId));
+	            generarNotificacion(userActual, reto, "UNION_RETO");
+	            model.addAttribute("mensaje", "Te has unido correctamente");
+	            return "reto/" + retoId;
+	        }
+	    }
+	    return "redirect:/login";
+	}
 
+	
+	
+	//FUNCIONES PRIVADAS AUXLIARES
 	private void generarNotificacion(Usuario userActual, Reto reto, String tipoNotificacion) {
 		Notificacion notificacion = new Notificacion();
 
@@ -128,7 +172,7 @@ public class UsuarioController {
 		if ("CREACION_RETO".equals(tipoNotificacion)) {
 			mensaje = "¡Has creado un nuevo reto: " + reto.getNombre() + "!";
 		} else if ("UNION_RETO".equals(tipoNotificacion)) {
-			mensaje = "Te has unido al reto: " + reto.getNombre() + "!";
+			mensaje = "¡Te has unido al reto: " + reto.getNombre() + "!";
 		}
 
 		notificacion.setMensaje(mensaje);

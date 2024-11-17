@@ -24,8 +24,18 @@ public class RetoServiceImpl implements RetoService{
 	}
 
 	@Override
-	public List<Reto> obtenerRetosPorUsuario(Long usuarioId) {
+	public List<Reto> obtenerRetosCreadosPorUsuario(Long usuarioId) {
 		return retoRepository.findAllByCreadorId(usuarioId);
+	}
+
+	@Override
+	public Reto obtenerReto(Long id) {
+		return retoRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<Reto> obtenerTodosLosRetos() {
+		return retoRepository.findAll();
 	}
     
 }

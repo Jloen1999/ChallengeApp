@@ -10,5 +10,9 @@ public interface RetoService {
 
 	Reto crearReto(Reto reto);
 
-	List<Reto> obtenerRetosPorUsuario(Long usuarioId);
+	List<Reto> obtenerRetosCreadosPorUsuario(Long usuarioId);
+
+	Reto obtenerReto(Long id);
+	
+	List<Reto> obtenerTodosLosRetos();
 }

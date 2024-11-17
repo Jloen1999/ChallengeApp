@@ -1,5 +1,7 @@
 package es.uex.challengeapp.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +10,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 
@@ -16,11 +20,18 @@ import jakarta.servlet.http.HttpSession;
 public class HomeController {
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private RetoService retoService;
 
     @GetMapping("/")
     public String home(Model model,HttpSession session) {
     	Usuario userActual = (Usuario) session.getAttribute("userActual");
         model.addAttribute("estaLogueado", userActual != null);
+        
+        List<Reto> retos=retoService.obtenerTodosLosRetos();
+        model.addAttribute("retos",retos);
+        
         return "index";
     }
     
@@ -49,7 +60,9 @@ public class HomeController {
 			session.setAttribute("userActual", usuario);
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("estaLogueado", true);
-			return "index"; // Página principal del usuario
+			List<Reto> retos=retoService.obtenerTodosLosRetos();
+	        model.addAttribute("retos",retos);
+			return "index";
 		}
 		model.addAttribute("usuario", new Usuario());
 		model.addAttribute("error", "Correo o contraseña incorrectos.");
