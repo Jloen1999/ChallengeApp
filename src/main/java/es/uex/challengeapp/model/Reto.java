@@ -17,7 +17,6 @@ public class Reto {
 	private String url;
 	private Boolean novedad;
 	
-	//POR QUÉ VISIBILIDAD ES UN STRING
 	private String visibilidad;
 	
 	private Date fechaCreacion;

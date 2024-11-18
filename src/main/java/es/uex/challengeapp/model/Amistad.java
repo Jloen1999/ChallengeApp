@@ -11,7 +11,7 @@ public class Amistad implements Serializable {
     private Usuario usuario1; //
 
     @Id
-    @ManyToOne // Un
+    @ManyToOne
     @JoinColumn(name = "usuario_id2")
     private Usuario usuario2; // Usuario con el que se ha establecido la amistad
 
