@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioServiceImpl implements UsuarioService{
 
+    private final UsuarioRepository usuarioRepository;
+
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @Override
     public Usuario registrarUsuario(Usuario usuario) {
@@ -22,4 +26,5 @@ public class UsuarioServiceImpl implements UsuarioService{
             .filter(u -> u.getContrasena().equals(contrasena))
             .orElse(null);
     }
+
 }

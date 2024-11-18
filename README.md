@@ -281,3 +281,110 @@ graph TD
 ![Diagrama de clases](src/main/resources/static/images/DiagramaClases.png)
 ## 2. Diagrama de clases JPA  
 ![Diagrama de clases](src/main/resources/static/images/DiagramaClasesJPA.png)
+
+# 4. CommandLineRunner
+[Gemini](https://g.co/gemini/share/fcd05cdd0d2b)  
+## ¿Qué es CommandLineRunner?  
+En el contexto de Spring Boot, CommandLineRunner es una interfaz que permite ejecutar código personalizado justo después de que el contexto de la aplicación se haya iniciado completamente. Esto es especialmente útil para tareas de inicialización que requieren acceso a los beans de la aplicación, como:
+
+1. Cargar datos iniciales: Popularizar una base de datos con datos de prueba o configuración inicial.
+2. Ejecutar tareas programadas: Iniciar tareas que se ejecuten en segundo plano o con un cron.
+3. Realizar comprobaciones de salud: Verificar la conectividad a bases de datos, servicios externos, etc.
+4. Personalizar la configuración: Ajustar ciertos parámetros de la aplicación en función de argumentos de línea de comandos.
+
+> [!IMPORTANT]
+> ** Ejemplo 1: Cargar datos iniciales en la base de datos **  
+
+```java
+package es.uex.challengeapp;
+
+import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.service.UsuarioServiceImpl;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+@Component
+public class MyCommandLineRunner implements CommandLineRunner {
+
+    private final UsuarioServiceImpl usuarioService;
+
+    public MyCommandLineRunner(UsuarioServiceImpl usuarioService) {
+        this.usuarioService = usuarioService;
+    }
+    @Override
+    public void run(String... args) throws Exception{
+        System.out.println("¡Hola desde CommandLineRunner");
+
+        // Insertar dos usuarios en la base de datos
+        Usuario usuario1 = new Usuario("jose", "jose@gmail.com", "jose", "Calle Linares");
+        Usuario usuario2 = new Usuario("maria", "maria@gmail.com", "maria", "Calle Linares");
+
+        // Guardar los usuarios en la base de datos
+        usuarioService.registrarUsuario(usuario1);
+        usuarioService.registrarUsuario(usuario2);
+    }
+}
+```
+
+> [!TIP]
+> Spring Boot Detectará automáticamente esta clase y la ejecutará al iniciar la aplicación.
+
+
+> [!IMPORTANT]
+> ** Ejemplo 2: Ejecutar una tarea programa **
+
+```java
+
+package es.uex.challengeapp;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+
+import es.uex.challengeapp.repository.UsuarioRepository;
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+@Configuration
+public class ExecutorConfig {
+
+    @Bean
+    public ScheduledExecutorService scheduledExecutorService() {
+        return Executors.newScheduledThreadPool(1);
+    }
+}
+
+@SpringBootApplication
+public class ChallengeappApplication {
+    private final ScheduledExecutorService scheduledExecutorService;
+    private final UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public ChallengeappApplication(ScheduledExecutorService scheduledExecutorService, UsuarioRepository usuarioRepository) {
+        this.scheduledExecutorService = scheduledExecutorService;
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(ChallengeappApplication.class, args);
+    }
+
+    @PostConstruct
+    public void startScheduledTask() {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
+            System.out.println("Usuarios en la base de datos: " + usuarioRepository.count());
+        }, 1, 2, TimeUnit.MINUTES);
+    }
+
+}
+```
+
+> [!TIP]
+> **Spring Boot** permite ejecutar tareas programadas de forma sencilla. En este ejemplo, se crea un **ScheduledExecutorService** que imprime el número de usuarios en la base de datos cada 2 minutos.
+![img.png](src/main/resources/static/images/CommandLineRunner.png)

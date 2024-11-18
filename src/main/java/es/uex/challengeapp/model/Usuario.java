@@ -1,6 +1,8 @@
 package es.uex.challengeapp.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,13 +34,44 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<ProgresoReto> progresoRetos;
 
+    public Usuario(String nombre, String correo, String contrasena, String ubicacion) {
+        this.nombre = nombre;
+        this.correo = correo;
+        this.contrasena = contrasena;
+        this.ubicacion = ubicacion;
+        retosCreados = new ArrayList<>();
+        estadisticas = new ArrayList<>();
+        notificaciones = new ArrayList<>();
+        comentarios = new ArrayList<>();
+        recompensas = new ArrayList<>();
+        progresoRetos = new ArrayList<>();
+        amigos = new ArrayList<>();
+    }
+
     @ManyToMany
     @JoinTable(
             name = "Amistad",
             joinColumns = @JoinColumn(name = "usuario_id1"),
             inverseJoinColumns = @JoinColumn(name = "usuario_id2")
     )
+
+
     private List<Usuario> amigos;
+
+    public Usuario() {
+        nombre = "";
+        correo = "";
+        contrasena = "";
+        perfilInfo = "";
+        ubicacion = "";
+        retosCreados = new ArrayList<>();
+        estadisticas = new ArrayList<>();
+        notificaciones = new ArrayList<>();
+        comentarios = new ArrayList<>();
+        recompensas = new ArrayList<>();
+        progresoRetos = new ArrayList<>();
+        amigos = new ArrayList<>();
+    }
 
     public Integer getId() {
         return id;

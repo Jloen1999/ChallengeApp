@@ -29,8 +29,8 @@ public class HomeController {
     	Usuario userActual = (Usuario) session.getAttribute("userActual");
         model.addAttribute("estaLogueado", userActual != null);
         
-        List<Reto> retos=retoService.obtenerTodosLosRetos();
-        model.addAttribute("retos",retos);
+        /*List<Reto> retos=retoService.obtenerTodosLosRetos();
+        model.addAttribute("retos",retos);*/
         
         return "index";
     }
