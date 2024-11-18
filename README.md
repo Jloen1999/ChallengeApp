@@ -284,6 +284,7 @@ graph TD
 
 # 4. CommandLineRunner
 [Gemini Jose Luis Obiang](https://g.co/gemini/share/fcd05cdd0d2b)  
+[Gemini Alfredo Mituy Okenve](https://g.co/gemini/share/53ff291cb25d)
 ## ¿Qué es CommandLineRunner?  
 En el contexto de Spring Boot, CommandLineRunner es una interfaz que permite ejecutar código personalizado justo después de que el contexto de la aplicación se haya iniciado completamente. Esto es especialmente útil para tareas de inicialización que requieren acceso a los beans de la aplicación, como:
 
