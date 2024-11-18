@@ -104,14 +104,14 @@
 <main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
     <div class="card p-4 shadow-lg w-50 h-75">
         <h2 class="text-center mb-4">Inicia Sesión</h2>
-        <form action="/usuario/dashboard"
-              method="get">
+        <form th:action="@{/}" th:object="${usuario}" method="post">
             <div class="mb-3">
                 <label for="email"
                        class="form-label">Correo Electrónico</label>
                 <input type="email"
                        class="form-control"
                        id="email"
+                       th:field="*{correo}"
                        placeholder="correo@example.com"
                        required>
             </div>
@@ -121,14 +121,15 @@
                 <input type="password"
                        class="form-control"
                        id="password"
+                       th:field="*{contrasena}"
                        placeholder="Contraseña"
                        required>
             </div>
-            <a href="/usuario/dashboard"
-                    class="btn btn-primary w-100 mt-3">Ingresar
-            </a>
+            <button type="submit" class="btn btn-primary w-100 mt-3">Iniciar sesión</button>
             <p class="text-center mt-3">¿No tienes cuenta? <a href="/usuario/registro"
                                                               class="link-primary">Regístrate aquí</a></p>
+            <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
+            <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
         </form>
     </div>
 </main>

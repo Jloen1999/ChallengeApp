@@ -61,7 +61,7 @@
     <nav class="navbar navbar-expand-md">
         <div class="container-fluid">
 
-           <h1><a href="/"
+            <h1><a href="/"
                    class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
                                                                                   alt="Logo de la página web Retos"
                                                                                   class="logo-image"> ChallengeApp</a>
@@ -102,71 +102,34 @@
     </nav>
 </header>
 
-<main class="vh-100 mx-4">
-    <div class="container my-5 card p-4 shadow-lg">
-    <!-- HAY QUE AÑADIR UN CALENDARIO PARA SELECCIONAR FECHA DE FINALIZACIÓN, U OTRO MEDIDA-->
-        <h2 class="text-center">Crear Nuevo Reto</h2>
-        <form class="mt-4"
-                th:action="@{/usuario/crearReto}"
-                th:object="${reto}"
-                method="post">
-            <div class="mb-3">
-                <label for="nombreReto"
-                       class="form-label">Nombre del Reto</label>
-                <input type="text"
-                       class="form-control"
-                       id="nombreReto"
-                       th:field="*{nombre}"
-                       required>
-            </div>
-            <div class="mb-3">
-                <label for="descripcion"
-                       class="form-label">Descripción</label>
-                <textarea class="form-control"
-                          id="descripcion"
-                          th:field="*{descripcion}"
-                          rows="3"
-                          required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="duracion"
-                       class="form-label">Duración (días)</label>
-                <input type="number"
-                       class="form-control"
-                       id="duracion"
-                       th:field="*{duracion}"
-                       required>
-            </div>
-            <div class="mb-3">
-                <label for="tipoReto"
-                       class="form-label">Tipo de Reto</label>
-                <select class="form-select"
-                        id="tipoReto"
-                        th:field="*{tipo}"
-                        required>
-                    <option value="SIMPLE">Reto Simple</option>
-                    <option value="COMPLEJO">Reto Complejo</option>
-                </select>
-            </div>
-            <button type="submit"
-                    class="btn btn-primary w-100">Crear Reto
-            </button>
-            
-            <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
-            <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
-        </form>
+<main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg w-50">
+        <h2 class="text-center">Retos Creados</h2>
+        <div th:each="reto : ${retos}"
+        	 class="list-group mt-4">
+                <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
+                   class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                    <span th:text="${reto.nombre}">Nombre del Reto</span>
+                    <!-- ME LO MUESTRA SIEMPRE AZUL A PESAR DE QUE CAPTURA BIEN EL ESTADO -->
+                    <span th:classappend="${reto.estado == 'FALLIDO' ? 'badge bg-danger' :
+                      reto.estado == 'COMPLETADO' ? 'badge bg-success' :
+                      reto.estado == 'EN_PROGRESO' ? 'badge bg-warning text-dark' :
+                      'badge bg-primary'}"
+      					th:text="${reto.estado}">Estado</span>
+                </a>
+        </div>
     </div>
 </main>
 
-<footer class="bg-dark text-white text-center w-100 position-sticky bottom-0">
+<footer class="footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
     <div>
         <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
         <p class="d-flex justify-content-center">
             <a href="#"
-               class="me-3">Términos de Uso</a>
-            |
+               class="me-3">Términos de Uso</a> |
             <a href="#"
-               class="ms-3">Política de Privacidad</a></p>
+               class="ms-3">Política de Privacidad</a>
+        </p>
         <div class="social-icons">
             <i class="bi bi-whatsapp mx-2"></i>
             <i class="bi bi-instagram mx-2"></i>
@@ -178,7 +141,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
-
 </body>
 </html>

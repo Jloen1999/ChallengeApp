@@ -100,98 +100,82 @@
                 <div class="card align-items-center">
                     <div class="card-header bg-primary text-white">
                         <h3 class="card-title"><i class="bi bi-trophy me-2"></i>
-		                    <span th:text="${reto.nombre}">Nombre del Reto</span>
-		                </h3>
+                            <span>5 Libros</span>
+                        </h3>
                     </div>
                     <div class="card-body">
-                        <p class="card-text"><i class="bi bi-info-circle me-2"></i> <strong>Descripción:</strong>
-		                    <span th:text="${reto.descripcion}">Descripción del reto</span></p>
-		                <p class="card-text"><i class="bi bi-clock me-2"></i> <strong>Duración:</strong>
-		                    <span th:text="${reto.duracion}">Duración</span> días</p>
-		                <p class="card-text"><i class="bi bi-flag me-2"></i> <strong>Estado:</strong>
-		                    <span th:text="${reto.estado}">Estado</span></p>
-		                <p class="card-text"><i class="bi bi-tags me-2"></i> <strong>Tipo:</strong>
-		                    <span th:text="${reto.tipo}">Tipo</span></p>
-		                <p class="card-text"><i class="bi bi-star me-2"></i> <strong>Novedad:</strong>
-		                    <span th:text="${reto.novedad ? 'true' : 'false'}">Novedad</span></p>
-		                <p class="card-text"><i class="bi bi-eye me-2"></i> <strong>Visibilidad:</strong>
-		                    <span th:text="${reto.visibilidad}">Visibilidad</span></p>
-		                <p class="card-text"><i class="bi bi-calendar me-2"></i> <strong>Fecha de Creación:</strong>
-		                    <span th:text="${#dates.format(reto.fechaCreacion, 'yyyy-MM-dd')}">Fecha de Creación</span></p>
-		                <p class="card-text"><i class="bi bi-calendar-check me-2"></i> <strong>Fecha de Finalización:</strong>
-		                    <span th:text="${#dates.format(reto.fechaFinalizacion, 'yyyy-MM-dd')}">Fecha de Finalización</span></p>
-		                <div class="card-text d-flex align-items-center mb-3">
-		                    <i class="bi bi-bar-chart me-2"></i>
-		                    <strong class="me-2">Porcentaje de Progreso:</strong>
-		                    <input type="range" th:value="${reto.porcentajeProgreso}" disabled aria-label="progreso">
-		                </div>
-		                <p class="card-text"><i class="bi bi-person me-2"></i> <strong>Nombre del Creador:</strong>
-		                    <span th:text="${reto.creador.nombre}">Creador</span></p>
+                        <p class="card-text"><i class="bi bi-info-circle me-2"></i> <span><strong>Descripción:</strong>
+                                Leer 5 Libros en una semana</span></p>
+                        <p class="card-text"><i class="bi bi-clock me-2"></i> <strong>Duración:</strong> <span>5 días</span></p>
+                        <p class="card-text"><i class="bi bi-flag me-2"></i> <strong>Estado:</strong>
+                            <span>Completado</span></p>
+                        <p class="card-text"><i class="bi bi-tags me-2"></i> <strong>Tipo:</strong> <span>simple</span>
+                        </p>
+                        <p class="card-text"><i class="bi bi-star me-2"></i> <strong>Novedad:</strong>
+                            <span>false</span></p>
+                        <p class="card-text"><i class="bi bi-eye me-2"></i> <strong>Visibilidad:</strong>
+                            <span>publico</span></p>
+                        <p class="card-text"><i class="bi bi-calendar me-2"></i> <strong>Fecha de Creación:</strong>
+                            <span>2021-05-01</span></p>
+                        <p class="card-text"><i class="bi bi-calendar-check me-2"></i> <strong>Fecha de
+                                Finalización:</strong> <span>2021-10-11</span></p>
+                        <div class="card-text d-flex align-items-center mb-3">
+                            <i class="bi bi-bar-chart me-2"></i>
+                            <strong class="me-2">Porcentaje de Progreso:</strong>
+                            <input type="range" disabled aria-label="progreso">
+                        </div>
+                        <p class="card-text"><i class="bi bi-person me-2"></i> <strong>Nombre del Creador:</strong>
+                            <span>User</span></p>
                         <!-- Botón de unirse al reto -->
                         <div class="text-center mt-3">
-						    <form action="/usuario/unirse" method="get">
-						        <input type="hidden" name="retoId" th:value="${reto.id}">
-						        <button class="btn btn-primary" type="submit">
-						            <i class="bi bi-plus-circle me-2"></i>Unirse al reto
-						        </button>
-						    </form>
-						</div>
-						<p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
+                            <button class="btn btn-primary"><i class="bi bi-plus-circle me-2"></i>Unirse al reto</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <!-- Columna secundaria: Usuarios del reto -->
-			<div class="col-lg-4 mb-4">
-			    <div class="card">
-			        <div class="card-header bg-secondary text-white">
-			            <h4 class="card-title"><i class="bi bi-people me-2"></i> Usuarios Unidos</h4>
-			        </div>
-			        <div class="card-body">
-			            <ul class="list-group">
-			                <!-- Iterar sobre los participantes -->
-			                <li class="list-group-item" th:each="usuario : ${participantes}">
-			                    <i class="bi bi-person-fill me-2"></i>
-			                    <span th:text="${usuario.nombre}">Nombre Usuario</span>
-			                </li>
-			            </ul>
-			        </div>
-			    </div>
-			</div>
+            <div class="col-lg-4 mb-4">
+                <div class="card">
+                    <div class="card-header bg-secondary text-white">
+                        <h4 class="card-title"><i class="bi bi-people me-2"></i> Usuarios Unidos</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item"><i class="bi bi-person-fill me-2"></i>Usuario 1</li>
+                            <li class="list-group-item"><i class="bi bi-person-fill me-2"></i>Usuario 2</li>
+                            <li class="list-group-item"><i class="bi bi-person-fill me-2"></i>Usuario 3</li>
+                            <li class="list-group-item"><i class="bi bi-person-fill me-2"></i>Usuario 4</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Sección de comentarios -->
-        <form action="/usuario/comentar" method="POST">
-		    <div class="row">
-		        <div class="col-12">
-		            <div class="card">
-		                <div class="card-header bg-info text-white">
-		                    <h4 class="card-title"><i class="bi bi-chat-dots me-2"></i> Comentarios</h4>
-		                </div>
-		                <div class="card-body">
-		                    <div class="mb-3">
-		                        <label for="comentario" class="form-label">Deja tu comentario:</label>
-		                        <textarea class="form-control" id="comentario" name="comentarioTexto" rows="3" placeholder="Escribe aquí..."></textarea>
-		                    </div>
-		                    <input type="hidden" name="retoId" th:value="${reto.id}" /> <!-- Asegúrate de que el retoId esté disponible -->
-		                    <button class="btn btn-primary mb-3" type="submit">Enviar</button>
-		                    <hr>
-		                    <div class="mb-3">
-		                        <p class="list-group-item"><strong>Usuario 1:</strong> Este reto es genial, me encanta la idea.</p>
-		                        <ul class="list-group">
-								    <li th:each="comentario : ${comentarios}" class="list-group-item">
-								        <strong th:text="${comentario.usuario.nombre}">Usuario</strong>: 
-								        <span th:text="${comentario.texto}"></span>
-								        <br>
-								        <small class="text-muted" th:text="${#dates.format(comentario.fecha, 'yyyy-MM-dd HH:mm')}">Fecha del comentario</small>
-								    </li>
-								</ul>
-		                    </div>
-		                </div>
-		            </div>
-		        </div>
-		    </div>
-		</form>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h4 class="card-title"><i class="bi bi-chat-dots me-2"></i> Comentarios</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="comentario" class="form-label">Deja tu comentario:</label>
+                            <textarea class="form-control" id="comentario" rows="3"
+                                placeholder="Escribe aquí..."></textarea>
+                        </div>
+                        <button class="btn btn-primary mb-3">Enviar</button>
+                        <hr>
+                        <div class="mb-3">
+                            <p><strong>Usuario 1:</strong> Este reto es genial, me encanta la idea.</p>
+                            <p><strong>Usuario 2:</strong> Yo también quiero participar.</p>
+                            <p><strong>Usuario 3:</strong> Gran iniciativa, ¡a leer!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
 

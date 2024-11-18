@@ -1,12 +1,19 @@
 package es.uex.challengeapp.repository;
 
-import es.uex.challengeapp.model.Reto;
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import es.uex.challengeapp.model.Reto;
 
 @Repository
 public interface RetoRepository extends JpaRepository<Reto, Long> {
-    List<Reto> findByNovedadTrue();
+	
+	List<Reto> findByNovedadTrue();
+
+	List<Reto> findAllByCreadorId(Long creadorId);
+	
+	Optional<Reto> findById(Long id);
 }
