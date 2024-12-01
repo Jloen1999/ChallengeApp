@@ -24,4 +24,9 @@ public class NotificacionServiceImpl implements NotificacionService {
 		return notificacionRepository.findByUsuarioId(usuarioId);
 	}
 
+	@Override
+	public void eliminarNotificacion(Long id) {
+		notificacionRepository.deleteById(id);
+	}
+
 }

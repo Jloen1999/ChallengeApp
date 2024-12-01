@@ -7,4 +7,8 @@ public interface UsuarioService {
 	Usuario registrarUsuario(Usuario usuario);
 
 	Usuario autenticarUsuario(String correo, String contrasena);
+
+	Usuario buscarUsusarioPorNombre(String nombreAmigo);
+
+	Usuario obtenerUsuarioPorId(Integer id);
 }

@@ -20,22 +20,22 @@ import jakarta.servlet.http.HttpSession;
 public class HomeController {
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private RetoService retoService;
 
-    @GetMapping("/")
-    public String home(Model model,HttpSession session) {
-    	Usuario userActual = (Usuario) session.getAttribute("userActual");
-        model.addAttribute("estaLogueado", userActual != null);
-        
-        /*List<Reto> retos=retoService.obtenerTodosLosRetos();
-        model.addAttribute("retos",retos);*/
-        
-        return "index";
-    }
-    
-    @PostMapping("/registro")
+	@GetMapping("/")
+	public String home(Model model, HttpSession session) {
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		model.addAttribute("estaLogueado", userActual != null);
+
+		List<Reto> retos = retoService.obtenerTodosLosRetos();
+		model.addAttribute("retos", retos);
+
+		return "index";
+	}
+
+	@PostMapping("/registro")
 	public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
 		Usuario registrado = usuarioService.registrarUsuario(usuario);
 		if (registrado != null) {
@@ -51,8 +51,8 @@ public class HomeController {
 		model.addAttribute("usuario", new Usuario());
 		return "login";
 	}
-    
-    @PostMapping("/")
+
+	@PostMapping("/")
 	public String login(@RequestParam String correo, @RequestParam String contrasena, Model model,
 			HttpSession session) {
 		Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
@@ -60,8 +60,8 @@ public class HomeController {
 			session.setAttribute("userActual", usuario);
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("estaLogueado", true);
-			List<Reto> retos=retoService.obtenerTodosLosRetos();
-	        model.addAttribute("retos",retos);
+			List<Reto> retos = retoService.obtenerTodosLosRetos();
+			model.addAttribute("retos", retos);
 			return "index";
 		}
 		model.addAttribute("usuario", new Usuario());

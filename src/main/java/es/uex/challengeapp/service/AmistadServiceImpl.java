@@ -1,14 +1,35 @@
 package es.uex.challengeapp.service;
 
-import es.uex.challengeapp.model.Amistad;
+import java.util.List;
 
-public class AmistadServiceImpl implements AmistadService{
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import es.uex.challengeapp.model.Amistad;
+import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.repository.AmistadRepository;
+import jakarta.transaction.Transactional;
+
+@Service
+public class AmistadServiceImpl implements AmistadService {
+
+	@Autowired
+	private AmistadRepository amistadRepository;
 
 	@Override
 	public Amistad anadirAmigo(Amistad amistad) {
-		// TODO Auto-generated method stub
-		return null;
+		return amistadRepository.save(amistad);
 	}
 
+	@Override
+	public List<Usuario> obtenerAmigos(Integer id) {
+		return amistadRepository.findAmigosByUsuarioId(id);
+	}
+
+	@Transactional
+	@Override
+	public void eliminarAmistad(Integer id, Integer id2) {
+		amistadRepository.eliminarAmistad(id, id2);
+	}
 
 }

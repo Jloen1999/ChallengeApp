@@ -9,4 +9,6 @@ public interface NotificacionService {
 	Notificacion crearNotificacion(Notificacion notificacion);
 	
 	List<Notificacion> obtenerNotificacionesPorUsuario(Long usuarioId);
+
+	void eliminarNotificacion(Long id);
 }

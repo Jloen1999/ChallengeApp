@@ -19,6 +19,7 @@ import es.uex.challengeapp.model.ParticipantesReto;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Reto.Estado;
 import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.service.AmistadService;
 import es.uex.challengeapp.service.ComentarioService;
 import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
@@ -44,6 +45,9 @@ public class UsuarioController {
 
 	@Autowired
 	private ComentarioService comentarioService;
+
+	@Autowired
+	private AmistadService amistadService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -90,9 +94,11 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/amigos")
-	public String mostrarAmigos(HttpSession session) {
+	public String mostrarAmigos(HttpSession session, Model model) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
+			List<Usuario> listaAmigos = amistadService.obtenerAmigos(userActual.getId());
+			model.addAttribute("amigos", listaAmigos);
 			return "amigos";
 		}
 		return "redirect:/login";
@@ -198,6 +204,16 @@ public class UsuarioController {
 			}
 		}
 		return "redirect:/login";
+	}
+
+	@PostMapping("/borrarNotificacion/{id}")
+	public String borrarNotificacion(@PathVariable Long id, HttpSession session, Model model) {
+		if ((Usuario) session.getAttribute("userActual") != null) {
+			notificacionService.eliminarNotificacion(id);
+			mostrarNotificacionesUsuario(model, session);
+		}
+		return "notificaciones";
+
 	}
 
 	// FUNCIONES PRIVADAS AUXLIARES

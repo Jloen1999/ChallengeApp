@@ -2,7 +2,6 @@ package es.uex.challengeapp.service;
 
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,7 +9,6 @@ public class UsuarioServiceImpl implements UsuarioService{
 
     private final UsuarioRepository usuarioRepository;
 
-    @Autowired
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
@@ -26,5 +24,15 @@ public class UsuarioServiceImpl implements UsuarioService{
             .filter(u -> u.getContrasena().equals(contrasena))
             .orElse(null);
     }
+
+	@Override
+	public Usuario buscarUsusarioPorNombre(String nombreAmigo) {
+		return usuarioRepository.findByNombre(nombreAmigo).orElse(null);
+	}
+
+	@Override
+	public Usuario obtenerUsuarioPorId(Integer id) {
+		return usuarioRepository.findById(Long.valueOf(id)).orElse(null);
+	}
 
 }

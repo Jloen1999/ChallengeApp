@@ -4,17 +4,20 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@IdClass(AmistadId.class)
 public class Amistad implements Serializable {
+
     @Id
-    @ManyToOne // Un usuario puede tener muchas amistades
+    @ManyToOne
     @JoinColumn(name = "usuario_id1")
-    private Usuario usuario1; //
+    private Usuario usuario1;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "usuario_id2")
-    private Usuario usuario2; // Usuario con el que se ha establecido la amistad
+    private Usuario usuario2;
 
+    // Getters y setters
     public Usuario getUsuario1() {
         return usuario1;
     }
@@ -31,3 +34,4 @@ public class Amistad implements Serializable {
         this.usuario2 = usuario2;
     }
 }
+
