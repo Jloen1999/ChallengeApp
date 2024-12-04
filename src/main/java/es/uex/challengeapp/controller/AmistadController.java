@@ -102,6 +102,17 @@ public class AmistadController {
 		}
 		return "redirect:/login";
 	}
+	
+	@GetMapping("/buscar")
+	public String buscarUsuarios(@RequestParam String criterioBusqueda, Model model) {
+	    List<Usuario> usuarios = usuarioService.buscarPorNombreOCorreo(criterioBusqueda);
+	    
+	    model.addAttribute("usuarios", usuarios);  // Pasa los resultados al modelo
+	    
+	    // Devuelve un fragmento de HTML para los resultados
+	    return "fragments/resultadosBusqueda :: resultados";
+	}
+
 
 	// FUNCIONES PRIVADAS AUXLIARES
 	private void generarNotificacion(Usuario userActual, Usuario userAmigo, String tipoNotificacion) {

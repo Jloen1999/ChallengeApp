@@ -2,6 +2,9 @@ package es.uex.challengeapp.service;
 
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.repository.UsuarioRepository;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +36,11 @@ public class UsuarioServiceImpl implements UsuarioService{
 	@Override
 	public Usuario obtenerUsuarioPorId(Integer id) {
 		return usuarioRepository.findById(Long.valueOf(id)).orElse(null);
+	}
+
+	@Override
+	public List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda) {
+		return usuarioRepository.findByNombreContainingIgnoreCaseOrCorreoContainingIgnoreCase(criterioBusqueda, criterioBusqueda);
 	}
 
 }

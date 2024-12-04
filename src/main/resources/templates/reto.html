@@ -105,9 +105,8 @@
                     </div>
                     <div class="card-body">
                         <!-- Imagen del reto, solo si hay una URL -->
-                        <div th:if="${reto.url}">
-                            <img th:src="@{'/imagenes_retos/' + ${reto.url}}" alt="Imagen del reto"
-                                class="img-fluid mb-3" />
+                        <div th:if="${reto.url}" class="d-flex justify-content-center">
+                            <img th:src="@{/images/{image}(image=${reto.url})}" alt="Imagen del reto" class="img-fluid img-thumbnail mb-3 w-30" />
                         </div>
 
                         <p class="card-text"><i class="bi bi-info-circle me-2"></i> <strong>Descripción:</strong>

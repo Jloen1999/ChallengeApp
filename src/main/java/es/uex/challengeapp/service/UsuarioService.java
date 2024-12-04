@@ -1,5 +1,7 @@
 package es.uex.challengeapp.service;
 
+import java.util.List;
+
 import es.uex.challengeapp.model.Usuario;
 
 public interface UsuarioService {
@@ -11,4 +13,6 @@ public interface UsuarioService {
 	Usuario buscarUsusarioPorNombre(String nombreAmigo);
 
 	Usuario obtenerUsuarioPorId(Integer id);
+
+	List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda);
 }

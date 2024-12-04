@@ -1,5 +1,10 @@
 package es.uex.challengeapp.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.util.List;
 
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.uex.challengeapp.model.Comentario;
 import es.uex.challengeapp.model.Notificacion;
@@ -127,7 +133,8 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/crearReto")
-	public String crearReto(@ModelAttribute Reto reto, Model model, HttpSession session) {
+	public String crearReto(@ModelAttribute Reto reto, @RequestParam("imagenReto") MultipartFile imagen, Model model,
+			HttpSession session) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
 			reto.setCreador(userActual);
@@ -135,6 +142,21 @@ public class UsuarioController {
 			reto.setNovedad(true);
 			reto.setPorcentajeProgreso(0.0f);
 			reto.setFechaCreacion(new Date(System.currentTimeMillis()));
+
+			if (!imagen.isEmpty()) {
+				try {
+					Path path = Paths.get("src/main/resources/static/images/" + imagen.getOriginalFilename());
+					Files.copy(imagen.getInputStream(), path);
+
+					reto.setUrl(imagen.getOriginalFilename());
+
+				} catch (IOException e) {
+					e.printStackTrace();
+					model.addAttribute("error", "Error al subir la imagen.");
+					return "crearReto";
+				}
+			}
+
 			Reto creado = retoService.crearReto(reto);
 			if (creado != null) {
 				model.addAttribute("mensaje", "Reto añadido correctamente.");

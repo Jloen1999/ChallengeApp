@@ -1,184 +1,145 @@
 <!doctype html>
-<html lang="es"
-      class="no-js"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="es" class="no-js" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Retos</title>
+      <title>Retos</title>
 
-    <!-- Metadatos generales -->
-    <meta name="author"
-          content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
-    <meta name="description"
-          content="Página de inicio">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type"
-          content="text/html;charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible"
-          content="ie=edge">
+      <!-- Metadatos generales -->
+      <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
+      <meta name="description" content="Página de inicio">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <!-- Metadatos para móviles -->
-    <meta property="og:title"
-          content="Página de Retos">
-    <meta property="og:image"
-          content="/images/logo.png">
-    <meta property="og:image:alt"
-          content="Logo de la página sobre Retos">
-    <meta property="og:type"
-          content="website">
-    <meta property="og:url"
-          content="https://retos.com">
+      <!-- Metadatos para móviles -->
+      <meta property="og:title" content="Página de Retos">
+      <meta property="og:image" content="/images/logo.png">
+      <meta property="og:image:alt" content="Logo de la página sobre Retos">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://retos.com">
 
-    <!-- Estilos CSS -->
-    <link rel="stylesheet"
-          href="/css/stylesReto.css">
-    <link rel="stylesheet"
-          href="/css/normalize.css">
-    <link rel="stylesheet"
-          href="/css/stylesCommons.css">
+      <!-- Estilos CSS -->
+      <link rel="stylesheet" href="/css/stylesReto.css">
+      <link rel="stylesheet" href="/css/normalize.css">
+      <link rel="stylesheet" href="/css/stylesCommons.css">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css"
-          rel="stylesheet">
+      <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+      <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
 
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+      <!-- Bootstrap Icons -->
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-          rel="stylesheet">
+      <!-- Fuentes -->
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+            rel="stylesheet">
 
 </head>
 
 <body>
-<header class="header">
+      <header class="header">
 
-    <nav class="navbar navbar-expand-md">
-        <div class="container-fluid">
+            <nav class="navbar navbar-expand-md">
+                  <div class="container-fluid">
 
-           <h1><a href="/"
-                   class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
-                                                                                  alt="Logo de la página web Retos"
-                                                                                  class="logo-image"> ChallengeApp</a>
-            </h1>
-            <button class="navbar-toggler mb-5"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse pb-5"
-                 id="navbarNav">
-                <ul class="navbar-nav ms-md-auto align-items-md-center">
-                    <li class="nav-item btn-search">
-                        <form class="d-flex"
-                              role="search">
-                            <input class="form-control me-2"
-                                   type="search"
-                                   placeholder="Buscar Reto"
-                                   aria-label="Search">
-                            <button class="btn btn-outline-success"
-                                    type="submit">Buscar
-                            </button>
-                        </form>
-                    </li>
+                        <h1><a href="/" class="navbar-brand fs-5 text-decoration-none text-white"><img
+                                          src="/images/logo.png" alt="Logo de la página web Retos" class="logo-image">
+                                    ChallengeApp</a>
+                        </h1>
+                        <button class="navbar-toggler mb-5" type="button" data-bs-toggle="collapse"
+                              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                              aria-label="Toggle navigation">
+                              <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse pb-5" id="navbarNav">
+                              <ul class="navbar-nav ms-md-auto align-items-md-center">
+                                    <li class="nav-item btn-search">
+                                          <form class="d-flex" role="search">
+                                                <input class="form-control me-2" type="search" placeholder="Buscar Reto"
+                                                      aria-label="Search">
+                                                <button class="btn btn-outline-success" type="submit">Buscar
+                                                </button>
+                                          </form>
+                                    </li>
 
-                    <li class="nav-item icon-profile ms-md-3">
-                        <a class="nav-link"
-                           href="/usuario/dashboard">
-                            <i class="bi bi-person-circle fs-1 col"></i></a>
-                    </li>
-                </ul>
+                                    <li class="nav-item icon-profile ms-md-3">
+                                          <a class="nav-link" href="/usuario/dashboard">
+                                                <i class="bi bi-person-circle fs-1 col"></i></a>
+                                    </li>
+                              </ul>
+                        </div>
+                  </div>
+            </nav>
+      </header>
+
+      <main class="vh-100 mx-4">
+            <div class="container my-5 card p-4 shadow-lg">
+                  <!-- HAY QUE AÑADIR UN CALENDARIO PARA SELECCIONAR FECHA DE FINALIZACIÓN, U OTRO MEDIDA-->
+                  <h2 class="text-center">Crear Nuevo Reto</h2>
+                  <form class="mt-4" th:action="@{/usuario/crearReto}" th:object="${reto}" method="post"
+                        enctype="multipart/form-data">
+                        <div class="mb-3">
+                              <label for="nombreReto" class="form-label">Nombre del Reto</label>
+                              <input type="text" class="form-control" id="nombreReto" th:field="*{nombre}" required>
+                        </div>
+                        <div class="mb-3">
+                              <label for="descripcion" class="form-label">Descripción</label>
+                              <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"
+                                    required></textarea>
+                        </div>
+                        <div class="mb-3">
+                              <label for="duracion" class="form-label">Duración (días)</label>
+                              <input type="number" class="form-control" id="duracion" th:field="*{duracion}" required>
+                        </div>
+                        <div class="mb-3">
+                              <label for="tipoReto" class="form-label">Tipo de Reto</label>
+                              <select class="form-select" id="tipoReto" th:field="*{tipo}" required>
+                                    <option value="SIMPLE">Reto Simple</option>
+                                    <option value="COMPLEJO">Reto Complejo</option>
+                              </select>
+                        </div>
+
+                        <!-- Campo para seleccionar la imagen -->
+                        <div class="mb-3">
+                              <label for="imagenReto" class="form-label">Imagen del Reto</label>
+                              <input type="file" class="form-control" id="imagenReto" name="imagenReto" accept="image/*"
+                                    required>
+                        </div>
+
+
+
+                        <button type="submit" class="btn btn-primary w-100">Crear Reto
+                        </button>
+
+                        <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
+                        <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
+                  </form>
+
             </div>
-        </div>
-    </nav>
-</header>
+      </main>
 
-<main class="vh-100 mx-4">
-    <div class="container my-5 card p-4 shadow-lg">
-    <!-- HAY QUE AÑADIR UN CALENDARIO PARA SELECCIONAR FECHA DE FINALIZACIÓN, U OTRO MEDIDA-->
-        <h2 class="text-center">Crear Nuevo Reto</h2>
-        <form class="mt-4"
-                th:action="@{/usuario/crearReto}"
-                th:object="${reto}"
-                method="post">
-            <div class="mb-3">
-                <label for="nombreReto"
-                       class="form-label">Nombre del Reto</label>
-                <input type="text"
-                       class="form-control"
-                       id="nombreReto"
-                       th:field="*{nombre}"
-                       required>
+      <footer class="bg-dark text-white text-center w-100 position-sticky bottom-0">
+            <div>
+                  <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
+                  <p class="d-flex justify-content-center">
+                        <a href="#" class="me-3">Términos de Uso</a>
+                        |
+                        <a href="#" class="ms-3">Política de Privacidad</a>
+                  </p>
+                  <div class="social-icons">
+                        <i class="bi bi-whatsapp mx-2"></i>
+                        <i class="bi bi-instagram mx-2"></i>
+                        <i class="bi bi-twitter mx-2"></i>
+                  </div>
             </div>
-            <div class="mb-3">
-                <label for="descripcion"
-                       class="form-label">Descripción</label>
-                <textarea class="form-control"
-                          id="descripcion"
-                          th:field="*{descripcion}"
-                          rows="3"
-                          required></textarea>
-            </div>
-            <div class="mb-3">
-                <label for="duracion"
-                       class="form-label">Duración (días)</label>
-                <input type="number"
-                       class="form-control"
-                       id="duracion"
-                       th:field="*{duracion}"
-                       required>
-            </div>
-            <div class="mb-3">
-                <label for="tipoReto"
-                       class="form-label">Tipo de Reto</label>
-                <select class="form-select"
-                        id="tipoReto"
-                        th:field="*{tipo}"
-                        required>
-                    <option value="SIMPLE">Reto Simple</option>
-                    <option value="COMPLEJO">Reto Complejo</option>
-                </select>
-            </div>
-            <button type="submit"
-                    class="btn btn-primary w-100">Crear Reto
-            </button>
-            
-            <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
-            <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
-        </form>
-    </div>
-</main>
+      </footer>
 
-<footer class="bg-dark text-white text-center w-100 position-sticky bottom-0">
-    <div>
-        <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
-        <p class="d-flex justify-content-center">
-            <a href="#"
-               class="me-3">Términos de Uso</a>
-            |
-            <a href="#"
-               class="ms-3">Política de Privacidad</a></p>
-        <div class="social-icons">
-            <i class="bi bi-whatsapp mx-2"></i>
-            <i class="bi bi-instagram mx-2"></i>
-            <i class="bi bi-twitter mx-2"></i>
-        </div>
-    </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
 
 
 </body>
+
 </html>
