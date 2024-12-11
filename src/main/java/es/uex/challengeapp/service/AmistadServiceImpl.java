@@ -30,6 +30,8 @@ public class AmistadServiceImpl implements AmistadService {
 	@Override
 	public void eliminarAmistad(Integer id, Integer id2) {
 		amistadRepository.eliminarAmistad(id, id2);
+		amistadRepository.eliminarAmistad(id2,id);
 	}
+
 
 }

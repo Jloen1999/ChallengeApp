@@ -72,28 +72,54 @@
             <h2 class="text-white">Notificaciones</h2>
         </div>
         <div class="list-group">
-            <div class="list-group-item list-group-item-action">
-                <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">Título de la Notificación</h5>
-                    <small>Fecha</small>
-                </div>
-                <p class="mb-1">Mensaje de la notificación</p>
+            <div th:if="${notificaciones.empty}" class="text-center mt-3">
+                <p style="color: white;">No tienes notificaciones.</p>
             </div>
 
             <div th:each="notificacion, stat : ${notificaciones}" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1" th:text="'Notificación ' + (${stat.index} + 1)">Notificación X</h5>
+                    <!-- Mostrar el tipo de notificación como título -->
+                    <h5 class="mb-1" th:text="${notificacion.tipoNotificacion}">Tipo de notificación</h5>
                     <small th:text="${#dates.format(notificacion.fechaEnvio, 'dd/MM/yyyy HH:mm')}">Fecha</small>
                 </div>
                 <div class="d-flex w-100 justify-content-between">
                     <p class="mb-1" th:text="${notificacion.mensaje}">Mensaje de la notificación</p>
-                    <!-- Botón para borrar la notificación -->
-                    <form th:action="@{/usuario/borrarNotificacion/{id}(id=${notificacion.id})}" method="post">
-                        <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
-                    </form>
-                </div>
 
+                    <!-- Opciones: confirmar solicitud de amistad y eliminar -->
+                    <div>
+                        <!-- Mostrar el botón de confirmar si es una solicitud de amistad -->
+                        <div th:if="${notificacion.tipoNotificacion.name() == 'SOLICITUD_AMISTAD'}" class="d-inline-block">
+                            <!-- Mostrar botón solo si la notificación no ha sido procesada -->
+                            <div th:if="${notificacion.leido == false}">
+                                <form
+                                    th:action="@{/usuario/amigos/aceptarAmistad/{email}(email=${#strings.substring(notificacion.mensaje, 12, #strings.indexOf(notificacion.mensaje, ' te ha enviado'))})}"
+                                    method="post">
+                                    <input type="hidden" name="notificacionId" th:value="${notificacion.id}" />
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-check"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <!-- Mensaje de ya procesada -->
+                            <div th:if="${notificacion.leido == true}">
+                                <button class="btn btn-secondary btn-sm" disabled>
+                                    <i class="bi bi-check-circle"></i> Aceptada
+                                </button>
+                            </div>
+                        </div>
+                        
+
+                        <!-- Botón para borrar la notificación -->
+                        <form th:action="@{/usuario/borrarNotificacion/{id}(id=${notificacion.id})}" method="post"
+                            class="d-inline-block">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
+
         </div>
     </main>
 

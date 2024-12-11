@@ -10,9 +10,11 @@ public interface UsuarioService {
 
 	Usuario autenticarUsuario(String correo, String contrasena);
 
-	Usuario buscarUsusarioPorNombre(String nombreAmigo);
+	Usuario buscarUsuarioPorNombre(String nombreAmigo);
 
 	Usuario obtenerUsuarioPorId(Integer id);
 
 	List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda);
+
+	Usuario buscarUsuarioPorEmail(String email);
 }

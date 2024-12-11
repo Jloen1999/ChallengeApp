@@ -84,26 +84,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <!-- Formulario para buscar usuarios -->
+                        <!-- Formulario de búsqueda -->
                         <form id="buscarUsuarioForm">
                             <div class="mb-3">
                                 <label for="criterioBusqueda" class="form-label">Buscar por nombre o correo</label>
                                 <input type="text" class="form-control" id="criterioBusqueda" name="criterioBusqueda"
                                     placeholder="Introduce nombre o correo" required>
                             </div>
-                            <div class="text-end">
-                                <button type="button" id="buscarUsuarioBtn" class="btn btn-secondary">Buscar</button>
-                            </div>
                         </form>
 
-                        <!-- Lista de resultados de búsqueda -->
-                        <div id="resultadosBusqueda" class="mt-3">
-
-                        </div>
+                        <!-- Contenedor para resultados -->
+                        <div id="resultadosBusqueda" class="mt-3 list-group"></div>
                     </div>
                 </div>
             </div>
         </div>
+
 
 
         <div class="row">
@@ -166,21 +162,45 @@
             }
         });
 
-        document.getElementById('buscarUsuarioBtn').addEventListener('click', function () {
-            const criterio = document.getElementById('criterioBusqueda').value;
+        document.getElementById('criterioBusqueda').addEventListener('input', function () {
+            const criterioBusqueda = this.value;
 
-            // Realiza la solicitud AJAX
-            fetch(`/usuario/amigos/buscar?criterioBusqueda=${criterio}`, {
-                method: 'GET',
-            })
-                .then(response => response.text())  // Espera una respuesta en texto (HTML)
-                .then(data => {
-                    // Limpia los resultados anteriores
-                    const resultadosDiv = document.getElementById('resultadosBusqueda');
-                    resultadosDiv.innerHTML = data;  // Coloca el HTML recibido en los resultados
+            if (criterioBusqueda.trim().length === 0) {
+                document.getElementById('resultadosBusqueda').innerHTML = ''; // Limpiar resultados si no hay texto
+                return;
+            }
+
+            fetch(`/usuario/amigos/buscar?criterioBusqueda=${encodeURIComponent(criterioBusqueda)}`)
+                .then(response => response.json())
+                .then(usuarios => {
+                    const resultadosContainer = document.getElementById('resultadosBusqueda');
+                    resultadosContainer.innerHTML = ''; // Limpiar resultados previos
+
+                    usuarios.forEach(usuario => {
+                        const item = document.createElement('div');
+                        item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+
+                        const nombreSpan = document.createElement('span');
+                        nombreSpan.textContent = usuario.nombre;
+
+                        const form = document.createElement('form');
+                        form.action = `/usuario/amigos/enviarSolicitud/${usuario.id}`;
+                        form.method = 'POST';
+
+                        const button = document.createElement('button');
+                        button.type = 'submit';
+                        button.textContent = 'Enviar solicitud';
+                        button.classList.add('btn', 'btn-primary', 'btn-sm');
+
+                        form.appendChild(button);
+                        item.appendChild(nombreSpan);
+                        item.appendChild(form);
+                        resultadosContainer.appendChild(item);
+                    });
                 })
                 .catch(error => console.error('Error al buscar usuarios:', error));
         });
+
     </script>
 
 

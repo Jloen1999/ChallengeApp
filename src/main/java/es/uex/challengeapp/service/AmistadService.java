@@ -11,5 +11,4 @@ public interface AmistadService {
 	List<Usuario> obtenerAmigos(Integer id);
 
 	void eliminarAmistad(Integer id, Integer id2);
-
 }

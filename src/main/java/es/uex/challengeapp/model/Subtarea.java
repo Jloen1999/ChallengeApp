@@ -19,9 +19,56 @@ public class Subtarea {
     @JoinColumn(name = "reto_complejo_id")
     private RetoComplejo retoComplejo;
 
-    // Getters and setters
-
     public enum Estado {
         PENDIENTE, EN_PROGRESO, COMPLETADA
     }
+
+    // Getters and setters
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public Date getFechaCreacion() {
+		return fechaCreacion;
+	}
+
+	public void setFechaCreacion(Date fechaCreacion) {
+		this.fechaCreacion = fechaCreacion;
+	}
+
+	public Date getFechaFinalizada() {
+		return fechaFinalizada;
+	}
+
+	public void setFechaFinalizada(Date fechaFinalizada) {
+		this.fechaFinalizada = fechaFinalizada;
+	}
+
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
+
+	public RetoComplejo getRetoComplejo() {
+		return retoComplejo;
+	}
+
+	public void setRetoComplejo(RetoComplejo retoComplejo) {
+		this.retoComplejo = retoComplejo;
+	}
 }

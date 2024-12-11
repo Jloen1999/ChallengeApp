@@ -5,16 +5,16 @@ import java.util.List;
 
 @Entity
 public class RetoComplejo extends Reto {
-    private String subtareaActual;
+    private int subtareaActual;
 
     @OneToMany(mappedBy = "retoComplejo")
     private List<Subtarea> subtareas;
 
-    public String getSubtareaActual() {
+    public int getSubtareaActual() {
         return subtareaActual;
     }
 
-    public void setSubtareaActual(String subtareaActual) {
+    public void setSubtareaActual(int subtareaActual) {
         this.subtareaActual = subtareaActual;
     }
 

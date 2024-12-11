@@ -17,7 +17,7 @@ public class Reto {
 	private String url;
 	private Boolean novedad;
 	
-	private String visibilidad;
+	private Boolean visibilidad;
 	
 	private Date fechaCreacion;
 	private Date fechaFinalizacion;
@@ -33,7 +33,7 @@ public class Reto {
 	@JoinColumn(name = "creador_id")
 	private Usuario creador;
 
-	@OneToMany(mappedBy = "reto")
+	@OneToMany(mappedBy = "reto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comentario> comentarios;
 
 	@OneToMany(mappedBy = "reto")
@@ -42,7 +42,7 @@ public class Reto {
 	@OneToMany(mappedBy = "reto")
 	private List<ProgresoReto> progresoRetos;
 
-	@OneToMany(mappedBy = "reto")
+	@OneToMany(mappedBy = "reto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ParticipantesReto> participantes;
 
 	public enum Estado {
@@ -102,11 +102,11 @@ public class Reto {
 		this.novedad = novedad;
 	}
 
-	public String getVisibilidad() {
+	public Boolean getVisibilidad() {
 		return visibilidad;
 	}
 
-	public void setVisibilidad(String visibilidad) {
+	public void setVisibilidad(Boolean visibilidad) {
 		this.visibilidad = visibilidad;
 	}
 

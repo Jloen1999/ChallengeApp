@@ -8,28 +8,26 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService{
+public class UsuarioServiceImpl implements UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
+	private final UsuarioRepository usuarioRepository;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
-
-    @Override
-    public Usuario registrarUsuario(Usuario usuario) {
-        return usuarioRepository.save(usuario);
-    }
-
-    @Override
-    public Usuario autenticarUsuario(String correo, String contrasena) {
-        return usuarioRepository.findByCorreo(correo)
-            .filter(u -> u.getContrasena().equals(contrasena))
-            .orElse(null);
-    }
+	public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+		this.usuarioRepository = usuarioRepository;
+	}
 
 	@Override
-	public Usuario buscarUsusarioPorNombre(String nombreAmigo) {
+	public Usuario registrarUsuario(Usuario usuario) {
+		return usuarioRepository.save(usuario);
+	}
+
+	@Override
+	public Usuario autenticarUsuario(String correo, String contrasena) {
+		return usuarioRepository.findByCorreo(correo).filter(u -> u.getContrasena().equals(contrasena)).orElse(null);
+	}
+
+	@Override
+	public Usuario buscarUsuarioPorNombre(String nombreAmigo) {
 		return usuarioRepository.findByNombre(nombreAmigo).orElse(null);
 	}
 
@@ -40,7 +38,13 @@ public class UsuarioServiceImpl implements UsuarioService{
 
 	@Override
 	public List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda) {
-		return usuarioRepository.findByNombreContainingIgnoreCaseOrCorreoContainingIgnoreCase(criterioBusqueda, criterioBusqueda);
+		return usuarioRepository.findByNombreContainingIgnoreCaseOrCorreoContainingIgnoreCase(criterioBusqueda,
+				criterioBusqueda);
+	}
+
+	@Override
+	public Usuario buscarUsuarioPorEmail(String email) {
+		return usuarioRepository.findByCorreo(email).orElse(null);
 	}
 
 }
