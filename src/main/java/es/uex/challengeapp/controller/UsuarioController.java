@@ -22,16 +22,19 @@ import es.uex.challengeapp.model.Comentario;
 import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Notificacion.TipoNotificacion;
 import es.uex.challengeapp.model.ParticipantesReto;
+import es.uex.challengeapp.model.ProgresoReto;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Reto.Estado;
 import es.uex.challengeapp.model.Reto.Tipo;
 import es.uex.challengeapp.model.RetoComplejo;
 import es.uex.challengeapp.model.RetoSimple;
+import es.uex.challengeapp.model.Subtarea;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.AmistadService;
 import es.uex.challengeapp.service.ComentarioService;
 import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
+import es.uex.challengeapp.service.ProgresoRetoService;
 import es.uex.challengeapp.service.RetoComplejoService;
 import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.RetoSimpleService;
@@ -43,10 +46,10 @@ public class UsuarioController {
 
 	@Autowired
 	private RetoService retoService;
-	
+
 	@Autowired
 	private RetoSimpleService retoSimpleService;
-	
+
 	@Autowired
 	private RetoComplejoService retoComplejoService;
 
@@ -61,6 +64,9 @@ public class UsuarioController {
 
 	@Autowired
 	private AmistadService amistadService;
+
+	@Autowired
+	private ProgresoRetoService progresoRetoService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -149,62 +155,57 @@ public class UsuarioController {
 	}
 
 	@PostMapping("/crearReto")
-	public String crearReto(
-	    @RequestParam("tipoReto") String tipoReto,
-	    @ModelAttribute("retoSimple") RetoSimple retoSimple,
-	    @ModelAttribute("retoComplejo") RetoComplejo retoComplejo,
-	    @RequestParam("imagenReto") MultipartFile imagen,
-	    Model model,
-	    HttpSession session
-	) {
-	    Usuario userActual = (Usuario) session.getAttribute("userActual");
-	    if (userActual == null) {
-	        return "redirect:/login";
-	    }
+	public String crearReto(@RequestParam("tipoReto") String tipoReto,
+			@ModelAttribute("retoSimple") RetoSimple retoSimple,
+			@ModelAttribute("retoComplejo") RetoComplejo retoComplejo, @RequestParam("imagenReto") MultipartFile imagen,
+			Model model, HttpSession session) {
+		Usuario userActual = (Usuario) session.getAttribute("userActual");
+		if (userActual == null) {
+			return "redirect:/login";
+		}
 
-	    Reto reto = "SIMPLE".equals(tipoReto) ? retoSimple : retoComplejo;
+		Reto reto = "SIMPLE".equals(tipoReto) ? retoSimple : retoComplejo;
 
-	    reto.setCreador(userActual);
-	    reto.setEstado(Estado.PENDIENTE);
-	    reto.setNovedad(true);
-	    reto.setPorcentajeProgreso(0.0f);
-	    reto.setFechaCreacion(new Date(System.currentTimeMillis()));
+		reto.setCreador(userActual);
+		reto.setEstado(Estado.PENDIENTE);
+		reto.setNovedad(true);
+		reto.setPorcentajeProgreso(0.0f);
+		reto.setFechaCreacion(new Date(System.currentTimeMillis()));
 
-	    if (!imagen.isEmpty()) {
-	        try {
-	            Path path = Paths.get("src/main/resources/static/images/" + imagen.getOriginalFilename());
-	            Files.copy(imagen.getInputStream(), path);
-	            reto.setUrl(imagen.getOriginalFilename());
-	        } catch (IOException e) {
-	            model.addAttribute("error", "Error al subir la imagen.");
-	            System.err.println("Error al subir la imagen.");
-	            return "crearReto";
-	        }
-	    }
+		if (!imagen.isEmpty()) {
+			try {
+				Path path = Paths.get("src/main/resources/static/images/" + imagen.getOriginalFilename());
+				Files.copy(imagen.getInputStream(), path);
+				reto.setUrl(imagen.getOriginalFilename());
+			} catch (IOException e) {
+				model.addAttribute("error", "Error al subir la imagen.");
+				System.err.println("Error al subir la imagen.");
+				return "crearReto";
+			}
+		}
 
-	    try {
-	        if ("SIMPLE".equals(tipoReto)) {
-	        	reto.setTipo(Tipo.SIMPLE);
-	            retoSimpleService.guardarRetoSimple(retoSimple);
-	        } else if ("COMPLEJO".equals(tipoReto)) {
-	        	reto.setTipo(Tipo.COMPLEJO);
-	            retoComplejoService.guardarRetoComplejo(retoComplejo);
-	        } else {
-	            model.addAttribute("error", "Tipo de reto inválido.");
-	            return "crearReto";
-	        }
-	    } catch (Exception e) {
-	        model.addAttribute("error", "Error al guardar el reto: " + e.getMessage());
-	        System.err.println("Error al guardar el reto: " + e.getMessage());
-	        return "crearReto";
-	    }
+		try {
+			if ("SIMPLE".equals(tipoReto)) {
+				reto.setTipo(Tipo.SIMPLE);
+				retoSimpleService.guardarRetoSimple(retoSimple);
+			} else if ("COMPLEJO".equals(tipoReto)) {
+				reto.setTipo(Tipo.COMPLEJO);
+				retoComplejoService.guardarRetoComplejo(retoComplejo);
+			} else {
+				model.addAttribute("error", "Tipo de reto inválido.");
+				return "crearReto";
+			}
+		} catch (Exception e) {
+			model.addAttribute("error", "Error al guardar el reto: " + e.getMessage());
+			System.err.println("Error al guardar el reto: " + e.getMessage());
+			return "crearReto";
+		}
 
-	    model.addAttribute("mensaje", "Reto añadido correctamente.");
-	    generarNotificacion(userActual, reto, "CREACION_RETO");
-	    model.addAttribute("reto", new Reto());
-	    return "crearReto";
+		model.addAttribute("mensaje", "Reto añadido correctamente.");
+		generarNotificacion(userActual, reto, "CREACION_RETO");
+		model.addAttribute("reto", new Reto());
+		return "crearReto";
 	}
-
 
 	@GetMapping("/unirse")
 	public String unirseAunReto(@RequestParam Integer retoId, Model model, HttpSession session) {
@@ -234,12 +235,54 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/reto/{id}")
-	public String mostrarReto(@PathVariable Integer id, Model model) {
+	public String mostrarReto(@PathVariable Integer id, HttpSession session, Model model) {
 		Reto reto = retoService.obtenerReto(Long.valueOf(id));
 		if (reto != null) {
 			List<Usuario> participantes = participantesRetoService.obteneParticipantesDeReto(Long.valueOf(id));
 			List<Comentario> comentarios = comentarioService.obtenerComentariosPorReto(Long.valueOf(id));
-			model.addAttribute("reto", reto);
+
+			Usuario usuario = (Usuario) session.getAttribute("userActual");
+			if (usuario == null) {
+				return "redirect:/login";
+			}
+
+			Boolean estaUnido = participantesRetoService.unidoAlReto(Long.valueOf(usuario.getId()), Long.valueOf(id));
+
+			if (estaUnido) {
+				ProgresoReto progresoReto = progresoRetoService.buscarProgresoReto(usuario, reto);
+
+				float progresoActual = 0.0f;
+				if (progresoReto.getProgresoActual() != null) {
+					progresoActual = progresoReto.getProgresoActual();
+				}
+				reto.setPorcentajeProgreso(progresoActual);
+
+				if (reto.getTipo() == Tipo.SIMPLE) {
+					RetoSimple retoSimple = (RetoSimple) reto;
+					int progreso = (int) ((progresoActual * retoSimple.getCantidad()) / 100);
+					retoSimple.setProgresoArray(progreso);
+					model.addAttribute("reto", retoSimple);
+				} else {
+					RetoComplejo retoComplejo = (RetoComplejo) reto;
+					List<Subtarea> subtareas=retoComplejoService.obtenerSubtareas(retoComplejo);
+					int completados=(int)((progresoActual*subtareas.size())/100);
+					
+					int cont=0;
+					for(Subtarea subtarea:subtareas) {
+						if(cont<completados) {
+							subtarea.setEstado(Subtarea.Estado.COMPLETADA);
+						}
+						cont++;
+					}
+					
+					model.addAttribute("subtareas",subtareas);
+					model.addAttribute("reto", retoComplejo);
+				}
+			} else {
+				model.addAttribute("reto", reto);
+			}
+
+			model.addAttribute("estaUnido", estaUnido);
 			model.addAttribute("participantes", participantes);
 			model.addAttribute("comentarios", comentarios);
 		}
