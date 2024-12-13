@@ -70,4 +70,9 @@ public class EstadisticaServiceImpl implements EstadisticaService {
 		}
 	}
 
+	@Override
+	public Estadistica guardarEstadistica(Estadistica estadistica) {
+		return estadisticaRepository.save(estadistica);
+	}
+
 }

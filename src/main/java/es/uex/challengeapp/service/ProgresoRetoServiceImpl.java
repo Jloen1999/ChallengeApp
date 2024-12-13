@@ -120,4 +120,17 @@ public class ProgresoRetoServiceImpl implements ProgresoRetoService {
 		return totalDuration;
 	}
 
+	@Override
+	public ProgresoReto reiniciarReto(Usuario usuario, Reto reto) {
+		ProgresoReto progresoReto=buscarProgresoReto(usuario, reto);
+		progresoReto.setProgresoActual(0.0f);
+		return actualizarProgreso(progresoReto);
+	}
+
+	@Override
+	public void borrarProgresoReto(Usuario usuario, Reto reto) {
+		ProgresoReto progresoReto=buscarProgresoReto(usuario, reto);
+		progresoRetoRepository.delete(progresoReto);
+	}
+
 }

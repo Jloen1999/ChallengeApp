@@ -59,4 +59,12 @@ public class ParticipantesRetoServiceImpl implements ParticipantesRetoService {
 	    return retos.subList(0, Math.min(retos.size(), 5));
 	}
 
+	@Override
+	public void desunirseReto(Usuario usuario, Reto reto) {
+		ParticipantesReto participantesReto=obtenerParticipacionReto(usuario, reto);
+		participantesRetoRepository.delete(participantesReto);
+	}
+
+	
+
 }

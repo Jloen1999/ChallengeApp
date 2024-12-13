@@ -11,4 +11,6 @@ public interface EstadisticaService {
 
 	void actualizarTodasLasEstadisticas();
 
+	Estadistica guardarEstadistica(Estadistica estadistica);
+
 }

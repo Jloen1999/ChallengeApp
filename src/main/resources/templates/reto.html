@@ -93,16 +93,65 @@
             <h2 class="text-white">Detalle del Reto</h2>
         </div>
 
+        <!-- Modal de configuración -->
+        <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="top:20%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="configModalLabel">Configuración del Reto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulario para cambiar la privacidad -->
+                        <form action="/usuario/reto/cambiar-privacidad" method="post">
+                            <input type="hidden" name="retoId" th:value="${reto.id}">
+                            <div class="mb-3 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <label for="visibilidadReto" class="form-label mb-0">Privacidad del Reto:</label>
+                                    <!-- Muestra el valor actual de visibilidad al lado del label -->
+                                    <span th:text="${reto.visibilidad ? 'Público' : 'Privado'}"
+                                        class="fw-bold me-3"></span>
+                                </div>
+                                <!-- Botón para cambiar privacidad alineado a la derecha -->
+                                <button type="submit" class="btn btn-primary btn-sm">
+                                    Cambiar privacidad
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Formulario para eliminar el reto -->
+                        <form action="/usuario/reto/eliminar" method="post">
+                            <input type="hidden" name="retoId" th:value="${reto.id}">
+                            <div class="d-flex justify-content-end">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="bi bi-trash me-2"></i>Eliminar reto
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Estructura de Grid -->
         <div class="row">
             <!-- Columna principal: Detalle del reto -->
             <div class="col-lg-8 mb-4">
                 <div class="card align-items-center">
-                    <div class="card-header bg-primary text-white">
-                        <h3 class="card-title"><i class="bi bi-trophy me-2"></i>
-                            <span th:text="${reto.nombre}">Nombre del Reto</span>
-                        </h3>
+                    <div class="d-flex w-100 justify-content-center position-relative">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="card-title"><i class="bi bi-trophy me-2"></i>
+                                <span th:text="${reto.nombre}">Nombre del Reto</span>
+                            </h3>
+                        </div>
+                        <div class="position-absolute end-0 mt-2">
+                            <button th:if="${esCreador}" class="btn btn-light btn-lg" data-bs-toggle="modal"
+                                data-bs-target="#configModal">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                        </div>
                     </div>
+
                     <div class="card-body">
                         <!-- Imagen del reto, solo si hay una URL -->
                         <div th:if="${reto.url}" class="d-flex justify-content-center">
@@ -191,30 +240,56 @@
                                     </div>
                                 </li>
                             </ul>
-
                         </div>
 
                         <!-- Botón de unirse o actualizar progreso -->
                         <div class="text-center mt-3">
+                            <!-- Formulario para unirse al reto -->
                             <form th:if="!${estaUnido}" action="/usuario/unirse" method="get">
                                 <input type="hidden" name="retoId" th:value="${reto.id}">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="bi bi-plus-circle me-2"></i>Unirse al reto
                                 </button>
                             </form>
-                            <form th:if="${estaUnido}" action="/usuario/reto/actualizarProgreso" method="post">
-                                <input type="hidden" name="retoId" th:value="${reto.id}">
-                                <input th:if="${reto.tipo.name() == 'SIMPLE'}" type="hidden" id="progresoActualInput"
-                                    name="progresoArray" th:value="${reto.progresoArray}">
 
+                            <!-- Botones para usuarios ya unidos -->
+                            <div th:if="${estaUnido}" class="d-flex justify-content-between">
+                                <!-- Botón para reiniciar el reto -->
+                                <form action="/usuario/reto/reiniciar" method="post" class="d-inline">
+                                    <input type="hidden" name="retoId" th:value="${reto.id}">
+                                    <button class="btn btn-primary" type="submit"
+                                        th:if="${reto.porcentajeProgreso < 100}"
+                                        th:attr="disabled=${reto.porcentajeProgreso == 0}">
+                                        <i class="bi bi-arrow-clockwise me-2"></i>Reiniciar Reto
+                                    </button>
+                                </form>
 
-                                <button class="btn btn-success" type="submit" th:if="${reto.porcentajeProgreso < 100}"
-                                    th:attr="disabled=${reto.tipo.name() == 'COMPLEJO'}">
-                                    <i class="bi bi-arrow-repeat me-2"></i>Actualizar Progreso
-                                </button>
+                                <!-- Botón para actualizar progreso -->
+                                <form action="/usuario/reto/actualizarProgreso" method="post" class="d-inline mx-4">
+                                    <input type="hidden" name="retoId" th:value="${reto.id}">
+                                    <input th:if="${reto.tipo.name() == 'SIMPLE'}" type="hidden"
+                                        id="progresoActualInput" name="progresoArray" th:value="${reto.progresoArray}">
 
-                                <button class="btn btn-secondary" type="button"
-                                    th:if="${reto.porcentajeProgreso == 100}" disabled>
+                                    <button class="btn btn-success" type="submit"
+                                        th:if="${reto.porcentajeProgreso < 100}"
+                                        th:attr="disabled=${reto.tipo.name() == 'COMPLEJO'}">
+                                        <i class="bi bi-arrow-repeat me-2"></i>Actualizar Progreso
+                                    </button>
+                                </form>
+
+                                <!-- Botón para dejar el reto -->
+                                <form action="/usuario/reto/desunirse" method="post" class="d-inline">
+                                    <input type="hidden" name="retoId" th:value="${reto.id}">
+                                    <button class="btn btn-danger" type="submit"
+                                        th:if="${reto.porcentajeProgreso < 100}">
+                                        <i class="bi bi-x-circle me-2"></i>Dejar el reto
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Botón de completado (deshabilitado) -->
+                            <form th:if="${reto.porcentajeProgreso == 100}" class="mt-3">
+                                <button class="btn btn-secondary" type="button" disabled>
                                     <i class="bi bi-check-circle"></i> Completado
                                 </button>
                             </form>

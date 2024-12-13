@@ -25,4 +25,8 @@ public interface ProgresoRetoService {
 
 	Duration obtenerTiempoTotalDeCompletado(Usuario usuario);
 
+	ProgresoReto reiniciarReto(Usuario usuario, Reto reto);
+
+	void borrarProgresoReto(Usuario usuario, Reto reto);
+
 }

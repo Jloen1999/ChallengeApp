@@ -92,6 +92,19 @@ public class RetoServiceImpl implements RetoService {
 	public List<Reto> obtenerRetosPrivados(Usuario usuario) {
 		return retoRepository.findByCreadorAndVisibilidad(usuario, false);
 	}
+	
+	@Override
+	public List<Reto> mostrarRetosPrivadosAmigos(Usuario userActual) {
+		List<Usuario> amigos = amistadService.obtenerAmigos(userActual.getId());
+		List<Reto> retosPrivados = new ArrayList<>();
+
+		for (Usuario amigo : amigos) {
+			retosPrivados.addAll(obtenerRetosPrivados(amigo));
+		}
+
+		return retosPrivados;
+	}
+	
 
 	// FUNCIONES PRIVADAS AUXILIARES
 	private void gestionarRetosNovedosos() {
@@ -108,18 +121,6 @@ public class RetoServiceImpl implements RetoService {
 				retoRepository.save(reto);
 			}
 		}
-	}
-
-	@Override
-	public List<Reto> mostrarRetosPrivadosAmigos(Usuario userActual) {
-		List<Usuario> amigos = amistadService.obtenerAmigos(userActual.getId());
-		List<Reto> retosPrivados = new ArrayList<>();
-
-		for (Usuario amigo : amigos) {
-			retosPrivados.addAll(obtenerRetosPrivados(amigo));
-		}
-
-		return retosPrivados;
 	}
 
 }

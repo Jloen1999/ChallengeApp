@@ -21,4 +21,6 @@ public interface ParticipantesRetoService {
 	ParticipantesReto obtenerParticipacionReto(Usuario usuario, Reto reto);
 
 	List<Reto> obtenerRetosMasParticipantes();
+
+	void desunirseReto(Usuario usuario, Reto reto);
 }

@@ -77,10 +77,10 @@ public class UsuarioController {
 
 	@Autowired
 	private EstadisticaService estadisticaService;
-	
+
 	@Autowired
 	private RecompensaService recompensaService;
-	
+
 	@Autowired
 	private PuntoService puntoService;
 
@@ -115,21 +115,18 @@ public class UsuarioController {
 
 		return "misEstadisticas";
 	}
-	
 
 	@GetMapping("/misRetos")
 	public String mostrarRetosUsuario(Model model, HttpSession session) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
 			List<Reto> retos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(userActual.getId()));
-			for(Reto reto:retos) {
-				if(progresoRetoService.estaCompletado(userActual, reto)) {
+			for (Reto reto : retos) {
+				if (progresoRetoService.estaCompletado(userActual, reto)) {
 					reto.setEstado(Estado.COMPLETADO);
-				}
-				else if(progresoRetoService.estaEnProgreso(userActual, reto)) {
+				} else if (progresoRetoService.estaEnProgreso(userActual, reto)) {
 					reto.setEstado(Estado.EN_PROGRESO);
-				}
-				else if(progresoRetoService.estaFallido(userActual, reto)) {
+				} else if (progresoRetoService.estaFallido(userActual, reto)) {
 					reto.setEstado(Estado.FALLIDO);
 				}
 			}
@@ -179,28 +176,28 @@ public class UsuarioController {
 		if (userActual == null) {
 			return "redirect:/login";
 		}
-		
-		List<Recompensa> medallasBronce=recompensaService.obtenerRecompensasBronceUsuario(userActual);
-		List<Recompensa> medallasPlata=recompensaService.obtenerRecompensasPlataUsuario(userActual);
-		List<Recompensa> medallasOro=recompensaService.obtenerRecompensasOroUsuario(userActual);
-		List<Recompensa> medallasDiamante=recompensaService.obtenerRecompensasDiamanteUsuario(userActual);
-		
-		int totalMedallasBronce=medallasBronce.size();
-		int totalMedallasPlata=medallasPlata.size();
-		int totalMedallasOro=medallasOro.size();
-		int totalMedallasDiamante=medallasDiamante.size();
-		
-		List<Punto> puntos=puntoService.obtenerPuntosUsuario(userActual);
-		int totalPuntos=puntoService.totalPuntosUsuario(userActual);
-		
-		model.addAttribute("puntos",puntos);
-		model.addAttribute("totalPuntos",totalPuntos);
-		
-		model.addAttribute("medallasBronce",totalMedallasBronce);
-		model.addAttribute("medallasPlata",totalMedallasPlata);
-		model.addAttribute("medallasOro",totalMedallasOro);
-		model.addAttribute("medallasDiamante",totalMedallasDiamante);
-		
+
+		List<Recompensa> medallasBronce = recompensaService.obtenerRecompensasBronceUsuario(userActual);
+		List<Recompensa> medallasPlata = recompensaService.obtenerRecompensasPlataUsuario(userActual);
+		List<Recompensa> medallasOro = recompensaService.obtenerRecompensasOroUsuario(userActual);
+		List<Recompensa> medallasDiamante = recompensaService.obtenerRecompensasDiamanteUsuario(userActual);
+
+		int totalMedallasBronce = medallasBronce.size();
+		int totalMedallasPlata = medallasPlata.size();
+		int totalMedallasOro = medallasOro.size();
+		int totalMedallasDiamante = medallasDiamante.size();
+
+		List<Punto> puntos = puntoService.obtenerPuntosUsuario(userActual);
+		int totalPuntos = puntoService.totalPuntosUsuario(userActual);
+
+		model.addAttribute("puntos", puntos);
+		model.addAttribute("totalPuntos", totalPuntos);
+
+		model.addAttribute("medallasBronce", totalMedallasBronce);
+		model.addAttribute("medallasPlata", totalMedallasPlata);
+		model.addAttribute("medallasOro", totalMedallasOro);
+		model.addAttribute("medallasDiamante", totalMedallasDiamante);
+
 		return "recompensas";
 	}
 
@@ -232,12 +229,11 @@ public class UsuarioController {
 		reto.setNovedad(true);
 		reto.setPorcentajeProgreso(0.0f);
 		reto.setFechaCreacion(new Date(System.currentTimeMillis()));
-		
+
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(reto.getFechaCreacion());
 		calendar.add(Calendar.DAY_OF_MONTH, reto.getDuracion());
 		reto.setFechaFinalizacion(calendar.getTime());
-
 
 		if (!imagen.isEmpty()) {
 			try {
@@ -357,6 +353,7 @@ public class UsuarioController {
 				model.addAttribute("reto", reto);
 			}
 
+			model.addAttribute("esCreador", usuario.getId() == reto.getCreador().getId());
 			model.addAttribute("estaUnido", estaUnido);
 			model.addAttribute("participantes", participantes);
 			model.addAttribute("comentarios", comentarios);
