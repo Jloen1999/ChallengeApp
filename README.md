@@ -225,6 +225,20 @@ ________________________________________
   - El usuario recibe una recompensa que se almacena en su perfil.
 - Excepciones:
   - El reto no es elegible para recompensa: El sistema muestra un mensaje explicativo.
+
+**SISTEMA DE RECOMPENSAS**
+
+  **- Puntos:**
+  - Al completar un reto simple se obtienen 10 puntos
+  - Al completar un reto simple en **menos de 24 horas** se obtienen 100 puntos
+  - Al completar un reto complejo se obtienen 50 puntos
+  - Al completar un reto complejo en **menos de 30 días (720 horas)** se obtienen 500 puntos
+  
+  **- Medallas:**
+  - Para obtener una **medalla de BRONCE**, es necesario haber completado 5 retos simple o 2 retos complejos
+  - Para obtener una **medalla de PLATA**, es necesario llegar a las 5 medallas de bronce
+  - Para obtener una **medalla de ORO**, es necesario llegar a las 5 medallas de plata
+  - Para obtener una **medalla de DIAMANTE (recompensa especial)**, el usuario debe haber conseguido 2000 puntos, y cada 2000 puntos se asignará otrá medalla
 ________________________________________  
 **10. Caso de Uso CU10: Gestión de Notificaciones**
 - ID: CU10
