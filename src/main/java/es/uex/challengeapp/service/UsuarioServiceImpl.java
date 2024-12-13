@@ -47,4 +47,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuarioRepository.findByCorreo(email).orElse(null);
 	}
 
+	@Override
+	public List<Usuario> obtenerTodosLosUsuarios() {
+		return usuarioRepository.findAll();
+	}
+
 }

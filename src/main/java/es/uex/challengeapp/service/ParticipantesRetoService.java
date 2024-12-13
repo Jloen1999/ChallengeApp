@@ -15,4 +15,8 @@ public interface ParticipantesRetoService {
 	List<Usuario> obteneParticipantesDeReto(Long retoId);
 	
 	boolean unidoAlReto(Long usuarioId, Long retoId);
+
+	List<Usuario> obtenerTodosLosUsuarios();
+
+	ParticipantesReto obtenerParticipacionReto(Usuario usuario, Reto reto);
 }

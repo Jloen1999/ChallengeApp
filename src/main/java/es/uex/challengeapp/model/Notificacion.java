@@ -19,7 +19,7 @@ public class Notificacion {
 	private String mensaje;
 	private Boolean leido;
 	private Date fechaEnvio;
-	
+
 	@Enumerated(EnumType.STRING)
 	private TipoNotificacion tipoNotificacion;
 
@@ -32,7 +32,8 @@ public class Notificacion {
 	private Reto reto;
 
 	public enum TipoNotificacion {
-		SOLICITUD_AMISTAD, ACEPTACION_AMISTAD, CREACION_RETO, UNION_RETO, ELIMINACION_AMISTAD
+		SOLICITUD_AMISTAD, ACEPTACION_AMISTAD, CREACION_RETO, UNION_RETO, ELIMINACION_AMISTAD, RETO_COMPLETADO,
+		MEDALLA_CONSEGUIDA
 	}
 
 	public Integer getId() {

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Usuario;
+import es.uex.challengeapp.service.EstadisticaService;
 import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +24,9 @@ public class HomeController {
 
 	@Autowired
 	private RetoService retoService;
+	
+	@Autowired
+	private EstadisticaService estadisticaService;
 
 	@GetMapping("/")
 	public String home(Model model, HttpSession session) {
@@ -31,6 +35,8 @@ public class HomeController {
 
 		List<Reto> retos = retoService.obtenerTodosLosRetos();
 		model.addAttribute("retos", retos);
+		
+		estadisticaService.actualizarTodasLasEstadisticas();
 
 		return "index";
 	}

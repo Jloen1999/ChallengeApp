@@ -36,4 +36,14 @@ public class ParticipantesRetoServiceImpl implements ParticipantesRetoService {
 		return participantesRetoRepository.existsByUsuarioIdAndRetoId(usuarioId, retoId);
 	}
 
+	@Override
+	public List<Usuario> obtenerTodosLosUsuarios() {
+		return participantesRetoRepository.findAllDistinctUsuarios();
+	}
+
+	@Override
+	public ParticipantesReto obtenerParticipacionReto(Usuario usuario, Reto reto) {
+		return participantesRetoRepository.findByUsuarioAndReto(usuario, reto).orElse(new ParticipantesReto());
+	}
+
 }

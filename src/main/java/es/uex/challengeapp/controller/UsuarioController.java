@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Date;
+import java.util.*;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.uex.challengeapp.model.Comentario;
+import es.uex.challengeapp.model.Estadistica;
 import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Notificacion.TipoNotificacion;
 import es.uex.challengeapp.model.ParticipantesReto;
@@ -32,6 +33,7 @@ import es.uex.challengeapp.model.Subtarea;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.AmistadService;
 import es.uex.challengeapp.service.ComentarioService;
+import es.uex.challengeapp.service.EstadisticaService;
 import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
 import es.uex.challengeapp.service.ProgresoRetoService;
@@ -67,6 +69,9 @@ public class UsuarioController {
 
 	@Autowired
 	private ProgresoRetoService progresoRetoService;
+	
+	@Autowired
+	private EstadisticaService estadisticaService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -84,8 +89,19 @@ public class UsuarioController {
 		return "redirect:/login";
 	}
 
-	@GetMapping("/estadisticas")
-	public String mostrarEstadisticasUsuario() {
+	@GetMapping("/misEstadisticas")
+	public String mostrarEstadisticasUsuario(Model model, HttpSession session) {
+		Usuario usuario=(Usuario)session.getAttribute("userActual");
+		if(usuario==null) {
+			return "redirect:/login";
+		}
+		
+		Estadistica estadistica=estadisticaService.actualizarEstadistica(usuario);
+		String tiempoConvertido = convertirTiempoPromedio(estadistica.getTiempoPromedio());
+		
+		model.addAttribute("tiempoConvertido", tiempoConvertido);
+		model.addAttribute("estadistica",estadistica);
+		
 		return "estadisticas";
 	}
 
@@ -224,8 +240,16 @@ public class UsuarioController {
 				ParticipantesReto participantesReto = new ParticipantesReto();
 				participantesReto.setUsuario(userActual);
 				participantesReto.setReto(reto);
+				participantesReto.setFechaUnion(new Date(System.currentTimeMillis()));
+				
+				ProgresoReto progresoReto=new ProgresoReto();
+				progresoReto.setProgresoActual(0.0f);
+				progresoReto.setReto(reto);
+				progresoReto.setUsuario(userActual);
+				progresoReto.setFechaActualizacion(new Date(System.currentTimeMillis()));
 
 				participantesRetoService.unirseAReto(participantesReto);
+				progresoRetoService.actualizarProgreso(progresoReto);
 				generarNotificacion(userActual, reto, "UNION_RETO");
 				model.addAttribute("mensaje", "Te has unido correctamente");
 				return "redirect:/usuario/reto/" + retoId;
@@ -265,7 +289,7 @@ public class UsuarioController {
 				} else {
 					RetoComplejo retoComplejo = (RetoComplejo) reto;
 					List<Subtarea> subtareas=retoComplejoService.obtenerSubtareas(retoComplejo);
-					int completados=(int)((progresoActual*subtareas.size())/100);
+					int completados = (int)Math.round((progresoActual * subtareas.size()) / 100.0);
 					
 					int cont=0;
 					for(Subtarea subtarea:subtareas) {
@@ -338,6 +362,47 @@ public class UsuarioController {
 		notificacion.setReto(reto);
 
 		notificacionService.crearNotificacion(notificacion);
-
 	}
+	
+	private String convertirTiempoPromedio(float tiempoPromedio) {
+	    if (tiempoPromedio == 0) {
+	        return "0 minutos";  // Si es 0, se muestra como "0 minutos"
+	    }
+
+	    // Convertimos el tiempo en horas a días, horas y minutos
+	    int dias = (int) (tiempoPromedio / 24);
+	    int horas = (int) (tiempoPromedio % 24);
+	    int minutos = (int) ((tiempoPromedio - (int) tiempoPromedio) * 60);
+
+	    StringBuilder tiempoFormateado = new StringBuilder();
+
+	    // Solo agregamos días si no son 0
+	    if (dias > 0) {
+	        tiempoFormateado.append(dias).append(" días");
+	    }
+
+	    // Solo agregamos horas si no son 0
+	    if (horas > 0) {
+	        if (tiempoFormateado.length() > 0) {
+	            tiempoFormateado.append(", ");
+	        }
+	        tiempoFormateado.append(horas).append(" horas");
+	    }
+
+	    // Solo agregamos minutos si no son 0
+	    if (minutos > 0) {
+	        if (tiempoFormateado.length() > 0) {
+	            tiempoFormateado.append(", ");
+	        }
+	        tiempoFormateado.append(minutos).append(" minutos");
+	    }
+
+	    // Si todo es 0, mostramos "0 minutos"
+	    if (tiempoFormateado.length() == 0) {
+	        tiempoFormateado.append("0 minutos");
+	    }
+
+	    return tiempoFormateado.toString();
+	}
+
 }

@@ -17,4 +17,6 @@ public interface UsuarioService {
 	List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda);
 
 	Usuario buscarUsuarioPorEmail(String email);
+	
+	List<Usuario> obtenerTodosLosUsuarios();
 }

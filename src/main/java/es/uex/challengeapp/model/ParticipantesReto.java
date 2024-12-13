@@ -1,5 +1,7 @@
 package es.uex.challengeapp.model;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -7,6 +9,7 @@ public class ParticipantesReto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    private Date fechaUnion;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -24,7 +27,15 @@ public class ParticipantesReto {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
+    public Date getFechaUnion() {
+		return fechaUnion;
+	}
+
+	public void setFechaUnion(Date fechaUnion) {
+		this.fechaUnion = fechaUnion;
+	}
+
+	public Usuario getUsuario() {
         return usuario;
     }
 

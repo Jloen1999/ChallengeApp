@@ -1,6 +1,7 @@
 package es.uex.challengeapp.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,11 @@ public interface ParticipantesRetoRepository extends JpaRepository<Participantes
 	@Query("SELECT pr.usuario FROM ParticipantesReto pr WHERE pr.reto.id = :retoId")
 	List<Usuario> findUsuariosByRetoId(@Param("retoId") Long retoId);
 	
+	@Query("SELECT DISTINCT p.usuario FROM ParticipantesReto p")
+    List<Usuario> findAllDistinctUsuarios();
+	
 	boolean existsByUsuarioIdAndRetoId(Long usuarioId, Long retoId);
+	
+	Optional<ParticipantesReto> findByUsuarioAndReto(Usuario usuario, Reto reto);
 
 }

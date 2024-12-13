@@ -15,6 +15,9 @@ public class Usuario {
     private String contrasena;
     private String perfilInfo;
     private String ubicacion;
+    
+    @OneToMany(mappedBy = "usuario")
+    private List<Punto> puntos;
 
     @OneToMany(mappedBy = "creador")
     private List<Reto> retosCreados;
@@ -39,6 +42,7 @@ public class Usuario {
         this.correo = correo;
         this.contrasena = contrasena;
         this.ubicacion = ubicacion;
+        puntos=new ArrayList<Punto>();
         retosCreados = new ArrayList<>();
         estadisticas = new ArrayList<>();
         notificaciones = new ArrayList<>();
@@ -54,8 +58,6 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id1"),
             inverseJoinColumns = @JoinColumn(name = "usuario_id2")
     )
-
-
     private List<Usuario> amigos;
 
     public Usuario() {
@@ -64,6 +66,7 @@ public class Usuario {
         contrasena = "";
         perfilInfo = "";
         ubicacion = "";
+        puntos=new ArrayList<Punto>();
         retosCreados = new ArrayList<>();
         estadisticas = new ArrayList<>();
         notificaciones = new ArrayList<>();
@@ -121,7 +124,15 @@ public class Usuario {
         this.ubicacion = ubicacion;
     }
 
-    public List<Reto> getRetosCreados() {
+	public List<Punto> getPuntos() {
+		return puntos;
+	}
+
+	public void setPuntos(List<Punto> puntos) {
+		this.puntos = puntos;
+	}
+
+	public List<Reto> getRetosCreados() {
         return retosCreados;
     }
 
