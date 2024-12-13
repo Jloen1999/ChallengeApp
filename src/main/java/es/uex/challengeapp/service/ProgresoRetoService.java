@@ -16,6 +16,10 @@ public interface ProgresoRetoService {
 	List<Reto> obtenerRetosCompletadosPorUsuario(Usuario usuario);
 	
 	boolean estaCompletado(Usuario usuario,Reto reto);
+	
+	boolean estaEnProgreso(Usuario usuario, Reto reto);
+	
+	boolean estaFallido(Usuario usuario, Reto reto);
 
 	List<Reto> obtenerRetosFallidos(Usuario usuario);
 

@@ -61,15 +61,30 @@ public class ProgresoRetoServiceImpl implements ProgresoRetoService {
 	}
 
 	@Override
+	public boolean estaEnProgreso(Usuario usuario, Reto reto) {
+		ProgresoReto progresoReto = buscarProgresoReto(usuario, reto);
+		if (progresoReto.getProgresoActual() > 0 && progresoReto.getProgresoActual() < 100) {
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean estaFallido(Usuario usuario, Reto reto) {
+	    LocalDate fechaReto = reto.getFechaFinalizacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+	    LocalDate fechaActual = LocalDate.now();
+	    
+	    return !estaCompletado(usuario, reto) && fechaActual.isAfter(fechaReto);
+	}
+
+
+	@Override
 	public List<Reto> obtenerRetosFallidos(Usuario usuario) {
 		List<Reto> todosLosRetos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(usuario.getId()));
 		List<Reto> retosFallidos = new ArrayList<Reto>();
 
 		for (Reto reto : todosLosRetos) {
-			LocalDate fechaReto = reto.getFechaFinalizacion().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate fechaActual = LocalDate.now();
-
-			if (!estaCompletado(usuario, reto) && fechaActual.isAfter(fechaReto)) {
+			if(estaFallido(usuario, reto)) {
 				retosFallidos.add(reto);
 			}
 		}
@@ -84,15 +99,14 @@ public class ProgresoRetoServiceImpl implements ProgresoRetoService {
 		for (Reto reto : todosLosRetos) {
 			if (estaCompletado(usuario, reto)) {
 				ProgresoReto progresoReto = buscarProgresoReto(usuario, reto);
-				ParticipantesReto participantesReto=participantesRetoService.obtenerParticipacionReto(usuario,reto);
-				
+				ParticipantesReto participantesReto = participantesRetoService.obtenerParticipacionReto(usuario, reto);
+
 				Date fechaInicio;
-				
-				if(participantesReto.getFechaUnion()!=null) {
-					fechaInicio=participantesReto.getFechaUnion();
-				}
-				else {
-					fechaInicio=reto.getFechaCreacion();
+
+				if (participantesReto.getFechaUnion() != null) {
+					fechaInicio = participantesReto.getFechaUnion();
+				} else {
+					fechaInicio = reto.getFechaCreacion();
 				}
 
 				Instant inicio = fechaInicio.toInstant();

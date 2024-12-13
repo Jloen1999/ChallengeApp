@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -120,6 +121,17 @@ public class UsuarioController {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
 			List<Reto> retos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(userActual.getId()));
+			for(Reto reto:retos) {
+				if(progresoRetoService.estaCompletado(userActual, reto)) {
+					reto.setEstado(Estado.COMPLETADO);
+				}
+				else if(progresoRetoService.estaEnProgreso(userActual, reto)) {
+					reto.setEstado(Estado.EN_PROGRESO);
+				}
+				else if(progresoRetoService.estaFallido(userActual, reto)) {
+					reto.setEstado(Estado.FALLIDO);
+				}
+			}
 			model.addAttribute("retos", retos);
 			return "misRetos";
 		}
@@ -219,6 +231,12 @@ public class UsuarioController {
 		reto.setNovedad(true);
 		reto.setPorcentajeProgreso(0.0f);
 		reto.setFechaCreacion(new Date(System.currentTimeMillis()));
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(reto.getFechaCreacion());
+		calendar.add(Calendar.DAY_OF_MONTH, reto.getDuracion());
+		reto.setFechaFinalizacion(calendar.getTime());
+
 
 		if (!imagen.isEmpty()) {
 			try {
