@@ -1,5 +1,6 @@
 package es.uex.challengeapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,14 @@ public class HomeController {
 		model.addAttribute("estaLogueado", userActual != null);
 
 		List<Reto> retos = retoService.obtenerTodosLosRetos();
+		List<Reto> retosNovedosos = retoService.obtenerTodosLosRetos();
+		List<Reto> retosPopulares = new ArrayList<Reto>(retos.subList(0, Math.min(5, retos.size())));
+		List<Reto> retosPrivados = retoService.obtenerTodosLosRetos();
+		
 		model.addAttribute("retos", retos);
+		model.addAttribute("retosNovedosos", retosNovedosos);
+		model.addAttribute("retosPopulares", retosPopulares);
+		model.addAttribute("retosPrivados", retosPrivados);
 		
 		estadisticaService.actualizarTodasLasEstadisticas();
 

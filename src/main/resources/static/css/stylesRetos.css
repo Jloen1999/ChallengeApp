@@ -1,0 +1,32 @@
+#retosNovedosos .carousel-inner {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+#retosNovedosos .carousel-inner::-webkit-scrollbar {
+    display: none;
+}
+
+#retosPrivados .carousel-inner {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+#retosPrivados .carousel-inner::-webkit-scrollbar {
+    display: none;
+}
+
+.card-body {
+    overflow-y: scroll;
+}
+
+.card-body::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.card-body {
+    scrollbar-width: none;
+}
