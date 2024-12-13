@@ -113,8 +113,9 @@ public class UsuarioController {
 		model.addAttribute("tiempoConvertido", tiempoConvertido);
 		model.addAttribute("estadistica", estadistica);
 
-		return "estadisticas";
+		return "misEstadisticas";
 	}
+	
 
 	@GetMapping("/misRetos")
 	public String mostrarRetosUsuario(Model model, HttpSession session) {

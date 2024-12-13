@@ -1,5 +1,6 @@
 package es.uex.challengeapp.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,18 @@ public class ParticipantesRetoServiceImpl implements ParticipantesRetoService {
 	@Override
 	public ParticipantesReto obtenerParticipacionReto(Usuario usuario, Reto reto) {
 		return participantesRetoRepository.findByUsuarioAndReto(usuario, reto).orElse(new ParticipantesReto());
+	}
+
+	@Override
+	public List<Reto> obtenerRetosMasParticipantes() {
+		List<Object[]> resultados = participantesRetoRepository.obtenerRetosMasParticipantes();
+	    List<Reto> retos = new ArrayList<>();
+	    
+	    for (Object[] resultado : resultados) {
+	        retos.add((Reto) resultado[0]);
+	    }
+	    
+	    return retos.subList(0, Math.min(retos.size(), 5));
 	}
 
 }

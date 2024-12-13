@@ -33,5 +33,4 @@ public class AmistadServiceImpl implements AmistadService {
 		amistadRepository.eliminarAmistad(id2,id);
 	}
 
-
 }

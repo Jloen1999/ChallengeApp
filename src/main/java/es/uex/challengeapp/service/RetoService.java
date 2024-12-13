@@ -18,4 +18,10 @@ public interface RetoService {
 	List<Reto> obtenerTodosLosRetos();
 	
 	float tiempoEnCompletado(Usuario usuario, Reto reto);
+
+	List<Reto> obtenerRetosNovedosos();
+	
+	List<Reto> obtenerRetosPrivados(Usuario usuario);
+
+	List<Reto> mostrarRetosPrivadosAmigos(Usuario userActual);
 }

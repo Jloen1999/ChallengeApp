@@ -1,6 +1,5 @@
 package es.uex.challengeapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.EstadisticaService;
+import es.uex.challengeapp.service.ParticipantesRetoService;
 import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
@@ -25,7 +25,10 @@ public class HomeController {
 
 	@Autowired
 	private RetoService retoService;
-	
+
+	@Autowired
+	private ParticipantesRetoService participantesRetoService;
+
 	@Autowired
 	private EstadisticaService estadisticaService;
 
@@ -35,18 +38,27 @@ public class HomeController {
 		model.addAttribute("estaLogueado", userActual != null);
 
 		List<Reto> retos = retoService.obtenerTodosLosRetos();
-		List<Reto> retosNovedosos = retoService.obtenerTodosLosRetos();
-		List<Reto> retosPopulares = new ArrayList<Reto>(retos.subList(0, Math.min(5, retos.size())));
-		List<Reto> retosPrivados = retoService.obtenerTodosLosRetos();
-		
+		List<Reto> retosNovedosos = retoService.obtenerRetosNovedosos();
+		List<Reto> retosPopulares = participantesRetoService.obtenerRetosMasParticipantes();
+
 		model.addAttribute("retos", retos);
 		model.addAttribute("retosNovedosos", retosNovedosos);
 		model.addAttribute("retosPopulares", retosPopulares);
-		model.addAttribute("retosPrivados", retosPrivados);
-		
+
+		if (userActual != null) {
+			List<Reto> retosPrivados = retoService.mostrarRetosPrivadosAmigos(userActual);
+			model.addAttribute("retosPrivados", retosPrivados);
+		}
+
 		estadisticaService.actualizarTodasLasEstadisticas();
 
 		return "index";
+	}
+	
+	@GetMapping("/verEstadisticas")
+	public String mostrarEstadisticasGenerales(Model model) {
+
+		return "estadisticas";
 	}
 
 	@PostMapping("/registro")
@@ -72,11 +84,7 @@ public class HomeController {
 		Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
 		if (usuario != null) {
 			session.setAttribute("userActual", usuario);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("estaLogueado", true);
-			List<Reto> retos = retoService.obtenerTodosLosRetos();
-			model.addAttribute("retos", retos);
-			return "index";
+			return "redirect:/";
 		}
 		model.addAttribute("usuario", new Usuario());
 		model.addAttribute("error", "Correo o contraseña incorrectos.");

@@ -68,10 +68,10 @@
     </header>
     <main class="vh-100">
         <section class="section-left d-flex flex-column">
-            <a href="#" class="list-group-item list-group-item-action fs-3 p-0 text-warning">
+            <div class="list-group-item list-group-item-action fs-3 p-0 text-warning">
                 <i class="bi bi-dash"></i>
                 General
-            </a>
+            </div>            
             <a href="/usuario/crearReto" class="list-group-item list-group-item-action text-warning ms-3"
                 th:if="${estaLogueado}">
                 <i class="bi bi-x-circle text-danger"></i>
@@ -84,23 +84,24 @@
                 <i class="bi bi-geo-alt-fill"></i>
                 <span class="m-2">Buscar cerca de mí</span>
             </a>
-            <a href="/usuario/misEstadisticas" class="list-group-item list-group-item-action text-warning ms-3">
+            <a href="/verEstadisticas" class="list-group-item list-group-item-action text-warning ms-3">
                 <i class="bi bi-bar-chart-fill"></i>
                 <span class="m-2">Estadísticas</span>
-            </a>
-            <a href="#retosPopulares" class="list-group-item list-group-item-action text-warning ms-3">
-                <i class="bi bi-award-fill"></i>
-                <span class="m-2">Retos Populares</span>
             </a>
             <a href="#retosNovedad" class="list-group-item list-group-item-action text-warning ms-3">
                 <i class="bi bi-stars"></i>
                 <span class="m-2">Nuevos retos</span>
             </a>
+            <a href="#retosPopulares" class="list-group-item list-group-item-action text-warning ms-3">
+                <i class="bi bi-award-fill"></i>
+                <span class="m-2">Retos Populares</span>
+            </a>
+
         </section>
         <section class="container-fluid main-section">
             <h1 class="text-center text-warning">Retos</h1>
             <!-- Sección: Retos Novedosos (Carrusel de retos) -->
-            <div class="mb-4">
+            <div class="mb-4" th:if="!${retosNovedosos.isEmpty()}">
                 <h2 id="retosNovedad" class="text-info">Retos Novedosos</h2>
                 <div id="retosNovedosos" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner d-flex">
@@ -124,7 +125,7 @@
                 </div>
             </div>
             <!-- Sección: Retos Populares -->
-            <div class="mb-4">
+            <div class="mb-4" th:if="!${retosPopulares.isEmpty()}">
                 <h2 id="retosPopulares" class="text-info">Retos Más Populares</h2>
                 <div class="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-gap-2">
                     <th:block th:each="reto, stat : ${retosPopulares}">
@@ -149,8 +150,8 @@
                 </div>
             </div>
             <!-- Sección: Retos Privados de Amigos -->
-            <div class="mb-4">
-                <h2 id="retosPrivado" class="text-info">Retos Privados</h2>
+            <div class="mb-4" th:if="${estaLogueado} and !${retosPrivados.isEmpty()}">
+                <h2 id="retosPrivado" class="text-info">Retos Privados de Amigos</h2>
                 <div id="retosPrivados" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner d-flex">
                         <th:block th:each="reto, stat : ${retosPrivados}">
@@ -175,6 +176,9 @@
             <!-- Sección: Todos los Retos -->
             <div class="mb-4">
                 <h2 class="text-info">Todos los Retos</h2>
+                <div th:if="${retos.isEmpty()}">
+                    <p>No hay retos disponibles.</p>
+                </div>
                 <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-5 row-gap-2">
                     <th:block th:each="reto : ${retos}">
                         <article class="card mx-4 mt-2 col" style="width: 15rem; height: 20rem;">

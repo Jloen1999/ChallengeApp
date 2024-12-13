@@ -17,15 +17,19 @@ public interface ParticipantesRetoRepository extends JpaRepository<Participantes
 
 	@Query("SELECT pr.reto FROM ParticipantesReto pr WHERE pr.usuario.id = :usuarioId")
 	List<Reto> findRetosByUsuarioId(@Param("usuarioId") Long usuarioId);
-	
+
 	@Query("SELECT pr.usuario FROM ParticipantesReto pr WHERE pr.reto.id = :retoId")
 	List<Usuario> findUsuariosByRetoId(@Param("retoId") Long retoId);
-	
+
 	@Query("SELECT DISTINCT p.usuario FROM ParticipantesReto p")
-    List<Usuario> findAllDistinctUsuarios();
-	
+	List<Usuario> findAllDistinctUsuarios();
+
 	boolean existsByUsuarioIdAndRetoId(Long usuarioId, Long retoId);
-	
+
 	Optional<ParticipantesReto> findByUsuarioAndReto(Usuario usuario, Reto reto);
+
+	@Query("SELECT p.reto, COUNT(p) as participantes " + "FROM ParticipantesReto p " + "GROUP BY p.reto "
+			+ "ORDER BY participantes DESC")
+	List<Object[]> obtenerRetosMasParticipantes();
 
 }

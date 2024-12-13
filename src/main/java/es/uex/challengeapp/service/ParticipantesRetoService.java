@@ -19,4 +19,6 @@ public interface ParticipantesRetoService {
 	List<Usuario> obtenerTodosLosUsuarios();
 
 	ParticipantesReto obtenerParticipacionReto(Usuario usuario, Reto reto);
+
+	List<Reto> obtenerRetosMasParticipantes();
 }
