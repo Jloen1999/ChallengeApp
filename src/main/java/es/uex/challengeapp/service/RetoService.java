@@ -3,6 +3,7 @@ package es.uex.challengeapp.service;
 import java.util.List;
 
 import es.uex.challengeapp.model.Reto;
+import es.uex.challengeapp.model.Usuario;
 
 public interface RetoService {
 
@@ -15,4 +16,6 @@ public interface RetoService {
 	Reto obtenerReto(Long id);
 	
 	List<Reto> obtenerTodosLosRetos();
+	
+	float tiempoEnCompletado(Usuario usuario, Reto reto);
 }

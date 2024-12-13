@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,8 @@ import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Notificacion.TipoNotificacion;
 import es.uex.challengeapp.model.ParticipantesReto;
 import es.uex.challengeapp.model.ProgresoReto;
+import es.uex.challengeapp.model.Punto;
+import es.uex.challengeapp.model.Recompensa;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Reto.Estado;
 import es.uex.challengeapp.model.Reto.Tipo;
@@ -37,6 +39,8 @@ import es.uex.challengeapp.service.EstadisticaService;
 import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
 import es.uex.challengeapp.service.ProgresoRetoService;
+import es.uex.challengeapp.service.PuntoService;
+import es.uex.challengeapp.service.RecompensaService;
 import es.uex.challengeapp.service.RetoComplejoService;
 import es.uex.challengeapp.service.RetoService;
 import es.uex.challengeapp.service.RetoSimpleService;
@@ -69,9 +73,15 @@ public class UsuarioController {
 
 	@Autowired
 	private ProgresoRetoService progresoRetoService;
-	
+
 	@Autowired
 	private EstadisticaService estadisticaService;
+	
+	@Autowired
+	private RecompensaService recompensaService;
+	
+	@Autowired
+	private PuntoService puntoService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
@@ -91,17 +101,17 @@ public class UsuarioController {
 
 	@GetMapping("/misEstadisticas")
 	public String mostrarEstadisticasUsuario(Model model, HttpSession session) {
-		Usuario usuario=(Usuario)session.getAttribute("userActual");
-		if(usuario==null) {
+		Usuario usuario = (Usuario) session.getAttribute("userActual");
+		if (usuario == null) {
 			return "redirect:/login";
 		}
-		
-		Estadistica estadistica=estadisticaService.actualizarEstadistica(usuario);
+
+		Estadistica estadistica = estadisticaService.actualizarEstadistica(usuario);
 		String tiempoConvertido = convertirTiempoPromedio(estadistica.getTiempoPromedio());
-		
+
 		model.addAttribute("tiempoConvertido", tiempoConvertido);
-		model.addAttribute("estadistica",estadistica);
-		
+		model.addAttribute("estadistica", estadistica);
+
 		return "estadisticas";
 	}
 
@@ -153,10 +163,32 @@ public class UsuarioController {
 	@GetMapping("/recompensas")
 	public String mostrarRecompensas(Model model, HttpSession session) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
-		if (userActual != null) {
-			return "recompensas";
+		if (userActual == null) {
+			return "redirect:/login";
 		}
-		return "redirect:/login";
+		
+		List<Recompensa> medallasBronce=recompensaService.obtenerRecompensasBronceUsuario(userActual);
+		List<Recompensa> medallasPlata=recompensaService.obtenerRecompensasPlataUsuario(userActual);
+		List<Recompensa> medallasOro=recompensaService.obtenerRecompensasOroUsuario(userActual);
+		List<Recompensa> medallasDiamante=recompensaService.obtenerRecompensasDiamanteUsuario(userActual);
+		
+		int totalMedallasBronce=medallasBronce.size();
+		int totalMedallasPlata=medallasPlata.size();
+		int totalMedallasOro=medallasOro.size();
+		int totalMedallasDiamante=medallasDiamante.size();
+		
+		List<Punto> puntos=puntoService.obtenerPuntosUsuario(userActual);
+		int totalPuntos=puntoService.totalPuntosUsuario(userActual);
+		
+		model.addAttribute("puntos",puntos);
+		model.addAttribute("totalPuntos",totalPuntos);
+		
+		model.addAttribute("medallasBronce",totalMedallasBronce);
+		model.addAttribute("medallasPlata",totalMedallasPlata);
+		model.addAttribute("medallasOro",totalMedallasOro);
+		model.addAttribute("medallasDiamante",totalMedallasDiamante);
+		
+		return "recompensas";
 	}
 
 	@GetMapping("/crearReto")
@@ -241,8 +273,8 @@ public class UsuarioController {
 				participantesReto.setUsuario(userActual);
 				participantesReto.setReto(reto);
 				participantesReto.setFechaUnion(new Date(System.currentTimeMillis()));
-				
-				ProgresoReto progresoReto=new ProgresoReto();
+
+				ProgresoReto progresoReto = new ProgresoReto();
 				progresoReto.setProgresoActual(0.0f);
 				progresoReto.setReto(reto);
 				progresoReto.setUsuario(userActual);
@@ -288,18 +320,18 @@ public class UsuarioController {
 					model.addAttribute("reto", retoSimple);
 				} else {
 					RetoComplejo retoComplejo = (RetoComplejo) reto;
-					List<Subtarea> subtareas=retoComplejoService.obtenerSubtareas(retoComplejo);
-					int completados = (int)Math.round((progresoActual * subtareas.size()) / 100.0);
-					
-					int cont=0;
-					for(Subtarea subtarea:subtareas) {
-						if(cont<completados) {
+					List<Subtarea> subtareas = retoComplejoService.obtenerSubtareas(retoComplejo);
+					int completados = (int) Math.round((progresoActual * subtareas.size()) / 100.0);
+
+					int cont = 0;
+					for (Subtarea subtarea : subtareas) {
+						if (cont < completados) {
 							subtarea.setEstado(Subtarea.Estado.COMPLETADA);
 						}
 						cont++;
 					}
-					
-					model.addAttribute("subtareas",subtareas);
+
+					model.addAttribute("subtareas", subtareas);
 					model.addAttribute("reto", retoComplejo);
 				}
 			} else {
@@ -363,46 +395,46 @@ public class UsuarioController {
 
 		notificacionService.crearNotificacion(notificacion);
 	}
-	
+
 	private String convertirTiempoPromedio(float tiempoPromedio) {
-	    if (tiempoPromedio == 0) {
-	        return "0 minutos";  // Si es 0, se muestra como "0 minutos"
-	    }
+		if (tiempoPromedio == 0) {
+			return "0 minutos"; // Si es 0, se muestra como "0 minutos"
+		}
 
-	    // Convertimos el tiempo en horas a días, horas y minutos
-	    int dias = (int) (tiempoPromedio / 24);
-	    int horas = (int) (tiempoPromedio % 24);
-	    int minutos = (int) ((tiempoPromedio - (int) tiempoPromedio) * 60);
+		// Convertimos el tiempo en horas a días, horas y minutos
+		int dias = (int) (tiempoPromedio / 24);
+		int horas = (int) (tiempoPromedio % 24);
+		int minutos = (int) ((tiempoPromedio - (int) tiempoPromedio) * 60);
 
-	    StringBuilder tiempoFormateado = new StringBuilder();
+		StringBuilder tiempoFormateado = new StringBuilder();
 
-	    // Solo agregamos días si no son 0
-	    if (dias > 0) {
-	        tiempoFormateado.append(dias).append(" días");
-	    }
+		// Solo agregamos días si no son 0
+		if (dias > 0) {
+			tiempoFormateado.append(dias).append(" días");
+		}
 
-	    // Solo agregamos horas si no son 0
-	    if (horas > 0) {
-	        if (tiempoFormateado.length() > 0) {
-	            tiempoFormateado.append(", ");
-	        }
-	        tiempoFormateado.append(horas).append(" horas");
-	    }
+		// Solo agregamos horas si no son 0
+		if (horas > 0) {
+			if (tiempoFormateado.length() > 0) {
+				tiempoFormateado.append(", ");
+			}
+			tiempoFormateado.append(horas).append(" horas");
+		}
 
-	    // Solo agregamos minutos si no son 0
-	    if (minutos > 0) {
-	        if (tiempoFormateado.length() > 0) {
-	            tiempoFormateado.append(", ");
-	        }
-	        tiempoFormateado.append(minutos).append(" minutos");
-	    }
+		// Solo agregamos minutos si no son 0
+		if (minutos > 0) {
+			if (tiempoFormateado.length() > 0) {
+				tiempoFormateado.append(", ");
+			}
+			tiempoFormateado.append(minutos).append(" minutos");
+		}
 
-	    // Si todo es 0, mostramos "0 minutos"
-	    if (tiempoFormateado.length() == 0) {
-	        tiempoFormateado.append("0 minutos");
-	    }
+		// Si todo es 0, mostramos "0 minutos"
+		if (tiempoFormateado.length() == 0) {
+			tiempoFormateado.append("0 minutos");
+		}
 
-	    return tiempoFormateado.toString();
+		return tiempoFormateado.toString();
 	}
 
 }

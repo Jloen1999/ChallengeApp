@@ -16,9 +16,9 @@ public class Reto {
 	private int duracion;
 	private String url;
 	private Boolean novedad;
-	
+
 	private Boolean visibilidad;
-	
+
 	private Date fechaCreacion;
 	private Date fechaFinalizacion;
 	private Float porcentajeProgreso;
@@ -35,9 +35,6 @@ public class Reto {
 
 	@OneToMany(mappedBy = "reto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comentario> comentarios;
-
-	@OneToMany(mappedBy = "reto")
-	private List<Recompensa> recompensas;
 
 	@OneToMany(mappedBy = "reto")
 	private List<ProgresoReto> progresoRetos;
@@ -164,14 +161,6 @@ public class Reto {
 
 	public void setComentarios(List<Comentario> comentarios) {
 		this.comentarios = comentarios;
-	}
-
-	public List<Recompensa> getRecompensas() {
-		return recompensas;
-	}
-
-	public void setRecompensas(List<Recompensa> recompensas) {
-		this.recompensas = recompensas;
 	}
 
 	public List<ProgresoReto> getProgresoRetos() {

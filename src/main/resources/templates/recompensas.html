@@ -6,15 +6,15 @@
 
     <!-- Metadatos generales -->
     <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
-    <meta name="description" content="Página de notificaciones">
+    <meta name="description" content="Página de recompensas">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Metadatos para móviles -->
-    <meta property="og:title" content="Página de Notificaciones">
+    <meta property="og:title" content="Página de Recompensas">
     <meta property="og:image" content="/images/logo.png">
-    <meta property="og:image:alt" content="Logo de la página sobre Notificaciones">
+    <meta property="og:image:alt" content="Logo de la página sobre Recompensas">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://retos.com">
 
@@ -28,6 +28,9 @@
 
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!--Iconos de Font Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -68,12 +71,118 @@
     </header>
 
     <main class="container my-5 vh-100">
+        <!-- Título principal -->
         <div class="text-center mb-5">
             <h2 class="text-white">Recompensas</h2>
         </div>
+
+        <!-- Sección de Información de Medallas y Puntos Obtenidos -->
+        <div class="row mb-5">
+            <!-- Información de Medallas -->
+            <div class="col-md-6">
+                <h3 class="text-white">Información de Medallas</h3>
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="/images/bronze-medal.png" alt="Medalla Bronce" class="img-fluid me-3" style="width: 50px;">
+                        <div>
+                            <h5 class="card-title">Medalla de Bronce</h5>
+                            <p class="card-text">Se otorgan al haber completado 5 retos simples o 2 retos complejos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="/images/silver-medal.png" alt="Medalla Plata" class="img-fluid me-3" style="width: 50px;">
+                        <div>
+                            <h5 class="card-title">Medalla de Plata</h5>
+                            <p class="card-text">Se otorgan cada 5 medallas de bronce conseguidas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="/images/gold-medal.png" alt="Medalla Oro" class="img-fluid me-3" style="width: 50px;">
+                        <div>
+                            <h5 class="card-title">Medalla de Oro</h5>
+                            <p class="card-text">Se otorgan cada 5 medallas de plata conseguidas.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-3">
+                    <div class="card-body d-flex align-items-center">
+                        <img src="/images/diamond.png" alt="Medalla Diamante" class="img-fluid me-3"
+                            style="width: 50px;">
+                        <div>
+                            <h5 class="card-title">Medalla de Diamante (Recompensa ESPECIAL)</h5>
+                            <p class="card-text">Se otorgan cada 2000 puntos totales conseguidos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Puntos obtenidos -->
+            <div class="col-md-6">
+                <h3 class="text-white">Puntos Obtenidos</h3>
+                <ul class="list-group">
+                    <!-- Iterar sobre la lista de puntos -->
+                    <li th:each="punto : ${puntos}" class="list-group-item d-flex justify-content-between">
+                        <span th:text="${punto.descripcion}">Descripción del punto</span>
+                        <span th:text="${punto.cantidad}">Cantidad</span>
+                    </li>
+                    <!-- Total de puntos -->
+                    <li class="list-group-item d-flex justify-content-between bg-light">
+                        <strong>Total:</strong>
+                        <strong th:text="${totalPuntos}">0 puntos</strong>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+
+        <!-- Logros -->
+        <div class="row">
+            <div class="col-12">
+                <h3 class="text-white">Logros</h3>
+                <div class="d-flex justify-content-between">
+                    <div class="card text-center" style="width: 20%;">
+                        <div class="card-body">
+                            <img src="/images/bronze-medal.png" alt="Medalla Bronce" class="img-fluid mb-2"
+                                style="width: 60px;">
+                            <h5 class="card-title">Bronce</h5>
+                            <p class="card-text" th:text="${medallasBronce}">5 medallas</p>
+                        </div>
+                    </div>
+                    <div class="card text-center" style="width: 20%;">
+                        <div class="card-body">
+                            <img src="/images/silver-medal.png" alt="Medalla Plata" class="img-fluid mb-2"
+                                style="width: 60px;">
+                            <h5 class="card-title">Plata</h5>
+                            <p class="card-text" th:text="${medallasPlata}">3 medallas</p>
+                        </div>
+                    </div>
+                    <div class="card text-center" style="width: 20%;">
+                        <div class="card-body">
+                            <img src="/images/gold-medal.png" alt="Medalla Oro" class="img-fluid mb-2" style="width: 60px;">
+                            <h5 class="card-title">Oro</h5>
+                            <p class="card-text" th:text="${medallasOro}">2 medallas</p>
+                        </div>
+                    </div>
+                    <div class="card text-center" style="width: 20%;">
+                        <div class="card-body">
+                            <img src="/images/diamond.png" alt="Medalla Diamante" class="img-fluid mb-2"
+                                style="width: 60px;">
+                            <h5 class="card-title">Diamante</h5>
+                            <p class="card-text" th:text="${medallasDiamante}">1 medalla</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <footer class="footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
+
+
+    <footer class="hidden footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
         <div>
             <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
             <p class="d-flex justify-content-center">

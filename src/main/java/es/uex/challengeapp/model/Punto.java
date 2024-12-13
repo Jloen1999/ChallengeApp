@@ -37,6 +37,10 @@ public class Punto {
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-    
-    
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	} 
 }
