@@ -104,7 +104,8 @@
                     Reto
                 </span>
             </a>
-            <a href="#" class="list-group-item list-group-item-action text-warning ms-3" th:if="${estaLogueado}">
+            <a href="#" class="list-group-item list-group-item-action text-warning ms-3" th:if="${estaLogueado}"
+                data-bs-toggle="modal" data-bs-target="#modalAñadirAmigo">
                 <i class="bi bi-geo-alt-fill"></i>
                 <span class="m-2">Buscar cerca de mí</span>
             </a>
@@ -123,7 +124,83 @@
 
         </section>
 
-        <section class="container-fluid main-section">
+        <!-- Modal de Búsqueda -->
+        <div class="modal fade" id="modalAñadirAmigo" tabindex="-1" aria-labelledby="modalAñadirAmigoLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" style="top: 20%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAñadirAmigoLabel">Buscar retos cercanos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/usuario/buscarRetosPorUbicacion" method="get">
+                            <!-- Input de ubicación -->
+                            <div class="mb-3 d-flex">
+                                <input type="text" id="ubicacionInput" name="ubicacion" class="form-control me-2"
+                                    placeholder="Introduce tu ubicación" required>
+                                <button type="button" class="btn btn-primary" id="btnUbicacion">
+                                    <i class="bi bi-geo-alt"></i>
+                                </button>
+                            </div>
+
+                            <!-- Barra de progreso para el radio de búsqueda -->
+                            <div class="mb-3">
+                                <label for="radioBusqueda" class="form-label">Radio de búsqueda (km):</label>
+                                <input type="range" class="form-range" id="radioBusqueda" name="radio" min="0" max="50"
+                                    step="1" value="5" oninput="actualizarValor(this.value)">
+                                <div class="d-flex justify-content-between">
+                                    <span>0</span>
+                                    <span>50</span>
+                                </div>
+                                <div id="valorRadio" class="text-center fw-bold mt-2">5 km</div>
+                            </div>
+
+                            <!-- Botón de búsqueda -->
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-geo-alt-fill"></i> Buscar retos
+                                </button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="container-fluid main-section" th:if="${retosBusqueda!=null}">
+            <div>
+                <h1 class="text-warning">Resultados de búsqueda</h1>
+
+                <!-- Sección: Resultados búsqueda -->
+                <div class="mb-4">
+                    <div th:if="${retosBusqueda.isEmpty()}">
+                        <p>No se han encontrado retos.</p>
+                    </div>
+                    <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-5 row-gap-2">
+                        <th:block th:each="reto : ${retosBusqueda}">
+                            <article class="card mx-4 mt-2 col" style="width: 15rem; height: 20rem;">
+                                <img th:src="@{/images/{image}(image=${reto.url})}"
+                                    class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
+                                <div class="card-body d-flex flex-column" style="overflow-y: auto;">
+                                    <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+                                    <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
+                                    <div class="mt-auto">
+                                        <a th:href="@{/usuario/reto/{id}(id=${reto.id})}" class="btn btn-primary w-100">
+                                            Ir
+                                            al Reto
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container-fluid main-section" th:if="${retosBusqueda==null}">
             <h1 class="text-center text-warning">Retos</h1>
             <!-- Sección: Retos Novedosos (Carrusel de retos) -->
             <div class="mb-4" th:if="!${retosNovedosos.isEmpty()}">
@@ -279,10 +356,37 @@
             // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
             if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
                 resultadosBusqueda.style.display = 'none';
-            }else{
+            } else {
                 resultadosBusqueda.style.display = 'block';
             }
         });
+
+        // Listener para el botón de obtener ubicación actual
+        document.getElementById('btnUbicacion').addEventListener('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    // Usa un servicio o API para convertir lat/lon a una ubicación legible
+                    fetch(`/usuario/buscarUbicacionActual?lat=${lat}&lon=${lon}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data); // Verificar cómo llega el objeto
+                            document.getElementById('ubicacionInput').value = data.nombre;
+                        })
+                        .catch(error => console.error('Error al obtener la ubicación actual:', error));
+
+                });
+            } else {
+                alert('Geolocalización no soportada en este navegador.');
+            }
+        });
+
+
+        function actualizarValor(valor) {
+            document.getElementById("valorRadio").textContent = valor + " km";
+        }
 
     </script>
 

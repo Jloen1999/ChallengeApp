@@ -8,7 +8,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.uex.challengeapp.model.Comentario;
@@ -33,6 +38,7 @@ import es.uex.challengeapp.model.Reto.Tipo;
 import es.uex.challengeapp.model.RetoComplejo;
 import es.uex.challengeapp.model.RetoSimple;
 import es.uex.challengeapp.model.Subtarea;
+import es.uex.challengeapp.model.UbicacionDTO;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.AmistadService;
 import es.uex.challengeapp.service.ComentarioService;
@@ -399,6 +405,63 @@ public class UsuarioController {
 		return "notificaciones";
 
 	}
+
+	@GetMapping("/buscarUbicacionActual")
+	public ResponseEntity<UbicacionDTO> buscarUbicacionActual(@RequestParam double lat, @RequestParam double lon) {
+		String apiKey = "Vw6yiuvZTeWMG8-khv5SEhpwTL0o2qMFU7WdGNRzku4"; // Reemplaza con tu clave de API
+		String url = String.format("https://revgeocode.search.hereapi.com/v1/revgeocode?at=%s,%s&apiKey=%s", lat, lon,
+				apiKey);
+
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+			JSONObject jsonResponse = new JSONObject(response.getBody());
+			
+			if (jsonResponse.has("items")) {
+				JSONArray items = jsonResponse.getJSONArray("items");
+				if (items.length() > 0) {
+					JSONObject item = items.getJSONObject(0);
+					String nombreUbicacion = item.getString("title");
+					return ResponseEntity.ok(new UbicacionDTO(null, nombreUbicacion));
+				}
+			}
+
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@GetMapping("/buscarRetosPorUbicacion")
+	public String buscarRetosPorUbicacion(@RequestParam String ubicacion, @RequestParam int radio,
+	        HttpSession session, Model model) {
+	    // Convertir la ubicación a coordenadas (lat, lon) usando OpenStreetMap
+	    String url = String.format("https://nominatim.openstreetmap.org/search?q=%s&format=json", ubicacion);
+
+	    try {
+	        RestTemplate restTemplate = new RestTemplate();
+	        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+	        JSONArray jsonResponse = new JSONArray(response.getBody());
+
+	        if (jsonResponse.length() == 0) {
+	            return "redirect:/";
+	        }
+
+	        JSONObject location = jsonResponse.getJSONObject(0);
+	        Usuario usuario = (Usuario) session.getAttribute("userActual");
+	        double lat = location.getDouble("lat");
+	        double lon = location.getDouble("lon");
+	        List<Reto> retos = retoService.buscarRetosPorUbicacion(usuario, lat, lon, radio);
+
+	        model.addAttribute("estaLogueado",true);
+	        model.addAttribute("retosBusqueda", retos);
+
+	        return "index";
+	    } catch (Exception e) {
+	        return "redirect:/";
+	    }
+	}
+
 
 	// FUNCIONES PRIVADAS AUXLIARES
 	private void generarNotificacion(Usuario userActual, Reto reto, String tipoNotificacion) {

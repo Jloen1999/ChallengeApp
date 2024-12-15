@@ -14,13 +14,13 @@ public interface RetoService {
 	List<Reto> obtenerRetosCreadosPorUsuario(Long usuarioId);
 
 	Reto obtenerReto(Long id);
-	
+
 	List<Reto> obtenerRetos(Usuario userActual);
-	
+
 	float tiempoEnCompletado(Usuario usuario, Reto reto);
 
 	List<Reto> obtenerRetosNovedosos(Usuario userActual);
-	
+
 	List<Reto> obtenerRetosPrivados(Usuario usuario);
 
 	List<Reto> mostrarRetosPrivadosAmigos(Usuario userActual);
@@ -30,4 +30,6 @@ public interface RetoService {
 	List<Reto> buscarPorNombre(String criterioBusqueda);
 
 	List<Reto> obtenerTodosLosRetos();
+
+	List<Reto> buscarRetosPorUbicacion(Usuario usuario, double lat, double lon, int radio);
 }
