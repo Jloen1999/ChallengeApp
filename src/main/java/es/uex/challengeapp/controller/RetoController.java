@@ -84,6 +84,28 @@ public class RetoController {
 
 		return "redirect:/usuario/reto/"+retoId;
 	}
+	
+	@PostMapping("/cambiar-privacidad")
+	public String cambiarPrivacidadReto(@RequestParam("retoId") Integer retoId) {
+		Reto reto=retoService.obtenerReto(Long.valueOf(retoId));
+		reto.setVisibilidad(!reto.getVisibilidad());
+		retoService.guardarReto(reto);
+
+		return "redirect:/usuario/reto/"+retoId;
+	}
+	
+	@PostMapping("/eliminar")
+	public String eliminarReto(@RequestParam("retoId") Integer retoId, HttpSession session) {
+		Usuario usuario = (Usuario) session.getAttribute("userActual");
+		if (usuario == null) {
+			return "redirect:/login";
+		}
+		
+		Reto reto=retoService.obtenerReto(Long.valueOf(retoId));
+		retoService.eliminarReto(reto);
+
+		return "redirect:/usuario/dashboard";
+	}
 
 	@PostMapping("/actualizarProgreso")
 	public String actualizarProgreso(@RequestParam("retoId") Integer retoId,

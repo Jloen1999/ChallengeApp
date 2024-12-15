@@ -34,6 +34,16 @@
 
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu {
+            left: -100px;
+        }
+    </style>
 </head>
 
 <body>
@@ -60,9 +70,18 @@
                             </form>
                         </li>
 
-                        <li class="nav-item icon-profile ms-md-3">
-                            <a class="nav-link" href="/usuario/dashboard">
-                                <i class="bi bi-person-circle fs-1 col"></i></a>
+                        <li class="nav-item ms-md-3" th:classappend="${estaLogueado} ? 'dropdown' : ''">
+                            <!-- Enlace al dashboard -->
+                            <a class="nav-link" href="/usuario/dashboard" th:id="${estaLogueado} ? 'userMenu' : ''"
+                                th:data-bs-toggle="${estaLogueado} ? '' : ''" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-1 col"></i>
+                            </a>
+
+                            <!-- Menú desplegable solo cuando el usuario está logueado -->
+                            <ul class="dropdown-menu dropdown-menu-end" th:if="${estaLogueado}"
+                                aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>

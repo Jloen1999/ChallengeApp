@@ -1,8 +1,10 @@
 package es.uex.challengeapp.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.uex.challengeapp.model.Reto;
+import es.uex.challengeapp.model.RetoDTO;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.service.EstadisticaService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
@@ -37,8 +40,8 @@ public class HomeController {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		model.addAttribute("estaLogueado", userActual != null);
 
-		List<Reto> retos = retoService.obtenerTodosLosRetos();
-		List<Reto> retosNovedosos = retoService.obtenerRetosNovedosos();
+		List<Reto> retos = retoService.obtenerTodosLosRetos(userActual);
+		List<Reto> retosNovedosos = retoService.obtenerRetosNovedosos(userActual);
 		List<Reto> retosPopulares = participantesRetoService.obtenerRetosMasParticipantes();
 
 		model.addAttribute("retos", retos);
@@ -60,6 +63,18 @@ public class HomeController {
 
 		return "estadisticas";
 	}
+	
+	@GetMapping("/buscarRetos")
+	public ResponseEntity<List<RetoDTO>> buscarRetos(@RequestParam String criterioBusqueda) {
+	    List<Reto> retos = retoService.buscarPorNombre(criterioBusqueda);
+
+	    List<RetoDTO> retosDTO = retos.stream()
+	            .map(reto -> new RetoDTO(reto.getId(), reto.getNombre(), reto.getDescripcion()))
+	            .collect(Collectors.toList());
+
+	    return ResponseEntity.ok(retosDTO);
+	}
+
 
 	@PostMapping("/registro")
 	public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
@@ -76,6 +91,12 @@ public class HomeController {
 	public String mostrarFormularioLogin(Model model) {
 		model.addAttribute("usuario", new Usuario());
 		return "login";
+	}
+	
+	@GetMapping("/logout")
+	public String cerrarSesion(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
 	}
 
 	@PostMapping("/")

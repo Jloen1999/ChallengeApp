@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Notificacion.TipoNotificacion;
+import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.repository.NotificacionRepository;
 
@@ -57,6 +58,11 @@ public class NotificacionServiceImpl implements NotificacionService {
 	@Override
 	public Notificacion buscarPorId(Long notificacionId) {
 		return notificacionRepository.findById(notificacionId).orElse(null);
+	}
+
+	@Override
+	public List<Notificacion> obtenerNotificacionesPorReto(Reto reto) {
+		return notificacionRepository.findByReto(reto);
 	}
 
 }

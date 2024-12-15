@@ -30,7 +30,12 @@ public class AmistadServiceImpl implements AmistadService {
 	@Override
 	public void eliminarAmistad(Integer id, Integer id2) {
 		amistadRepository.eliminarAmistad(id, id2);
-		amistadRepository.eliminarAmistad(id2,id);
+		amistadRepository.eliminarAmistad(id2, id);
 	}
 
+	@Override
+	public boolean sonAmigos(Usuario usuario1, Usuario usuario2) {
+        return amistadRepository.existsByUsuario1AndUsuario2(usuario1, usuario2) ||
+               amistadRepository.existsByUsuario1AndUsuario2(usuario2, usuario1);
+    }
 }

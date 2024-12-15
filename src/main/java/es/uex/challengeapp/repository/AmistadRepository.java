@@ -21,5 +21,6 @@ public interface AmistadRepository extends JpaRepository<Amistad, AmistadId> {
 	@Modifying
 	@Query("DELETE FROM Amistad a WHERE a.usuario1.id = :usuarioId1 AND a.usuario2.id = :usuarioId2")
 	void eliminarAmistad(@Param("usuarioId1") Integer usuarioId1, @Param("usuarioId2") Integer usuarioId2);
-
+	
+	boolean existsByUsuario1AndUsuario2(Usuario usuario1, Usuario usuario2);
 }

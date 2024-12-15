@@ -11,6 +11,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.uex.challengeapp.model.Notificacion;
+import es.uex.challengeapp.model.Notificacion.TipoNotificacion;
 import es.uex.challengeapp.model.ParticipantesReto;
 import es.uex.challengeapp.model.ProgresoReto;
 import es.uex.challengeapp.model.Reto;
@@ -29,6 +31,9 @@ public class RetoServiceImpl implements RetoService {
 	private ParticipantesRetoService participantesRetoService;
 
 	@Autowired
+	private NotificacionService notificacionService;
+
+	@Autowired
 	private AmistadService amistadService;
 
 	@Override
@@ -37,7 +42,7 @@ public class RetoServiceImpl implements RetoService {
 	}
 
 	@Override
-	public Reto crearReto(Reto reto) {
+	public Reto guardarReto(Reto reto) {
 		return retoRepository.save(reto);
 	}
 
@@ -52,8 +57,51 @@ public class RetoServiceImpl implements RetoService {
 	}
 
 	@Override
-	public List<Reto> obtenerTodosLosRetos() {
-		return retoRepository.findAll();
+	public List<Reto> obtenerTodosLosRetos(Usuario userActual) {
+		List<Reto> todosLosRetos = retoRepository.findAll();
+		List<Reto> retos = new ArrayList<Reto>();
+
+		if (userActual == null) {
+			for (Reto reto : todosLosRetos) {
+				if (reto.getVisibilidad()) {
+					retos.add(reto);
+				}
+			}
+			return retos;
+		}
+
+		for (Reto reto : todosLosRetos) {
+			if (reto.getVisibilidad() || userActual.getId() == reto.getCreador().getId()
+					|| amistadService.sonAmigos(userActual, reto.getCreador())) {
+				retos.add(reto);
+			}
+		}
+		return retos;
+	}
+
+	@Override
+	public List<Reto> obtenerRetosNovedosos(Usuario userActual) {
+		gestionarRetosNovedosos();
+
+		List<Reto> todosLosRetosNovedosos = retoRepository.findByNovedadTrue();
+		List<Reto> retos = new ArrayList<Reto>();
+
+		if (userActual == null) {
+			for (Reto reto : todosLosRetosNovedosos) {
+				if (reto.getVisibilidad()) {
+					retos.add(reto);
+				}
+			}
+			return retos;
+		}
+
+		for (Reto reto : todosLosRetosNovedosos) {
+			if (reto.getVisibilidad() || userActual.getId() == reto.getCreador().getId()
+					|| amistadService.sonAmigos(userActual, reto.getCreador())) {
+				retos.add(reto);
+			}
+		}
+		return retos;
 	}
 
 	@Override
@@ -83,16 +131,10 @@ public class RetoServiceImpl implements RetoService {
 	}
 
 	@Override
-	public List<Reto> obtenerRetosNovedosos() {
-		gestionarRetosNovedosos();
-		return retoRepository.findByNovedadTrue();
-	}
-
-	@Override
 	public List<Reto> obtenerRetosPrivados(Usuario usuario) {
 		return retoRepository.findByCreadorAndVisibilidad(usuario, false);
 	}
-	
+
 	@Override
 	public List<Reto> mostrarRetosPrivadosAmigos(Usuario userActual) {
 		List<Usuario> amigos = amistadService.obtenerAmigos(userActual.getId());
@@ -104,7 +146,6 @@ public class RetoServiceImpl implements RetoService {
 
 		return retosPrivados;
 	}
-	
 
 	// FUNCIONES PRIVADAS AUXILIARES
 	private void gestionarRetosNovedosos() {
@@ -121,6 +162,35 @@ public class RetoServiceImpl implements RetoService {
 				retoRepository.save(reto);
 			}
 		}
+	}
+
+	@Override
+	public void eliminarReto(Reto reto) {
+		List<Notificacion> notificaciones = notificacionService.obtenerNotificacionesPorReto(reto);
+		for (Notificacion notificacion : notificaciones) {
+			notificacion.setReto(null);
+		}
+
+		List<Usuario> participantes = participantesRetoService.obteneParticipantesDeReto(Long.valueOf(reto.getId()));
+		if (!participantes.isEmpty()) {
+			Notificacion notificacion = new Notificacion();
+			notificacion.setFechaEnvio(new Date(System.currentTimeMillis()));
+			notificacion.setMensaje("El reto '" + reto.getNombre() + "', al que te habías unido, ¡ha sido eliminado!");
+			notificacion.setLeido(false);
+			notificacion.setTipoNotificacion(TipoNotificacion.ELIMINACION_RETO);
+
+			for (Usuario participante : participantes) {
+				notificacion.setUsuario(participante);
+				notificacionService.crearNotificacion(notificacion);
+			}
+		}
+
+		retoRepository.delete(reto);
+	}
+
+	@Override
+	public List<Reto> buscarPorNombre(String criterioBusqueda) {
+	    return retoRepository.findByNombreContainingIgnoreCase(criterioBusqueda);
 	}
 
 }

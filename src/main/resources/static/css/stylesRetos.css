@@ -30,3 +30,16 @@
 .card-body {
     scrollbar-width: none;
 }
+
+#resultadosBusqueda {
+    position: absolute;
+    top: 25px;  /* Ajusta este valor según la altura del header */
+    left: 0;
+    right: 0;
+    z-index: 9999; /* Asegura que se muestre sobre otros elementos */
+    max-height: 300px;
+    overflow-y: auto; /* Permite desplazarse si hay demasiados resultados */
+    background-color: white; /* Fondo blanco para los resultados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra para mejorar la visibilidad */
+}
+

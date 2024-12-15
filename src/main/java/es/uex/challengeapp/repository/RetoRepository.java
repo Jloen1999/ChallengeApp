@@ -19,4 +19,6 @@ public interface RetoRepository extends JpaRepository<Reto, Long> {
 	Optional<Reto> findById(Long id);
 
 	List<Reto> findByCreadorAndVisibilidad(Usuario usuario, boolean b);
+
+	List<Reto> findByNombreContainingIgnoreCase(String criterioBusqueda);
 }

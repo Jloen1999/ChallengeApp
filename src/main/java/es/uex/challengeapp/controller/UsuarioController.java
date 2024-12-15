@@ -86,6 +86,7 @@ public class UsuarioController {
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {
+		model.addAttribute("estaLogueado", true);
 		model.addAttribute("usuario", new Usuario());
 		return "registro";
 	}
@@ -94,6 +95,7 @@ public class UsuarioController {
 	public String mostrarPerfilUsuario(Model model, HttpSession session) {
 		Usuario userActual = (Usuario) session.getAttribute("userActual");
 		if (userActual != null) {
+			model.addAttribute("estaLogueado", true);
 			model.addAttribute("nombreUsuario", userActual.getNombre());
 			return "dashboard";
 		}
@@ -110,6 +112,7 @@ public class UsuarioController {
 		Estadistica estadistica = estadisticaService.actualizarEstadistica(usuario);
 		String tiempoConvertido = convertirTiempoPromedio(estadistica.getTiempoPromedio());
 
+		model.addAttribute("estaLogueado", true);
 		model.addAttribute("tiempoConvertido", tiempoConvertido);
 		model.addAttribute("estadistica", estadistica);
 
@@ -130,6 +133,7 @@ public class UsuarioController {
 					reto.setEstado(Estado.FALLIDO);
 				}
 			}
+			model.addAttribute("estaLogueado", true);
 			model.addAttribute("retos", retos);
 			return "misRetos";
 		}
@@ -142,6 +146,7 @@ public class UsuarioController {
 		if (userActual != null) {
 			List<Reto> retos = retoService.obtenerRetosCreadosPorUsuario(Long.valueOf(userActual.getId()));
 			model.addAttribute("retos", retos);
+			model.addAttribute("estaLogueado", true);
 			return "retosCreados";
 		}
 		return "redirect:/login";
@@ -153,6 +158,7 @@ public class UsuarioController {
 		if (userActual != null) {
 			List<Usuario> listaAmigos = amistadService.obtenerAmigos(userActual.getId());
 			model.addAttribute("amigos", listaAmigos);
+			model.addAttribute("estaLogueado", true);
 			return "amigos";
 		}
 		return "redirect:/login";
@@ -165,6 +171,7 @@ public class UsuarioController {
 			List<Notificacion> notificaciones = notificacionService
 					.obtenerNotificacionesPorUsuario(Long.valueOf(userActual.getId()));
 			model.addAttribute("notificaciones", notificaciones);
+			model.addAttribute("estaLogueado", true);
 			return "notificaciones";
 		}
 		return "redirect:/login";
@@ -198,6 +205,8 @@ public class UsuarioController {
 		model.addAttribute("medallasOro", totalMedallasOro);
 		model.addAttribute("medallasDiamante", totalMedallasDiamante);
 
+		model.addAttribute("estaLogueado", true);
+
 		return "recompensas";
 	}
 
@@ -207,6 +216,7 @@ public class UsuarioController {
 		if (userActual != null) {
 			model.addAttribute("retoSimple", new RetoSimple());
 			model.addAttribute("retoComplejo", new RetoComplejo());
+			model.addAttribute("estaLogueado", true);
 			return "crearReto";
 		}
 		return "redirect:/login";
@@ -350,6 +360,7 @@ public class UsuarioController {
 					model.addAttribute("reto", retoComplejo);
 				}
 			} else {
+				reto.setPorcentajeProgreso(0.0f);
 				model.addAttribute("reto", reto);
 			}
 

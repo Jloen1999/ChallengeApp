@@ -36,7 +36,7 @@ public class Reto {
 	@OneToMany(mappedBy = "reto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Comentario> comentarios;
 
-	@OneToMany(mappedBy = "reto")
+	@OneToMany(mappedBy = "reto", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ProgresoReto> progresoRetos;
 
 	@OneToMany(mappedBy = "reto", cascade = CascadeType.ALL, orphanRemoval = true)
