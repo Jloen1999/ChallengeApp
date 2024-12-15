@@ -15,7 +15,7 @@ public interface RetoService {
 
 	Reto obtenerReto(Long id);
 	
-	List<Reto> obtenerTodosLosRetos(Usuario userActual);
+	List<Reto> obtenerRetos(Usuario userActual);
 	
 	float tiempoEnCompletado(Usuario usuario, Reto reto);
 
@@ -28,4 +28,6 @@ public interface RetoService {
 	void eliminarReto(Reto reto);
 
 	List<Reto> buscarPorNombre(String criterioBusqueda);
+
+	List<Reto> obtenerTodosLosRetos();
 }

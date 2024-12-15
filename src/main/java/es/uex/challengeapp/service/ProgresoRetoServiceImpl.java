@@ -53,11 +53,12 @@ public class ProgresoRetoServiceImpl implements ProgresoRetoService {
 
 	@Override
 	public boolean estaCompletado(Usuario usuario, Reto reto) {
-		ProgresoReto progresoReto = buscarProgresoReto(usuario, reto);
-		if (progresoReto.getProgresoActual() == 100) {
-			return true;
-		}
-		return false;
+	    ProgresoReto progresoReto = buscarProgresoReto(usuario, reto);
+	    if (progresoReto == null || progresoReto.getProgresoActual() == null) {
+	        return false;
+	    }
+
+	    return progresoReto.getProgresoActual() == 100;
 	}
 
 	@Override

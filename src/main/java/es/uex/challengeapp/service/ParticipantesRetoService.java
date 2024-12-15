@@ -12,7 +12,7 @@ public interface ParticipantesRetoService {
 	
 	List<Reto> obtenerRetosDeUsuario(Long usuarioId);
 	
-	List<Usuario> obteneParticipantesDeReto(Long retoId);
+	List<Usuario> obtenerParticipantesDeReto(Long retoId);
 	
 	boolean unidoAlReto(Long usuarioId, Long retoId);
 

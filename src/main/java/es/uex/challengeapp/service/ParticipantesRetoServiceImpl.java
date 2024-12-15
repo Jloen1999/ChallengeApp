@@ -28,7 +28,7 @@ public class ParticipantesRetoServiceImpl implements ParticipantesRetoService {
 	}
 
 	@Override
-	public List<Usuario> obteneParticipantesDeReto(Long retoId) {
+	public List<Usuario> obtenerParticipantesDeReto(Long retoId) {
 		return participantesRetoRepository.findUsuariosByRetoId(retoId);
 	}
 

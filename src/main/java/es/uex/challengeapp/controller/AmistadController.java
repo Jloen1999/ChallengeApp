@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.uex.challengeapp.model.Amistad;
+import es.uex.challengeapp.model.Estadistica;
 import es.uex.challengeapp.model.Notificacion;
 import es.uex.challengeapp.model.Notificacion.TipoNotificacion;
 import es.uex.challengeapp.model.Reto;
 import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.model.UsuarioDTO;
 import es.uex.challengeapp.service.AmistadService;
+import es.uex.challengeapp.service.EstadisticaService;
 import es.uex.challengeapp.service.NotificacionService;
 import es.uex.challengeapp.service.ParticipantesRetoService;
 import es.uex.challengeapp.service.RetoService;
@@ -45,10 +47,13 @@ public class AmistadController {
 	private RetoService retoService;
 
 	@Autowired
+	private EstadisticaService estadisticaService;
+
+	@Autowired
 	private ParticipantesRetoService participantesRetoService;
 
 	@PostMapping("/aceptarAmistad/{email}")
-	public String aceptarAmistad(@PathVariable String email,@RequestParam Long notificacionId, HttpSession session,
+	public String aceptarAmistad(@PathVariable String email, @RequestParam Long notificacionId, HttpSession session,
 			RedirectAttributes redirectAttributes) {
 		Usuario user = (Usuario) session.getAttribute("userActual");
 		if (user != null) {
@@ -68,12 +73,12 @@ public class AmistadController {
 
 				generarNotificacion(user, amigo, "ADICION_AMISTAD");
 				notificacionService.negociarAmistad(user, amigo, "ACEPTAR_SOLICITUD");
-				
+
 				Notificacion notificacion = notificacionService.buscarPorId(notificacionId);
-	            if (notificacion != null) {
-	                notificacion.setLeido(true);
-	                notificacionService.crearNotificacion(notificacion);
-	            }
+				if (notificacion != null) {
+					notificacion.setLeido(true);
+					notificacionService.crearNotificacion(notificacion);
+				}
 
 				redirectAttributes.addFlashAttribute("mensaje",
 						"Has aceptado la solicitud de amistad de " + amigo.getNombre());
@@ -94,8 +99,8 @@ public class AmistadController {
 			amistadService.eliminarAmistad(userActual.getId(), id);
 			Usuario amigo = usuarioService.obtenerUsuarioPorId(id);
 			generarNotificacion(userActual, amigo, "BORRAR_AMISTAD");
-			//List<Usuario> listaAmigos = amistadService.obtenerAmigos(userActual.getId());
-			//model.addAttribute("amigos", listaAmigos);
+			// List<Usuario> listaAmigos = amistadService.obtenerAmigos(userActual.getId());
+			// model.addAttribute("amigos", listaAmigos);
 			return "redirect:/usuario/amigos";
 		}
 		return "redirect:/login";
@@ -110,13 +115,15 @@ public class AmistadController {
 			List<Reto> retosCreados = retoService.obtenerRetosCreadosPorUsuario(Long.valueOf(id));
 			List<Reto> retosUnidos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(id));
 			List<Usuario> amigos = amistadService.obtenerAmigos(id);
-			// Estadisticas estadisticas = estadisticasService.obtenerEstadisticasPorId(id);
+			Estadistica estadistica = estadisticaService.obtenerEstadisticaPorUsuario(otroUsuario);
+			String tiempoConvertido = convertirTiempoPromedio(estadistica.getTiempoPromedio());
 
 			model.addAttribute("usuario", otroUsuario);
 			model.addAttribute("retosCreados", retosCreados);
 			model.addAttribute("retosUnidos", retosUnidos);
 			model.addAttribute("amigos", amigos);
-			// model.addAttribute("estadisticas", estadisticas);
+			model.addAttribute("estadisticas", estadistica);
+			model.addAttribute("tiempoConvertido", tiempoConvertido);
 
 			return "dashboardAmigo";
 		}
@@ -138,8 +145,8 @@ public class AmistadController {
 	public String enviarSolicitudAmistad(@PathVariable Integer idAmigo, HttpSession session, Model model) {
 		Usuario user = (Usuario) session.getAttribute("userActual");
 		Usuario amigoUsuario = usuarioService.obtenerUsuarioPorId(idAmigo);
-		
-		notificacionService.negociarAmistad(user, amigoUsuario,"ENVIAR_SOLCITUD");
+
+		notificacionService.negociarAmistad(user, amigoUsuario, "ENVIAR_SOLCITUD");
 
 		return "redirect:/usuario/amigos";
 	}
@@ -164,7 +171,47 @@ public class AmistadController {
 		notificacion.setUsuario(userActual);
 
 		notificacionService.crearNotificacion(notificacion);
+	}
 
+	private String convertirTiempoPromedio(float tiempoPromedio) {
+		if (tiempoPromedio == 0) {
+			return "0 minutos"; // Si es 0, se muestra como "0 minutos"
+		}
+
+		// Convertimos el tiempo en horas a días, horas y minutos
+		int dias = (int) (tiempoPromedio / 24);
+		int horas = (int) (tiempoPromedio % 24);
+		int minutos = (int) ((tiempoPromedio - (int) tiempoPromedio) * 60);
+
+		StringBuilder tiempoFormateado = new StringBuilder();
+
+		// Solo agregamos días si no son 0
+		if (dias > 0) {
+			tiempoFormateado.append(dias).append(" días");
+		}
+
+		// Solo agregamos horas si no son 0
+		if (horas > 0) {
+			if (tiempoFormateado.length() > 0) {
+				tiempoFormateado.append(", ");
+			}
+			tiempoFormateado.append(horas).append(" horas");
+		}
+
+		// Solo agregamos minutos si no son 0
+		if (minutos > 0) {
+			if (tiempoFormateado.length() > 0) {
+				tiempoFormateado.append(", ");
+			}
+			tiempoFormateado.append(minutos).append(" minutos");
+		}
+
+		// Si todo es 0, mostramos "0 minutos"
+		if (tiempoFormateado.length() == 0) {
+			tiempoFormateado.append("0 minutos");
+		}
+
+		return tiempoFormateado.toString();
 	}
 
 }

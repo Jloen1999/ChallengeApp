@@ -319,7 +319,7 @@ public class UsuarioController {
 	public String mostrarReto(@PathVariable Integer id, HttpSession session, Model model) {
 		Reto reto = retoService.obtenerReto(Long.valueOf(id));
 		if (reto != null) {
-			List<Usuario> participantes = participantesRetoService.obteneParticipantesDeReto(Long.valueOf(id));
+			List<Usuario> participantes = participantesRetoService.obtenerParticipantesDeReto(Long.valueOf(id));
 			List<Comentario> comentarios = comentarioService.obtenerComentariosPorReto(Long.valueOf(id));
 
 			Usuario usuario = (Usuario) session.getAttribute("userActual");

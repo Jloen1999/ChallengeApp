@@ -34,7 +34,7 @@
 
     <!-- Fuentes -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    
+
     <style>
         .nav-item.dropdown:hover .dropdown-menu {
             display: block;
@@ -94,9 +94,199 @@
         <div class="text-center mb-5">
             <h2 class="text-white">Estadísticas Generales</h2>
         </div>
+    
+        <!-- Ranking: Usuarios con más medallas -->
+        <div class="container mt-5">
+            <h3 class="text-center text-white">Ranking: Usuarios con más medallas</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Posición</th>
+                        <th>Usuario</th>
+                        <th><img src="/images/diamond.png" alt="Medalla Diamante" class="img-fluid me-3" style="width: 30px;"></th>
+                        <th><img src="/images/gold-medal.png" alt="Medalla Oro" class="img-fluid me-3" style="width: 30px;"></th>
+                        <th><img src="/images/silver-medal.png" alt="Medalla Plata" class="img-fluid me-3" style="width: 30px;"></th>
+                        <th><img src="/images/bronze-medal.png" alt="Medalla Bronce" class="img-fluid me-3" style="width: 30px;"></th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="detalle, iterStat : ${rankingMedallasDetalle}">
+                        <td th:text="${iterStat.index + 1}">1</td>
+                        <td th:text="${detalle.usuario.nombre}">Nombre del usuario</td>
+                        <td th:text="${detalle.diamantes}">0</td>
+                        <td th:text="${detalle.oros}">0</td>
+                        <td th:text="${detalle.platas}">0</td>
+                        <td th:text="${detalle.bronces}">0</td>
+                        <td th:text="${detalle.total}">0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+        <!-- Rankings: Usuarios con más puntos y más retos completados -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3 class="text-center text-white">Ranking: Usuarios con más puntos</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Usuario</th>
+                            <th>Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario, iterStat : ${usuariosPorPuntos}">
+                            <td th:text="${iterStat.index + 1}">1</td>
+                            <td th:text="${usuario.nombre}">Nombre del usuario</td>
+                            <td th:text="${puntoService.totalPuntosUsuario(usuario)}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="col-md-6">
+                <h3 class="text-center text-white">Ranking: Usuarios con más retos completados</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Usuario</th>
+                            <th>Retos Completados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario, iterStat : ${usuariosPorRetosCompletados}">
+                            <td th:text="${iterStat.index + 1}">1</td>
+                            <td th:text="${usuario.nombre}">Nombre del usuario</td>
+                            <td th:text="${progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario).size()}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Rankings: Promedio en retos simples y complejos -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3 class="text-center text-white">Ranking: Promedio en retos simples</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Usuario</th>
+                            <th>Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario, iterStat : ${usuariosPorPromedioSimples}">
+                            <td th:text="${iterStat.index + 1}">1</td>
+                            <td th:text="${usuario.nombre}">Nombre del usuario</td>
+                            <td th:text="${controller.calcularPromedioTiempoPorTipo(usuario, T(es.uex.challengeapp.model.Reto.Tipo).SIMPLE)}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="col-md-6">
+                <h3 class="text-center text-white">Ranking: Promedio en retos complejos</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Usuario</th>
+                            <th>Promedio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="usuario, iterStat : ${usuariosPorPromedioComplejos}">
+                            <td th:text="${iterStat.index + 1}">1</td>
+                            <td th:text="${usuario.nombre}">Nombre del usuario</td>
+                            <td th:text="${controller.calcularPromedioTiempoPorTipo(usuario, T(es.uex.challengeapp.model.Reto.Tipo).COMPLEJO)}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Popularidad de retos -->
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h3 class="text-center text-white">Ranking: Retos más populares</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Reto</th>
+                            <th>Participantes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reto, iterStat : ${retosMasPopulares}">
+                            <td th:text="${iterStat.index + 1}">1</td>
+                            <td th:text="${reto.nombre}">Nombre del reto</td>
+                            <td th:text="${participantesRetoService.obtenerParticipantesDeReto(reto.id).size()}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    
+            <div class="col-md-6">
+                <h3 class="text-center text-white">Ranking: Retos menos populares</h3>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Reto</th>
+                            <th>Participantes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="reto, iterStat : ${retosMenosPopulares}">
+                            <td th:text="${iterStat.index + 1}">1</td>
+                            <td th:text="${reto.nombre}">Nombre del reto</td>
+                            <td th:text="${participantesRetoService.obtenerParticipantesDeReto(reto.id).size()}">0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    
+        <!-- Estadísticas generales en tarjetas -->
+        <div class="row mt-5 text-center">
+            <div class="col-md-2">
+                <div class="card p-3 shadow-sm">
+                    <h5>Usuarios con retos completados</h5>
+                    <p class="display-6" th:text="${numeroUsuariosConRetosCompletados}">0</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card p-3 shadow-sm">
+                    <h5>Total Usuarios</h5>
+                    <p class="display-6" th:text="${numeroUsuarios}">0</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card p-3 shadow-sm">
+                    <h5>Retos Completados</h5>
+                    <p class="display-6" th:text="${numeroRetosCompletados}">0</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card p-3 shadow-sm">
+                    <h5>Total Retos</h5>
+                    <p class="display-6" th:text="${numeroRetos}">0</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="card p-3 shadow-sm">
+                    <h5>Tiempo Promedio</h5>
+                    <p class="display-6" th:text="${tiempoPromedioCompletado}">0</p>
+                </div>
+            </div>
+        </div>
     </main>
-
-
 
     <footer class="hidden footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
         <div>

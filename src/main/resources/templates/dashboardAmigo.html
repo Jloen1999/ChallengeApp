@@ -134,9 +134,18 @@
             <div class="col-md-3">
                 <h3>Estadísticas</h3>
                 <div th:if="${estadisticas != null}">
-                    <p>Retos completados: <span th:text="${estadisticas.retosCompletados}"></span></p>
-                    <p>Amigos: <span th:text="${estadisticas.amigos}"></span></p>
-                    <p>Otras estadísticas...</p>
+                    <div class="card p-3 shadow-sm">
+                        <div class="card-body">
+                            <p><strong>Retos Completados:</strong> <span
+                                    th:text="${estadisticas.retosCompletados}"></span></p>
+                            <p><strong>Total de Retos:</strong> <span th:text="${estadisticas.totalRetos}"></span></p>
+                            <p><strong>Retos Fallidos:</strong> <span th:text="${estadisticas.retosFallidos}"></span>
+                            </p>
+                            <p><strong>Progreso Promedio:</strong> <span
+                                    th:text="${estadisticas.progresoPromedio} + '%'"></span></p>
+                            <p><strong>Tiempo Promedio:</strong> <span th:text="${tiempoConvertido}"></span></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

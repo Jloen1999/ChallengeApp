@@ -57,7 +57,7 @@ public class RetoServiceImpl implements RetoService {
 	}
 
 	@Override
-	public List<Reto> obtenerTodosLosRetos(Usuario userActual) {
+	public List<Reto> obtenerRetos(Usuario userActual) {
 		List<Reto> todosLosRetos = retoRepository.findAll();
 		List<Reto> retos = new ArrayList<Reto>();
 
@@ -171,7 +171,7 @@ public class RetoServiceImpl implements RetoService {
 			notificacion.setReto(null);
 		}
 
-		List<Usuario> participantes = participantesRetoService.obteneParticipantesDeReto(Long.valueOf(reto.getId()));
+		List<Usuario> participantes = participantesRetoService.obtenerParticipantesDeReto(Long.valueOf(reto.getId()));
 		if (!participantes.isEmpty()) {
 			Notificacion notificacion = new Notificacion();
 			notificacion.setFechaEnvio(new Date(System.currentTimeMillis()));
@@ -191,6 +191,11 @@ public class RetoServiceImpl implements RetoService {
 	@Override
 	public List<Reto> buscarPorNombre(String criterioBusqueda) {
 	    return retoRepository.findByNombreContainingIgnoreCase(criterioBusqueda);
+	}
+
+	@Override
+	public List<Reto> obtenerTodosLosRetos() {
+		return retoRepository.findAll();
 	}
 
 }
