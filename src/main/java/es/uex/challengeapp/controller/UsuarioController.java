@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import es.uex.challengeapp.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,17 +41,6 @@ import es.uex.challengeapp.model.RetoSimple;
 import es.uex.challengeapp.model.Subtarea;
 import es.uex.challengeapp.model.UbicacionDTO;
 import es.uex.challengeapp.model.Usuario;
-import es.uex.challengeapp.service.AmistadService;
-import es.uex.challengeapp.service.ComentarioService;
-import es.uex.challengeapp.service.EstadisticaService;
-import es.uex.challengeapp.service.NotificacionService;
-import es.uex.challengeapp.service.ParticipantesRetoService;
-import es.uex.challengeapp.service.ProgresoRetoService;
-import es.uex.challengeapp.service.PuntoService;
-import es.uex.challengeapp.service.RecompensaService;
-import es.uex.challengeapp.service.RetoComplejoService;
-import es.uex.challengeapp.service.RetoService;
-import es.uex.challengeapp.service.RetoSimpleService;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -89,6 +79,9 @@ public class UsuarioController {
 
 	@Autowired
 	private PuntoService puntoService;
+
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@GetMapping("/registro")
 	public String mostrarFormularioRegistro(Model model) {

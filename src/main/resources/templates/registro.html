@@ -92,7 +92,7 @@
     <main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
         <div class="card p-4 shadow-lg w-50 h-50">
             <h2 class="text-center mb-4">Registro de Usuario</h2>
-            <form th:action="@{/usuario/registro}" th:object="${usuario}" method="post">
+            <form th:action="@{/registro}" th:object="${usuario}" method="post">
                 <div class="form-group">
                     <label for="name">Nombre</label>
                     <input type="text" id="name" th:field="*{nombre}" class="form-control" required>

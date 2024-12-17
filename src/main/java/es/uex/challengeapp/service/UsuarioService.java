@@ -1,6 +1,7 @@
 package es.uex.challengeapp.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import es.uex.challengeapp.model.Usuario;
 
@@ -16,7 +17,7 @@ public interface UsuarioService {
 
 	List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda);
 
-	Usuario buscarUsuarioPorEmail(String email);
+	Optional<Usuario> buscarUsuarioPorEmail(String email);
 	
 	List<Usuario> obtenerTodosLosUsuarios();
 }

@@ -2,6 +2,7 @@ package es.uex.challengeapp.controller;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,21 +59,21 @@ public class AmistadController {
 		Usuario user = (Usuario) session.getAttribute("userActual");
 		if (user != null) {
 			// Buscar al usuario que envió la solicitud de amistad por su email
-			Usuario amigo = usuarioService.buscarUsuarioPorEmail(email);
-			if (amigo != null) {
+			Optional<Usuario> amigo = usuarioService.buscarUsuarioPorEmail(email);
+			if (amigo.isPresent()) {
 				// Crear amistad en ambos sentidos
 				Amistad amistad1 = new Amistad();
 				amistad1.setUsuario1(user);
-				amistad1.setUsuario2(amigo);
+				amistad1.setUsuario2(amigo.get());
 				amistadService.anadirAmigo(amistad1);
 
 				Amistad amistad2 = new Amistad();
-				amistad2.setUsuario1(amigo);
+				amistad2.setUsuario1(amigo.get());
 				amistad2.setUsuario2(user);
 				amistadService.anadirAmigo(amistad2);
 
-				generarNotificacion(user, amigo, "ADICION_AMISTAD");
-				notificacionService.negociarAmistad(user, amigo, "ACEPTAR_SOLICITUD");
+				generarNotificacion(user, amigo.get(), "ADICION_AMISTAD");
+				notificacionService.negociarAmistad(user, amigo.get(), "ACEPTAR_SOLICITUD");
 
 				Notificacion notificacion = notificacionService.buscarPorId(notificacionId);
 				if (notificacion != null) {
@@ -81,7 +82,7 @@ public class AmistadController {
 				}
 
 				redirectAttributes.addFlashAttribute("mensaje",
-						"Has aceptado la solicitud de amistad de " + amigo.getNombre());
+						"Has aceptado la solicitud de amistad de " + amigo.get().getNombre());
 				redirectAttributes.addFlashAttribute("tipoMensaje", "success");
 			} else {
 				redirectAttributes.addFlashAttribute("mensaje", "El usuario no existe o no envió la solicitud");

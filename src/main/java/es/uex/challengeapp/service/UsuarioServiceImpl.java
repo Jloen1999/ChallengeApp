@@ -4,6 +4,7 @@ import es.uex.challengeapp.model.Usuario;
 import es.uex.challengeapp.repository.UsuarioRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Override
 	public Usuario registrarUsuario(Usuario usuario) {
+		// Comprobar si existe un usuario con el mismo correo
+		if (usuarioRepository.findByCorreo(usuario.getCorreo()).isPresent()) {
+			return null;
+		}
 		return usuarioRepository.save(usuario);
 	}
 
@@ -43,8 +48,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
-	public Usuario buscarUsuarioPorEmail(String email) {
-		return usuarioRepository.findByCorreo(email).orElse(null);
+	public Optional<Usuario> buscarUsuarioPorEmail(String email) {
+		return usuarioRepository.findByCorreo(email);
 	}
 
 	@Override
