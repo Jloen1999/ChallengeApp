@@ -8,9 +8,9 @@ import es.uex.challengeapp.model.Usuario;
 public interface AmistadService {
 	Amistad anadirAmigo(Amistad amistad);
 
-	List<Usuario> obtenerAmigos(Integer id);
+	List<Usuario> obtenerAmigos(Long id);
 
-	void eliminarAmistad(Integer id, Integer id2);
+	void eliminarAmistad(Long id, Long id2);
 	
 	boolean sonAmigos(Usuario usuario1, Usuario usuario2);
 }

@@ -27,7 +27,7 @@ public class EstadisticaServiceImpl implements EstadisticaService {
 	public Estadistica actualizarEstadistica(Usuario usuario) {
 		Estadistica estadistica = obtenerEstadisticaPorUsuario(usuario);
 
-		List<Reto> todosLosRetos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(usuario.getId()));
+		List<Reto> todosLosRetos = participantesRetoService.obtenerRetosDeUsuario(usuario.getId());
 		List<Reto> retosCompletados = progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario);
 		List<Reto> retosFallidos = progresoRetoService.obtenerRetosFallidos(usuario);
 		Duration totalTiempoCompletado = progresoRetoService.obtenerTiempoTotalDeCompletado(usuario);

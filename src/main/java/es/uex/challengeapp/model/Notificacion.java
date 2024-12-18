@@ -15,7 +15,7 @@ import jakarta.persistence.ManyToOne;
 public class Notificacion {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String mensaje;
 	private Boolean leido;
 	private Date fechaEnvio;
@@ -36,11 +36,11 @@ public class Notificacion {
 		MEDALLA_CONSEGUIDA, ELIMINACION_RETO
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

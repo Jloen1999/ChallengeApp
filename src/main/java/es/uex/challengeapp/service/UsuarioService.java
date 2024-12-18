@@ -13,7 +13,7 @@ public interface UsuarioService {
 
 	Usuario buscarUsuarioPorNombre(String nombreAmigo);
 
-	Usuario obtenerUsuarioPorId(Integer id);
+	Usuario obtenerUsuarioPorId(Long id);
 
 	List<Usuario> buscarPorNombreOCorreo(String criterioBusqueda);
 

@@ -38,7 +38,7 @@ public class ProgresoRetoServiceImpl implements ProgresoRetoService {
 
 	@Override
 	public List<Reto> obtenerRetosCompletadosPorUsuario(Usuario usuario) {
-		List<Reto> todosLosRetos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(usuario.getId()));
+		List<Reto> todosLosRetos = participantesRetoService.obtenerRetosDeUsuario(usuario.getId());
 		List<Reto> retosCompletados = new ArrayList<Reto>();
 
 		for (Reto reto : todosLosRetos) {

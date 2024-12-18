@@ -35,184 +35,189 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/usuario/amigos")
 public class AmistadController {
 
-	@Autowired
-	private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
-	@Autowired
-	private AmistadService amistadService;
+    @Autowired
+    private AmistadService amistadService;
 
-	@Autowired
-	private NotificacionService notificacionService;
+    @Autowired
+    private NotificacionService notificacionService;
 
-	@Autowired
-	private RetoService retoService;
+    @Autowired
+    private RetoService retoService;
 
-	@Autowired
-	private EstadisticaService estadisticaService;
+    @Autowired
+    private EstadisticaService estadisticaService;
 
-	@Autowired
-	private ParticipantesRetoService participantesRetoService;
+    @Autowired
+    private ParticipantesRetoService participantesRetoService;
 
-	@PostMapping("/aceptarAmistad/{email}")
-	public String aceptarAmistad(@PathVariable String email, @RequestParam Long notificacionId, HttpSession session,
-			RedirectAttributes redirectAttributes) {
-		Usuario user = (Usuario) session.getAttribute("userActual");
-		if (user != null) {
-			// Buscar al usuario que envió la solicitud de amistad por su email
-			Optional<Usuario> amigo = usuarioService.buscarUsuarioPorEmail(email);
-			if (amigo.isPresent()) {
-				// Crear amistad en ambos sentidos
-				Amistad amistad1 = new Amistad();
-				amistad1.setUsuario1(user);
-				amistad1.setUsuario2(amigo.get());
-				amistadService.anadirAmigo(amistad1);
+    @PostMapping("/aceptarAmistad/{email}")
+    public String aceptarAmistad(@PathVariable String email, @RequestParam Long notificacionId, HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        Usuario user = (Usuario) session.getAttribute("userActual");
+        if (user != null) {
+            // Buscar al usuario que envió la solicitud de amistad por su email
+            Optional<Usuario> amigo = usuarioService.buscarUsuarioPorEmail(email);
+            if (amigo.isPresent()) {
+                // Crear amistad en ambos sentidos
+                Amistad amistad1 = new Amistad();
+                amistad1.setUsuario1(user);
+                amistad1.setUsuario2(amigo.get());
+                amistadService.anadirAmigo(amistad1);
 
-				Amistad amistad2 = new Amistad();
-				amistad2.setUsuario1(amigo.get());
-				amistad2.setUsuario2(user);
-				amistadService.anadirAmigo(amistad2);
+                Amistad amistad2 = new Amistad();
+                amistad2.setUsuario1(amigo.get());
+                amistad2.setUsuario2(user);
+                amistadService.anadirAmigo(amistad2);
 
-				generarNotificacion(user, amigo.get(), "ADICION_AMISTAD");
-				notificacionService.negociarAmistad(user, amigo.get(), "ACEPTAR_SOLICITUD");
+                generarNotificacion(user, amigo.get(), "ADICION_AMISTAD");
+                notificacionService.negociarAmistad(user, amigo.get(), "ACEPTAR_SOLICITUD");
 
-				Notificacion notificacion = notificacionService.buscarPorId(notificacionId);
-				if (notificacion != null) {
-					notificacion.setLeido(true);
-					notificacionService.crearNotificacion(notificacion);
-				}
+                Notificacion notificacion = notificacionService.buscarPorId(notificacionId);
+                if (notificacion != null) {
+                    notificacion.setLeido(true);
+                    notificacionService.crearNotificacion(notificacion);
+                }
 
-				redirectAttributes.addFlashAttribute("mensaje",
-						"Has aceptado la solicitud de amistad de " + amigo.get().getNombre());
-				redirectAttributes.addFlashAttribute("tipoMensaje", "success");
-			} else {
-				redirectAttributes.addFlashAttribute("mensaje", "El usuario no existe o no envió la solicitud");
-				redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-			}
-			return "redirect:/usuario/notificaciones";
-		}
-		return "redirect:/login";
-	}
+                redirectAttributes.addFlashAttribute("mensaje",
+                        "Has aceptado la solicitud de amistad de " + amigo.get().getNombre());
+                redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+            } else {
+                redirectAttributes.addFlashAttribute("mensaje", "El usuario no existe o no envió la solicitud");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+            }
+            return "redirect:/usuario/notificaciones";
+        }
+        return "redirect:/login";
+    }
 
-	@GetMapping("/borrarAmigo/{id}")
-	public String borrarAmigo(@PathVariable Integer id, HttpSession session, Model model) {
-		Usuario userActual = (Usuario) session.getAttribute("userActual");
-		if (userActual != null) {
-			amistadService.eliminarAmistad(userActual.getId(), id);
-			Usuario amigo = usuarioService.obtenerUsuarioPorId(id);
-			generarNotificacion(userActual, amigo, "BORRAR_AMISTAD");
-			// List<Usuario> listaAmigos = amistadService.obtenerAmigos(userActual.getId());
-			// model.addAttribute("amigos", listaAmigos);
-			return "redirect:/usuario/amigos";
-		}
-		return "redirect:/login";
-	}
+    @GetMapping("/borrarAmigo/{id}")
+    public String borrarAmigo(@PathVariable Long id, HttpSession session, Model model) {
+        Usuario userActual = (Usuario) session.getAttribute("userActual");
+        if (userActual != null) {
+            amistadService.eliminarAmistad(userActual.getId(), id);
+            Usuario amigo = usuarioService.obtenerUsuarioPorId(id);
+            generarNotificacion(userActual, amigo, "BORRAR_AMISTAD");
+            // List<Usuario> listaAmigos = amistadService.obtenerAmigos(userActual.getId());
+            // model.addAttribute("amigos", listaAmigos);
+            return "redirect:/usuario/amigos";
+        }
+        return "redirect:/login";
+    }
 
-	@GetMapping("/dashboardAmigo/{id}")
-	public String verPerfilAmigo(@PathVariable Integer id, Model model, HttpSession session) {
-		Usuario userActual = (Usuario) session.getAttribute("userActual");
+    @GetMapping("/dashboardAmigo/{id}")
+    public String verPerfilAmigo(@PathVariable Long id, Model model, HttpSession session) {
+        Usuario userActual = (Usuario) session.getAttribute("userActual");
 
-		if (userActual != null) {
-			Usuario otroUsuario = usuarioService.obtenerUsuarioPorId(id);
-			List<Reto> retosCreados = retoService.obtenerRetosCreadosPorUsuario(Long.valueOf(id));
-			List<Reto> retosUnidos = participantesRetoService.obtenerRetosDeUsuario(Long.valueOf(id));
-			List<Usuario> amigos = amistadService.obtenerAmigos(id);
-			Estadistica estadistica = estadisticaService.obtenerEstadisticaPorUsuario(otroUsuario);
-			String tiempoConvertido = convertirTiempoPromedio(estadistica.getTiempoPromedio());
+        if (userActual != null) {
+            Usuario otroUsuario = usuarioService.obtenerUsuarioPorId(id);
+            List<Reto> retosCreados = retoService.obtenerRetosCreadosPorUsuario(id);
+            List<Reto> retosUnidos = participantesRetoService.obtenerRetosDeUsuario(id);
+            List<Usuario> amigos = amistadService.obtenerAmigos(id);
+            Estadistica estadistica = estadisticaService.obtenerEstadisticaPorUsuario(otroUsuario);
+            if (estadistica.getTiempoPromedio() == null) {
+                estadistica.setTiempoPromedio(0.0f);
+            }
 
-			model.addAttribute("usuario", otroUsuario);
-			model.addAttribute("retosCreados", retosCreados);
-			model.addAttribute("retosUnidos", retosUnidos);
-			model.addAttribute("amigos", amigos);
-			model.addAttribute("estadisticas", estadistica);
-			model.addAttribute("tiempoConvertido", tiempoConvertido);
+            String tiempoConvertido = convertirTiempoPromedio(estadistica.getTiempoPromedio());
+            model.addAttribute("tiempoConvertido", tiempoConvertido);
 
-			return "dashboardAmigo";
-		}
-		return "redirect:/login";
-	}
+            model.addAttribute("usuario", otroUsuario);
+            model.addAttribute("retosCreados", retosCreados);
+            model.addAttribute("retosUnidos", retosUnidos);
+            model.addAttribute("amigos", amigos);
+            model.addAttribute("estadisticas", estadistica);
 
-	@GetMapping("/buscar")
-	public ResponseEntity<List<UsuarioDTO>> buscarUsuarios(@RequestParam String criterioBusqueda) {
-		List<Usuario> usuarios = usuarioService.buscarPorNombreOCorreo(criterioBusqueda);
 
-		List<UsuarioDTO> usuariosDTO = usuarios.stream()
-				.map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getCorreo()))
-				.collect(Collectors.toList());
+            return "dashboardAmigo";
+        }
+        return "redirect:/login";
+    }
 
-		return ResponseEntity.ok(usuariosDTO);
-	}
+    @GetMapping("/buscar")
+    public ResponseEntity<List<UsuarioDTO>> buscarUsuarios(@RequestParam String criterioBusqueda) {
+        List<Usuario> usuarios = usuarioService.buscarPorNombreOCorreo(criterioBusqueda);
 
-	@PostMapping("/enviarSolicitud/{idAmigo}")
-	public String enviarSolicitudAmistad(@PathVariable Integer idAmigo, HttpSession session, Model model) {
-		Usuario user = (Usuario) session.getAttribute("userActual");
-		Usuario amigoUsuario = usuarioService.obtenerUsuarioPorId(idAmigo);
+        List<UsuarioDTO> usuariosDTO = usuarios.stream()
+                .map(usuario -> new UsuarioDTO(usuario.getId(), usuario.getNombre(), usuario.getCorreo()))
+                .collect(Collectors.toList());
 
-		notificacionService.negociarAmistad(user, amigoUsuario, "ENVIAR_SOLCITUD");
+        return ResponseEntity.ok(usuariosDTO);
+    }
 
-		return "redirect:/usuario/amigos";
-	}
+    @PostMapping("/enviarSolicitud/{idAmigo}")
+    public String enviarSolicitudAmistad(@PathVariable Long idAmigo, HttpSession session, Model model) {
+        Usuario user = (Usuario) session.getAttribute("userActual");
+        Usuario amigoUsuario = usuarioService.obtenerUsuarioPorId(idAmigo);
 
-	// FUNCIONES PRIVADAS AUXLIARES
-	private void generarNotificacion(Usuario userActual, Usuario userAmigo, String tipoNotificacion) {
-		Notificacion notificacion = new Notificacion();
+        notificacionService.negociarAmistad(user, amigoUsuario, "ENVIAR_SOLCITUD");
 
-		String mensaje = "";
-		if ("ADICION_AMISTAD".equals(tipoNotificacion)) {
-			mensaje = "¡Has añadido a un nuevo amigo: " + userAmigo.getNombre() + "!";
-			notificacion.setTipoNotificacion(TipoNotificacion.ACEPTACION_AMISTAD);
-		} else if ("BORRAR_AMISTAD".equals(tipoNotificacion)) {
-			mensaje = "¡Has eliminado a " + userAmigo.getNombre() + " de tu lista de amigos!";
-			notificacion.setTipoNotificacion(TipoNotificacion.ELIMINACION_AMISTAD);
-		}
+        return "redirect:/usuario/amigos";
+    }
 
-		notificacion.setMensaje(mensaje);
-		notificacion.setLeido(false);
-		notificacion.setFechaEnvio(new Date(System.currentTimeMillis()));
+    // FUNCIONES PRIVADAS AUXLIARES
+    private void generarNotificacion(Usuario userActual, Usuario userAmigo, String tipoNotificacion) {
+        Notificacion notificacion = new Notificacion();
 
-		notificacion.setUsuario(userActual);
+        String mensaje = "";
+        if ("ADICION_AMISTAD".equals(tipoNotificacion)) {
+            mensaje = "¡Has añadido a un nuevo amigo: " + userAmigo.getNombre() + "!";
+            notificacion.setTipoNotificacion(TipoNotificacion.ACEPTACION_AMISTAD);
+        } else if ("BORRAR_AMISTAD".equals(tipoNotificacion)) {
+            mensaje = "¡Has eliminado a " + userAmigo.getNombre() + " de tu lista de amigos!";
+            notificacion.setTipoNotificacion(TipoNotificacion.ELIMINACION_AMISTAD);
+        }
 
-		notificacionService.crearNotificacion(notificacion);
-	}
+        notificacion.setMensaje(mensaje);
+        notificacion.setLeido(false);
+        notificacion.setFechaEnvio(new Date(System.currentTimeMillis()));
 
-	private String convertirTiempoPromedio(float tiempoPromedio) {
-		if (tiempoPromedio == 0) {
-			return "0 minutos"; // Si es 0, se muestra como "0 minutos"
-		}
+        notificacion.setUsuario(userActual);
 
-		// Convertimos el tiempo en horas a días, horas y minutos
-		int dias = (int) (tiempoPromedio / 24);
-		int horas = (int) (tiempoPromedio % 24);
-		int minutos = (int) ((tiempoPromedio - (int) tiempoPromedio) * 60);
+        notificacionService.crearNotificacion(notificacion);
+    }
 
-		StringBuilder tiempoFormateado = new StringBuilder();
+    private String convertirTiempoPromedio(float tiempoPromedio) {
+        if (tiempoPromedio == 0) {
+            return "0 minutos"; // Si es 0, se muestra como "0 minutos"
+        }
 
-		// Solo agregamos días si no son 0
-		if (dias > 0) {
-			tiempoFormateado.append(dias).append(" días");
-		}
+        // Convertimos el tiempo en horas a días, horas y minutos
+        int dias = (int) (tiempoPromedio / 24);
+        int horas = (int) (tiempoPromedio % 24);
+        int minutos = (int) ((tiempoPromedio - (int) tiempoPromedio) * 60);
 
-		// Solo agregamos horas si no son 0
-		if (horas > 0) {
-			if (tiempoFormateado.length() > 0) {
-				tiempoFormateado.append(", ");
-			}
-			tiempoFormateado.append(horas).append(" horas");
-		}
+        StringBuilder tiempoFormateado = new StringBuilder();
 
-		// Solo agregamos minutos si no son 0
-		if (minutos > 0) {
-			if (tiempoFormateado.length() > 0) {
-				tiempoFormateado.append(", ");
-			}
-			tiempoFormateado.append(minutos).append(" minutos");
-		}
+        // Solo agregamos días si no son 0
+        if (dias > 0) {
+            tiempoFormateado.append(dias).append(" días");
+        }
 
-		// Si todo es 0, mostramos "0 minutos"
-		if (tiempoFormateado.length() == 0) {
-			tiempoFormateado.append("0 minutos");
-		}
+        // Solo agregamos horas si no son 0
+        if (horas > 0) {
+            if (tiempoFormateado.length() > 0) {
+                tiempoFormateado.append(", ");
+            }
+            tiempoFormateado.append(horas).append(" horas");
+        }
 
-		return tiempoFormateado.toString();
-	}
+        // Solo agregamos minutos si no son 0
+        if (minutos > 0) {
+            if (tiempoFormateado.length() > 0) {
+                tiempoFormateado.append(", ");
+            }
+            tiempoFormateado.append(minutos).append(" minutos");
+        }
+
+        // Si todo es 0, mostramos "0 minutos"
+        if (tiempoFormateado.length() == 0) {
+            tiempoFormateado.append("0 minutos");
+        }
+
+        return tiempoFormateado.toString();
+    }
 
 }

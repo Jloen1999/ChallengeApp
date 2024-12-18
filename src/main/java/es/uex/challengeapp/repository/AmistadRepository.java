@@ -16,11 +16,11 @@ import es.uex.challengeapp.model.Usuario;
 public interface AmistadRepository extends JpaRepository<Amistad, AmistadId> {
 
 	@Query("SELECT a.usuario2 FROM Amistad a WHERE a.usuario1.id = :usuarioId")
-	List<Usuario> findAmigosByUsuarioId(@Param("usuarioId") int usuarioId);
+	List<Usuario> findAmigosByUsuarioId(@Param("usuarioId") Long usuarioId);
 
 	@Modifying
 	@Query("DELETE FROM Amistad a WHERE a.usuario1.id = :usuarioId1 AND a.usuario2.id = :usuarioId2")
-	void eliminarAmistad(@Param("usuarioId1") Integer usuarioId1, @Param("usuarioId2") Integer usuarioId2);
+	void eliminarAmistad(@Param("usuarioId1") Long usuarioId1, @Param("usuarioId2") Long usuarioId2);
 	
 	boolean existsByUsuario1AndUsuario2(Usuario usuario1, Usuario usuario2);
 }

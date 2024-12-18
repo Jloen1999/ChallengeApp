@@ -1,22 +1,22 @@
 package es.uex.challengeapp.model;
 
 public class UsuarioDTO {
-	private Integer id;
+	private Long id;
 	private String nombre;
 	private String correo;
 
-	public UsuarioDTO(Integer id, String nombre, String correo) {
+	public UsuarioDTO(Long id, String nombre, String correo) {
 		this.id = id;
 		this.nombre = nombre;
 		this.correo = correo;
 	}
 
 	// Getters y Setters
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

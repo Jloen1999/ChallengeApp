@@ -22,13 +22,13 @@ public class AmistadServiceImpl implements AmistadService {
 	}
 
 	@Override
-	public List<Usuario> obtenerAmigos(Integer id) {
+	public List<Usuario> obtenerAmigos(Long id) {
 		return amistadRepository.findAmigosByUsuarioId(id);
 	}
 
 	@Transactional
 	@Override
-	public void eliminarAmistad(Integer id, Integer id2) {
+	public void eliminarAmistad(Long id, Long id2) {
 		amistadRepository.eliminarAmistad(id, id2);
 		amistadRepository.eliminarAmistad(id2, id);
 	}

@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 public class Punto {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String descripcion;
     private int cantidad;
     
@@ -19,10 +19,10 @@ public class Punto {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
     
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getDescripcion() {

@@ -6,23 +6,23 @@ import java.util.Objects;
 
 //ESTA CLASE ES NECESARIA PORQUE EN AMISTAD HAY DOS CAMPOS CON LA ETIQUETA ID
 public class AmistadId implements Serializable {
-    private int usuario1;
-    private int usuario2;
+    private Long usuario1;
+    private Long usuario2;
 
     // Getters, setters, equals y hashCode
-    public int getUsuario1() {
+    public Long getUsuario1() {
         return usuario1;
     }
 
-    public void setUsuario1(int usuario1) {
+    public void setUsuario1(Long usuario1) {
         this.usuario1 = usuario1;
     }
 
-    public int getUsuario2() {
+    public Long getUsuario2() {
         return usuario2;
     }
 
-    public void setUsuario2(int usuario2) {
+    public void setUsuario2(Long usuario2) {
         this.usuario2 = usuario2;
     }
 

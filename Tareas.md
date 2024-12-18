@@ -1,0 +1,20 @@
+- En el header mostrar nombre de usuario.
+- En el header añadir un botón "mostrar dashboard"
+- Mostrar un message alert de notificación.
+- Añadir un progress moderno.
+- Añadir gráficas para las estadísticas y mejorarlo.
+- Modificar la visualización de algunos campos.
+- Mejorar la responsividad tanto movil(si da tiempo) como pc.
+- Añadir filtro para tipos de retos.
+- Añadir el dashboard en el nav. 
+- Modificar el método de getRetosPopulares->HomeController.
+- Ordenar las notificaciones.
+- Eliminar el pie de página o mejorarlo si hay tiempo. AM
+- Modificar la vista de Mis amigos.
+- Añadir un iconito de cerrar busqueda en resultados de busqueda.
+- Añadir Carousel para los retos novedosos y privados.
+- Añadir en General link para Retos Privados siempre y cuando haya retos privados.
+- Comprobar lo de las imágenes. AM
+- Añadir input para perfil info en Registrarse.
+- Debe haber dos botones en Reto, uno para unirse que lleva a Mis Retos y otro para Ver Reto que muestra la info del reto.
+- Revisar subtareas para ocultar el check.

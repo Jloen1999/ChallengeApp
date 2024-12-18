@@ -50,10 +50,8 @@ public class NotificacionServiceImpl implements NotificacionService {
 		notificacion.setFechaEnvio(new Date(System.currentTimeMillis()));
 
 		notificacion.setUsuario(amigoUsuario);
-		if (crearNotificacion(notificacion) != null)
-			return true;
-		return false;
-	}
+        return crearNotificacion(notificacion) != null;
+    }
 
 	@Override
 	public Notificacion buscarPorId(Long notificacionId) {

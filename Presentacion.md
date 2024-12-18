@@ -1,0 +1,25 @@
+ - Idea Principal del proyecto. JL
+ - Tecnologías utilizadas. JL
+ - Casos de Uso. Mostrar imagen. No mostrar ninguna descripción. AM & JL
+ - Diagrama de Clases. AM
+ - Problemas encontrados y sus soluciones. 
+   - La responsividad. JL
+   - Eliminación por cascada. JL
+   - Las imágenes de los retos en static. AM
+   - Uso de la API HereApi, solución con Google Maps. AM 
+ - Propuesta a los compañeros. Mostrar la url a la página indicando ip:8080. AM
+ - Ejecución del proyecto. Primero obtener la IP.
+   - Registrarse e iniciar sesión. Tendremos dos usuarios ya creado con todos los datos(Alterar la BD). AM 
+   - Breve explicación del home page. AM
+   - Crear reto(Tanto simple como complejo). JL
+   - Retos Creados. JL
+   - Mis Retos > Comentarios. AM
+   - Mis Estadísticas. JL
+   - Notificaciones. AM
+   - Amigos. JL
+   - Notificaciones. JL
+   - Recompensas. AM
+   - Estadísticas. AM
+   - Buscar cerca de mí. JL
+ - Conclusiones. JL
+

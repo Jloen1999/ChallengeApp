@@ -10,7 +10,7 @@ import java.util.List;
 public class Reto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	private String nombre;
 	private String descripcion;
 	private int duracion;
@@ -51,11 +51,11 @@ public class Reto {
 	}
 
 	// GETTERS Y SETTERS
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

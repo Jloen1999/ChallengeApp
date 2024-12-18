@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class Recompensa {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoMedalla tipo;
@@ -19,11 +19,11 @@ public class Recompensa {
 		BRONCE, PLATA, ORO, DIAMANTE
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
