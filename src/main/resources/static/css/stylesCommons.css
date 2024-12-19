@@ -1,8 +1,9 @@
 body {
     font-family: 'Roboto', sans-serif;
     height: 100vh;
-    background: rgb(61, 60, 71);
-    background: linear-gradient(90deg, rgba(61, 60, 71, 1) 0%, rgba(17, 18, 17, 1) 100%, rgba(0, 212, 255, 1) 100%);
+    background: #1a2a6c; /* fallback for old browsers */
+            background: -webkit-linear-gradient(to right, #fdbb2d, #b21f1f, #1a2a6c); /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #fdbb2d, #b21f1f, #1a2a6c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .header {

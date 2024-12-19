@@ -1,19 +1,28 @@
 <!doctype html>
-<html lang="es" class="no-js" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" class="no-js">
 
 <head>
-    <title>Detalle del Reto</title>
+    <title>Detalle del Reto - ChallengeApp</title>
 
     <!-- Metadatos generales -->
     <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
-    <meta name="description" content="Detalle del Reto">
+    <meta name="description" content="Detalle del Reto en ChallengeApp">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
+    <!-- Metadatos para móviles -->
+    <meta property="og:title" content="Detalle del Reto">
+    <meta property="og:image" content="/images/logo.png">
+    <meta property="og:image:alt" content="Logo de ChallengeApp">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://retos.com">
+
     <!-- Estilos CSS -->
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/stylesCommons.css">
+    <link rel="stylesheet" href="/css/stylesDetalleReto.css"> <!-- Estilos específicos -->
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -26,8 +35,117 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar personalización */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar:hover {
+            background-color: rgba(0, 0, 0, 1);
+        }
+
+        .navbar-brand img.logo-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img.logo-image {
+            transform: scale(1.1);
+        }
+
+        /* Dropdown menú hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        .dropdown-menu {
+            left: -100px;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Barra Lateral (Sidebar) */
+        .section-left {
+            background-color: #343a40;
+            color: #ffc107;
+            position: fixed;
+            top: 56px; /* Altura de la navbar fija */
+            left: 0;
+            height: calc(100vh - 56px); /* Altura total menos la navbar */
+            width: 220px;
+            padding-top: 20px;
+            z-index: 1030;
+            transition: all 0.3s ease;
+            border-right: 2px solid #495057; /* Separación visual más prominente */
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+        }
+
+        @media (max-width: 768px) {
+            .section-left {
+                position: fixed;
+                top: 56px;
+                left: -220px;
+                height: calc(100vh - 56px);
+                width: 220px;
+                overflow-y: auto;
+            }
+
+            .section-left.show {
+                left: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                background-color: #ffc107;
+                border: none;
+                color: #343a40;
+                padding: 10px;
+                border-radius: 5px;
+                z-index: 1040;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            main {
+                margin-left: 0;
+                padding-top: 70px;
+            }
+        }
+
+        /* Ajustes generales */
+        main {
+            margin-left: 220px;
+            padding: 20px;
+            padding-top: 56px; /* Altura de la navbar fija */
+            transition: margin-left 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                margin-left: 0;
+                padding-top: 70px;
+            }
+        }
+
+        /* Tarjetas */
         .card {
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background-color: #343a40;
+            color: #ffc107;
+            border: none;
         }
 
         .card:hover {
@@ -47,46 +165,172 @@
             padding: 5px;
             border-radius: 5px;
         }
-        .nav-item.dropdown:hover .dropdown-menu {
-            display: block;
+
+        /* Footer */
+        footer {
+            background-color: #212529;
+            padding: 20px 0;
         }
 
-        .dropdown-menu {
-            left: -100px;
-            /* Ajusta este valor según sea necesario */
+        footer a {
+            color: #ffc107;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer .social-icons i {
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        footer .social-icons i:hover {
+            color: #ffc107;
+            transform: scale(1.2);
+        }
+
+        /* Animaciones */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Estilos de la sección lateral */
+        .section-left a {
+            color: #ffc107;
+            padding: 15px 20px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s ease;
+        }
+
+        .section-left a:hover {
+            background-color: #495057;
+        }
+
+        .section-left .active {
+            background-color: #495057;
+        }
+
+        /* Botón de toggle para sidebar */
+        .sidebar-toggle {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar-toggle {
+                display: block;
+            }
+        }
+
+        /* Estilos específicos para Detalle del Reto */
+        .modal-dialog {
+            top: 20%;
+        }
+
+        .progreso-slider {
+            width: 100%;
+        }
+
+        .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #343a40;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #e0a800;
+            color: #fff;
+        }
+
+        .btn-danger {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-success {
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+
+        .error-message {
+            color: #dc3545;
+            margin-top: 10px;
+            font-size: 0.9rem;
         }
     </style>
 
 </head>
 
 <body>
+    <!-- Botón para togglear el sidebar en móviles -->
+    <button class="sidebar-toggle d-md-none"><i class="bi bi-list"></i></button>
+
+    <!-- Barra Lateral (Sidebar) -->
+    <aside class="section-left d-none d-md-block">
+        <a href="/usuario/perfil"><i class="bi bi-person-circle me-2"></i> Perfil</a>
+        <a href="/usuario/configuracion"><i class="bi bi-gear me-2"></i> Configuración</a>
+        <a href="/usuario/ayuda"><i class="bi bi-question-circle me-2"></i> Ayuda</a>
+        <a href="/usuario/acerca"><i class="bi bi-info-circle me-2"></i> Acerca de</a>
+    </aside>
+
     <header class="header">
-
-        <nav class="navbar navbar-expand-md">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
             <div class="container-fluid">
-
-                <h1><a href="/" class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
-                            alt="Logo de la página web Retos" class="logo-image"> ChallengeApp</a>
+                <h1 class="mb-0">
+                    <a href="/" class="navbar-brand d-flex align-items-center fs-5 text-decoration-none">
+                        <img src="/images/logo.png" alt="Logo de ChallengeApp" class="logo-image">
+                        ChallengeApp
+                    </a>
                 </h1>
-                <button class="navbar-toggler mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse pb-5" id="navbarNav">
-                    <ul class="navbar-nav ms-md-auto align-items-md-center">
-                        <li class="nav-item btn-search">
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Buscar Reto"
-                                    aria-label="Search">
-                                <button class="btn btn-outline-success" type="submit">Buscar
-                                </button>
+                    <ul class="navbar-nav ms-auto align-items-center position-relative">
+                        <li class="nav-item me-3 position-relative">
+                            <!-- Formulario de búsqueda de retos -->
+                            <form id="buscarRetoForm" class="d-flex" role="search" onsubmit="return false;">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="search" class="form-control me-2" id="criterioBusqueda"
+                                        name="criterioBusqueda" placeholder="🔍 Buscar Reto" aria-label="Search" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-light ms-2">Buscar</button>
                             </form>
+                            <!-- Contenedor para resultados de búsqueda -->
+                            <div id="resultadosBusqueda" class="mt-2 list-group"></div>
                         </li>
+
                         <li class="nav-item ms-md-3" th:classappend="${estaLogueado} ? 'dropdown' : ''">
                             <!-- Enlace al dashboard -->
-                            <a class="nav-link" href="/usuario/dashboard" th:id="${estaLogueado} ? 'userMenu' : ''"
-                                th:data-bs-toggle="${estaLogueado} ? '' : ''" aria-expanded="false">
-                                <i class="bi bi-person-circle fs-1 col"></i>
+                            <a class="nav-link d-flex align-items-center" href="/usuario/dashboard"
+                                th:id="${estaLogueado} ? 'userMenu' : ''" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-4 me-2"></i>
+                                <span th:if="${usuario != null}" th:text="${usuario.nombre}">Usuario</span>
                             </a>
 
                             <!-- Menú desplegable solo cuando el usuario está logueado -->
@@ -101,7 +345,7 @@
         </nav>
     </header>
 
-    <main class="container my-5">
+    <main class="container my-5 fade-in">
         <!-- Título de la página -->
         <div class="text-center mb-5">
             <h2 class="text-white">Detalle del Reto</h2>
@@ -109,7 +353,7 @@
 
         <!-- Modal de configuración -->
         <div class="modal fade" id="configModal" tabindex="-1" aria-labelledby="configModalLabel" aria-hidden="true">
-            <div class="modal-dialog" style="top:20%;">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="configModalLabel">Configuración del Reto</h5>
@@ -151,14 +395,14 @@
         <div class="row">
             <!-- Columna principal: Detalle del reto -->
             <div class="col-lg-8 mb-4">
-                <div class="card align-items-center">
+                <div class="card">
                     <div class="d-flex w-100 justify-content-center position-relative">
-                        <div class="card-header bg-primary text-white">
+                        <div class="card-header bg-primary text-white w-100">
                             <h3 class="card-title"><i class="bi bi-trophy me-2"></i>
                                 <span th:text="${reto.nombre}">Nombre del Reto</span>
                             </h3>
                         </div>
-                        <div class="position-absolute end-0 mt-2">
+                        <div class="position-absolute end-0 mt-2 me-3">
                             <button th:if="${esCreador}" class="btn btn-light btn-lg" data-bs-toggle="modal"
                                 data-bs-target="#configModal">
                                 <i class="bi bi-gear"></i>
@@ -168,9 +412,9 @@
 
                     <div class="card-body">
                         <!-- Imagen del reto, solo si hay una URL -->
-                        <div th:if="${reto.url}" class="d-flex justify-content-center">
+                        <div th:if="${reto.url}" class="d-flex justify-content-center mb-3">
                             <img th:src="@{'/' + ${reto.url}}" alt="Imagen del reto"
-                                class="img-fluid img-thumbnail mb-3 w-30" />
+                                class="img-fluid img-thumbnail" style="max-height: 300px; object-fit: cover;" />
                         </div>
 
                         <p class="card-text"><i class="bi bi-info-circle me-2"></i> <strong>Descripción:</strong>
@@ -186,23 +430,24 @@
                             <span th:text="${reto.tipo}">Tipo</span>
                         </p>
                         <p class="card-text"><i class="bi bi-star me-2"></i> <strong>Novedad:</strong>
-                            <span th:text="${reto.novedad ? 'true' : 'false'}">Novedad</span>
+                            <span th:text="${reto.novedad ? 'Sí' : 'No'}">Novedad</span>
                         </p>
                         <p class="card-text"><i class="bi bi-eye me-2"></i> <strong>Visibilidad:</strong>
-                            <span th:text="${reto.visibilidad}">Visibilidad</span>
+                            <span th:text="${reto.visibilidad ? 'Público' : 'Privado'}">Visibilidad</span>
                         </p>
                         <p class="card-text"><i class="bi bi-calendar me-2"></i> <strong>Fecha de Creación:</strong>
-                            <span th:text="${#dates.format(reto.fechaCreacion, 'yyyy-MM-dd')}">Fecha de Creación</span>
+                            <span th:text="${#dates.format(reto.fechaCreacion, 'dd/MM/yyyy')}">Fecha de Creación</span>
                         </p>
                         <p class="card-text"><i class="bi bi-calendar-check me-2"></i> <strong>Fecha de
                                 Finalización:</strong>
-                            <span th:text="${#dates.format(reto.fechaFinalizacion, 'yyyy-MM-dd')}">Fecha de
+                            <span th:text="${#dates.format(reto.fechaFinalizacion, 'dd/MM/yyyy')}">Fecha de
                                 Finalización</span>
                         </p>
                         <div class="card-text d-flex align-items-center mb-3">
                             <i class="bi bi-bar-chart me-2"></i>
                             <strong class="me-2">Porcentaje de Progreso:</strong>
-                            <input type="range" th:value="${reto.porcentajeProgreso}" disabled aria-label="progreso">
+                            <input type="range" th:value="${reto.porcentajeProgreso}" max="100" class="form-range progreso-slider" disabled aria-label="progreso">
+                            <span class="ms-2" th:text="${reto.porcentajeProgreso} + '%'">0%</span>
                         </div>
                         <p class="card-text"><i class="bi bi-person me-2"></i> <strong>Nombre del Creador:</strong>
                             <span th:text="${reto.creador.nombre}">Creador</span>
@@ -267,11 +512,11 @@
                             </form>
 
                             <!-- Botones para usuarios ya unidos -->
-                            <div th:if="${estaUnido}" class="d-flex justify-content-between">
+                            <div th:if="${estaUnido}" class="d-flex justify-content-between flex-wrap">
                                 <!-- Botón para reiniciar el reto -->
                                 <form action="/usuario/reto/reiniciar" method="post" class="d-inline">
                                     <input type="hidden" name="retoId" th:value="${reto.id}">
-                                    <button class="btn btn-primary" type="submit"
+                                    <button class="btn btn-primary mb-2" type="submit"
                                         th:if="${reto.porcentajeProgreso < 100}"
                                         th:attr="disabled=${reto.porcentajeProgreso == 0}">
                                         <i class="bi bi-arrow-clockwise me-2"></i>Reiniciar Reto
@@ -279,12 +524,12 @@
                                 </form>
 
                                 <!-- Botón para actualizar progreso -->
-                                <form action="/usuario/reto/actualizarProgreso" method="post" class="d-inline mx-4">
+                                <form action="/usuario/reto/actualizarProgreso" method="post" class="d-inline mx-2">
                                     <input type="hidden" name="retoId" th:value="${reto.id}">
                                     <input th:if="${reto.tipo.name() == 'SIMPLE'}" type="hidden"
                                         id="progresoActualInput" name="progresoArray" th:value="${reto.progresoArray}">
 
-                                    <button class="btn btn-success" type="submit"
+                                    <button class="btn btn-success mb-2" type="submit"
                                         th:if="${reto.porcentajeProgreso < 100}"
                                         th:attr="disabled=${reto.tipo.name() == 'COMPLEJO'}">
                                         <i class="bi bi-arrow-repeat me-2"></i>Actualizar Progreso
@@ -294,7 +539,7 @@
                                 <!-- Botón para dejar el reto -->
                                 <form action="/usuario/reto/desunirse" method="post" class="d-inline">
                                     <input type="hidden" name="retoId" th:value="${reto.id}">
-                                    <button class="btn btn-danger" type="submit"
+                                    <button class="btn btn-danger mb-2" type="submit"
                                         th:if="${reto.porcentajeProgreso < 100}">
                                         <i class="bi bi-x-circle me-2"></i>Dejar el reto
                                     </button>
@@ -323,9 +568,12 @@
                     <div class="card-body">
                         <ul class="list-group">
                             <!-- Iterar sobre los participantes -->
-                            <li class="list-group-item" th:each="usuario : ${participantes}">
+                            <li class="list-group-item d-flex align-items-center" th:each="usuario : ${participantes}">
                                 <i class="bi bi-person-fill me-2"></i>
                                 <span th:text="${usuario.nombre}">Nombre Usuario</span>
+                            </li>
+                            <li th:if="${participantes.empty}" class="list-group-item text-center">
+                                No hay usuarios unidos aún.
                             </li>
                         </ul>
                     </div>
@@ -345,7 +593,7 @@
                             <div class="mb-3">
                                 <label for="comentario" class="form-label">Deja tu comentario:</label>
                                 <textarea class="form-control" id="comentario" name="comentarioTexto" rows="3"
-                                    placeholder="Escribe aquí..."></textarea>
+                                    placeholder="Escribe aquí..." required></textarea>
                             </div>
                             <input type="hidden" name="retoId" th:value="${reto.id}" />
                             <!-- Asegúrate de que el retoId esté disponible -->
@@ -358,8 +606,11 @@
                                         <span th:text="${comentario.texto}"></span>
                                         <br>
                                         <small class="text-muted"
-                                            th:text="${#dates.format(comentario.fecha, 'yyyy-MM-dd HH:mm')}">Fecha del
+                                            th:text="${#dates.format(comentario.fecha, 'dd/MM/yyyy HH:mm')}">Fecha del
                                             comentario</small>
+                                    </li>
+                                    <li th:if="${comentarios.empty}" class="list-group-item text-center">
+                                        No hay comentarios aún.
                                     </li>
                                 </ul>
                             </div>
@@ -371,23 +622,104 @@
     </main>
 
 
-    <footer class="footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
+    <footer class="footer bg-dark text-white text-center py-3 w-100">
         <div>
             <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
             <p class="d-flex justify-content-center">
-                <a href="#" class="me-3">Términos de Uso</a> |
+                <a href="#" class="me-3">Términos de Uso</a>
+                |
                 <a href="#" class="ms-3">Política de Privacidad</a>
             </p>
             <div class="social-icons">
-                <i class="bi bi-whatsapp mx-2"></i>
-                <i class="bi bi-instagram mx-2"></i>
-                <i class="bi bi-twitter mx-2"></i>
+                <a href="#" class="text-warning me-3"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" class="text-warning me-3"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-warning"><i class="bi bi-twitter"></i></a>
             </div>
         </div>
     </footer>
 
 
+    <!-- Scripts -->
     <script>
+        // Toggle Sidebar en dispositivos móviles
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        const sidebar = document.querySelector('.section-left');
+
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+
+        // Cerrar resultados de búsqueda al hacer clic fuera
+        document.addEventListener('click', function(event) {
+            const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+            const buscador = document.getElementById('criterioBusqueda');
+
+            // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
+            if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
+                resultadosBusqueda.style.display = 'none';
+            } else if (buscador.contains(event.target)) {
+                resultadosBusqueda.style.display = 'block';
+            }
+        });
+
+        // Manejo de mensajes de alerta que desaparecen después de 3 segundos
+        document.addEventListener("DOMContentLoaded", function() {
+            const alerta = document.getElementById("mensajeAlerta");
+            if (alerta) {
+                setTimeout(() => {
+                    alerta.style.display = 'none';
+                }, 3000); // 3 segundos
+            }
+        });
+
+        // Script para manejar la búsqueda de retos
+        document.getElementById('buscarRetoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const criterioBusqueda = document.getElementById('criterioBusqueda').value.trim();
+
+            if (criterioBusqueda.length === 0) {
+                document.getElementById('resultadosBusqueda').innerHTML = ''; // Limpiar resultados si no hay texto
+                return;
+            }
+
+            fetch(`/usuario/retos/buscar?criterioBusqueda=${encodeURIComponent(criterioBusqueda)}`)
+                .then(response => response.json())
+                .then(retos => {
+                    const resultadosContainer = document.getElementById('resultadosBusqueda');
+                    resultadosContainer.innerHTML = ''; // Limpiar resultados previos
+
+                    if (retos.length === 0) {
+                        resultadosContainer.innerHTML = '<div class="list-group-item">No se encontraron retos.</div>';
+                    } else {
+                        retos.forEach(reto => {
+                            const item = document.createElement('div');
+                            item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+
+                            const nombreSpan = document.createElement('span');
+                            nombreSpan.textContent = reto.nombre;
+
+                            const enlace = document.createElement('a');
+                            enlace.href = `/usuario/reto/${reto.id}`;
+                            enlace.classList.add('btn', 'btn-primary', 'btn-sm');
+                            enlace.textContent = 'Ver Reto';
+
+                            item.appendChild(nombreSpan);
+                            item.appendChild(enlace);
+                            resultadosContainer.appendChild(item);
+                        });
+                    }
+                    resultadosContainer.style.display = 'block'; // Asegura que los resultados se muestren
+                })
+                .catch(error => console.error('Error al buscar retos:', error));
+        });
+
+        // Manejo del botón de filtrar por periodo (Funcionalidad por implementar)
+        document.querySelector('.btn-filter')?.addEventListener('click', function() {
+            // Aquí puedes implementar una modal o redireccionar a una página de filtros
+            alert('Funcionalidad de filtro por periodo aún no implementada.');
+        });
+
+        // Función para incrementar progreso en retos simples
         function incrementarProgreso() {
             const slider = document.getElementById('progresoSlider');
             const input = document.getElementById('progresoActualInput');
@@ -402,6 +734,7 @@
         }
     </script>
 
+    <!-- Bootstrap Bundle con Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
