@@ -403,3 +403,5 @@ public class ChallengeappApplication {
 > [!TIP]
 > **Spring Boot** permite ejecutar tareas programadas de forma sencilla. En este ejemplo, se crea un **ScheduledExecutorService** que imprime el número de usuarios en la base de datos cada 2 minutos.
 ![img.png](src/main/resources/static/images/CommandLineRunner.png)
+
+# Despliegue a Heroku

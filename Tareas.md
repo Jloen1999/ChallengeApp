@@ -14,6 +14,8 @@
 - Añadir un iconito de cerrar busqueda en resultados de busqueda.
 - Añadir Carousel para los retos novedosos y privados.
 - Añadir en General link para Retos Privados siempre y cuando haya retos privados.
+- Comprobar lo de las imágenes. AM
+- Añadir input para perfil info en Registrarse. 
 - Comprobar lo de las imágenes(usar API de imagenes). AM
 - Añadir input para perfil info en Registrarse.
 - Debe haber dos botones en Reto, uno para unirse que lleva a Mis Retos y otro para Ver Reto que muestra la info del reto.
