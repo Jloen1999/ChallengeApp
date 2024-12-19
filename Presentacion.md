@@ -1,4 +1,4 @@
- - Idea Principal del proyecto. JL
+ - Idea Principal del proyecto. AM
  - Tecnologías utilizadas. JL
  - Casos de Uso. Mostrar imagen. No mostrar ninguna descripción. AM & JL
  - Diagrama de Clases. JL
