@@ -1,7 +1,7 @@
  - Idea Principal del proyecto. JL
  - Tecnologías utilizadas. JL
  - Casos de Uso. Mostrar imagen. No mostrar ninguna descripción. AM & JL
- - Diagrama de Clases. AM
+ - Diagrama de Clases. JL
  - Problemas encontrados y sus soluciones. 
    - La responsividad. JL
    - Eliminación por cascada. JL
