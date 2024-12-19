@@ -11,7 +11,7 @@
  - Ejecución del proyecto. Primero obtener la IP.
    - Registrarse e iniciar sesión. Tendremos dos usuarios ya creado con todos los datos(Alterar la BD). AM 
    - Breve explicación del home page. AM
-   - Crear reto(Tanto simple como complejo). JL
+   - Crear reto(sólo simple). JL
    - Retos Creados. JL
    - Mis Retos > Comentarios. AM
    - Mis Estadísticas. JL
