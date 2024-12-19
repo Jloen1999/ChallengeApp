@@ -181,7 +181,7 @@
                     <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-5 row-gap-2">
                         <th:block th:each="reto : ${retosBusqueda}">
                             <article class="card mx-4 mt-2 col" style="width: 15rem; height: 20rem;">
-                                <img th:src="@{/images/{image}(image=${reto.url})}"
+                                <img th:src="${reto.url}"
                                     class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
                                 <div class="card-body d-flex flex-column" style="overflow-y: auto;">
                                     <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
@@ -210,7 +210,7 @@
                         <th:block th:each="reto, stat : ${retosNovedosos}">
                             <div class="carousel-item" th:class="${stat.index == 0 ? 'active' : ''}">
                                 <article class="card mx-2" style="width: 15rem; height: 20rem;">
-                                    <img th:src="@{/images/{image}(image=${reto.url})}"
+                                    <img th:src="${reto.url}"
                                         class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
                                     <div class="card-body d-flex flex-column" style="overflow-y: auto;">
                                         <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
@@ -235,7 +235,7 @@
                             <!-- Etiqueta para la posición (Nº 1, Nº 2, etc.) -->
                             <span class="badge bg-dark position-absolute top-0 start-0 m-2" style="z-index: 1;"
                                 th:text="'Nº ' + ${stat.index + 1}"></span>
-                            <img th:src="@{/images/{image}(image=${reto.url})}"
+                            <img th:src="${reto.url}"
                                 class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
                             <div class="card-body d-flex flex-column" style="overflow-y: auto;">
                                 <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
@@ -259,7 +259,7 @@
                         <th:block th:each="reto, stat : ${retosPrivados}">
                             <div class="carousel-item" th:class="${stat.index == 0 ? 'active' : ''}">
                                 <article class="card mx-2" style="width: 15rem; height: 20rem;">
-                                    <img th:src="@{/images/{image}(image=${reto.url})}"
+                                    <img th:src="${reto.url}"
                                         class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
                                     <div class="card-body d-flex flex-column" style="overflow-y: auto;">
                                         <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
@@ -284,7 +284,7 @@
                 <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-5 row-gap-2">
                     <th:block th:each="reto : ${retos}">
                         <article class="card mx-4 mt-2 col" style="width: 15rem; height: 20rem;">
-                            <img th:src="@{/images/{image}(image=${reto.url})}"
+                            <img th:src="@{${reto.url}}"
                                 class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
                             <div class="card-body d-flex flex-column" style="overflow-y: auto;">
                                 <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
