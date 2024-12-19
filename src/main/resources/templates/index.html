@@ -404,7 +404,7 @@
                 <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
                     <th:block th:each="reto : ${retosBusqueda}">
                         <article class="card h-100 shadow-sm fade-in">
-                            <img th:src="@{/images/{image}(image=${reto.url})}"
+                            <img th:src="@{'/' + ${reto.url}}"
                                  class="card-img-top"
                                  alt="Imagen de un reto">
                             <div class="card-body d-flex flex-column">
@@ -473,7 +473,7 @@
                                 <th:block th:each="reto : ${grupo}">
                                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex">
                                         <article class="card w-100 shadow-sm fade-in">
-                                            <img th:src="@{/images/{image}(image=${reto.url})}"
+                                            <img th:src="@{${reto.url}}"
                                                  class="card-img-top"
                                                  alt="Imagen de un reto">
                                             <div class="card-body d-flex flex-column">
@@ -538,7 +538,7 @@
                         <!-- Etiqueta para la posición (Nº 1, Nº 2, etc.) -->
                         <span class="badge bg-dark position-absolute top-0 start-0 m-2"
                               th:text="'Nº ' + ${stat.index + 1}"></span>
-                        <img th:src="@{/images/{image}(image=${reto.url})}"
+                        <img th:src="@{${reto.url}}"
                              class="card-img-top"
                              alt="Imagen de un reto">
                         <div class="card-body d-flex flex-column">
@@ -587,7 +587,7 @@
                                 <th:block th:each="reto : ${grupo}">
                                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex">
                                         <article class="card w-100 shadow-sm fade-in">
-                                            <img th:src="@{/images/{image}(image=${reto.url})}"
+                                            <img th:src="@{${reto.url}}"
                                                  class="card-img-top"
                                                  alt="Imagen de un reto">
                                             <div class="card-body d-flex flex-column">
@@ -649,7 +649,7 @@
             <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
                 <th:block th:each="reto : ${retos}">
                     <article class="card h-100 shadow-sm fade-in">
-                        <img th:src="@{/images/{image}(image=${reto.url})}"
+                        <img th:src="@{${reto.url}}"
                              class="card-img-top"
                              alt="Imagen de un reto">
                         <div class="card-body d-flex flex-column">

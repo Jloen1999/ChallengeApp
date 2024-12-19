@@ -286,7 +286,7 @@
                             <form id="buscarRetoForm" class="d-flex" role="search" onsubmit="return false;">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                    <input type="search" class="form-control me-2" id="criterioBusqueda"
+                                    <input type="search" class="form-control me-2" id="criterioBusquedaReto"
                                         name="criterioBusqueda" placeholder="🔍 Buscar Reto" aria-label="Search" required>
                                 </div>
                                 <button type="submit" class="btn btn-outline-light ms-2">Buscar</button>
@@ -437,6 +437,7 @@
 
         // Script para manejar la búsqueda de amigos
         document.getElementById('criterioBusqueda').addEventListener('input', function () {
+            console.log("El input está siendo capturado");
             const criterioBusqueda = this.value.trim();
 
             if (criterioBusqueda.length === 0) {
@@ -475,10 +476,40 @@
                             resultadosContainer.appendChild(item);
                         });
                     }
+                    console.log(usuarios);
                     resultadosContainer.style.display = 'block'; // Asegura que los resultados se muestren
                 })
                 .catch(error => console.error('Error al buscar usuarios:', error));
         });
+
+        document.getElementById('criterioBusquedaReto').addEventListener('input', function () {
+        const criterio = this.value.trim(); // Obtiene el valor del campo de búsqueda
+        const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+
+        if (criterio.length >= 3) { // Solo buscar si el criterio tiene al menos 3 caracteres
+            fetch(`/buscarRetos?criterioBusqueda=${encodeURIComponent(criterio)}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultadosBusqueda.innerHTML = ''; // Limpiar resultados previos
+
+                    if (data.length === 0) {
+                        resultadosBusqueda.innerHTML = '<li class="list-group-item">No se encontraron retos.</li>';
+                    } else {
+                        data.forEach(reto => {
+                            const item = document.createElement('a');
+                            item.href = `/usuario/reto/${reto.id}`; // Enlace al detalle del reto
+                            item.classList.add('list-group-item', 'list-group-item-action');
+                            item.textContent = reto.nombre; // Mostrar nombre del reto
+                            resultadosBusqueda.appendChild(item);
+                        });
+                    }
+                    resultadosBusqueda.style.display = 'block'; // Asegura que los resultados se muestren
+                })
+                .catch(error => console.error('Error en la búsqueda:', error));
+        } else {
+            resultadosBusqueda.style.display = 'none'; // Oculta los resultados si no hay texto
+        }
+    });
 
         // Listener para el botón de obtener ubicación actual
         document.getElementById('btnUbicacion')?.addEventListener('click', function () {
