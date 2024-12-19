@@ -130,10 +130,11 @@
 
         /* Ajustes generales */
         main {
-            margin-left: 220px;
+            margin-left: 220px !important;
             padding: 20px;
             padding-top: 56px; /* Altura de la navbar fija */
             transition: margin-left 0.3s ease;
+            width: 80% !important;
         }
 
         @media (max-width: 768px) {
@@ -159,6 +160,7 @@
 
         /* Footer */
         footer {
+            margin-top: 300px !important;
             background-color: #212529;
             padding: 20px 0;
         }
@@ -380,7 +382,7 @@
                     <!-- Total de puntos -->
                     <li class="list-group-item d-flex justify-content-between bg-light">
                         <strong>Total:</strong>
-                        <strong th:text="${totalPuntos}">0 puntos</strong>
+                        <strong th:text="${totalPuntos}" class="text-dark">0 puntos</strong>
                     </li>
                 </ul>
             </div>
