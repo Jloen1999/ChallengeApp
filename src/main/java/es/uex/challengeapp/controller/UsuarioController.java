@@ -1,5 +1,6 @@
 package es.uex.challengeapp.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -258,12 +259,12 @@ public class UsuarioController {
 
         if (!imagen.isEmpty()) {
             try {
-                Path path = Paths.get("src/main/resources/templates/images/" + imagen.getOriginalFilename());
+                Path path = Paths.get(getRutaImagenes()+"/" + imagen.getOriginalFilename());
                 Files.copy(imagen.getInputStream(), path);
                 reto.setUrl(imagen.getOriginalFilename());
             } catch (IOException e) {
                 model.addAttribute("error", "Error al subir la imagen.");
-                System.err.println("Error al subir la imagen.");
+                System.err.println("Error al subir la imagen: "+e.getMessage());
                 return "crearReto";
             }
         }
@@ -291,7 +292,7 @@ public class UsuarioController {
         return "crearReto";
     }
 
-    @GetMapping("/unirse")
+	@GetMapping("/unirse")
     public String unirseAunReto(@RequestParam Integer retoId, Model model, HttpSession session) {
         Usuario userActual = (Usuario) session.getAttribute("userActual");
         if (userActual != null) {
@@ -529,5 +530,15 @@ public class UsuarioController {
 
         return tiempoFormateado.toString();
     }
+    
+    private String getRutaImagenes() {
+    	String ruta=System.getProperty("user.home")+"/Descargas/imagenes";
+    	File directorio=new File(ruta);
+		if(!directorio.exists()) {
+			directorio.mkdirs();
+		}
+    	
+    	return ruta;
+	}
 
 }

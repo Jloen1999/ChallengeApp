@@ -7,7 +7,7 @@ import java.util.List;
 public class RetoComplejo extends Reto {
     private int subtareaActual;
 
-    @OneToMany(mappedBy = "retoComplejo")
+    @OneToMany(mappedBy = "retoComplejo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subtarea> subtareas;
 
     public int getSubtareaActual() {

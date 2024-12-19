@@ -12,7 +12,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Estilos CSS -->
-    <link rel="stylesheet" href="/static/css/stylesCommons.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/stylesCommons.css">
     <!-- Bootstrap CSS -->
@@ -170,7 +169,7 @@
                     <div class="card-body">
                         <!-- Imagen del reto, solo si hay una URL -->
                         <div th:if="${reto.url}" class="d-flex justify-content-center">
-                            <img th:src="@{/images/{image}(image=${reto.url})}" alt="Imagen del reto"
+                            <img th:src="@{'/' + ${reto.url}}" alt="Imagen del reto"
                                 class="img-fluid img-thumbnail mb-3 w-30" />
                         </div>
 

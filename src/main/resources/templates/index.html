@@ -1,428 +1,249 @@
 <!doctype html>
-<html lang="es"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <title>Inicio</title>
     <!-- Metadatos generales -->
-    <meta name="author"
-          content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
-    <meta name="description"
-          content="Página de inicio">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type"
-          content="text/html;charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible"
-          content="ie=edge">
+    <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
+    <meta name="description" content="Página de inicio">
+    <meta name="viewport" content="width=device-witdh, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- Metadatos para móviles -->
-    <meta property="og:title"
-          content="Página de Retos">
-    <meta property="og:image"
-          content="/images/logo.png">
-    <meta property="og:image:alt"
-          content="Logo de la página sobre Retos">
-    <meta property="og:type"
-          content="website">
-    <meta property="og:url"
-          content="https://retos.com">
+    <meta property="og:title" content="Página de Retos">
+    <meta property="og:image" content="/images/logo.png">
+    <meta property="og:image:alt" content="Logo de la página sobre Retos">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://retos.com">
     <!-- Estilos CSS -->
-
-    <link rel="stylesheet"
-          href="/css/normalize.css">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
-          crossorigin="anonymous">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/stylesRetos.css">
+    <!-- Boostrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <!-- Boostrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Fuentes -->
     <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
-            rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-        }
-
-        /* Navbar personalización */
-        .navbar {
-            background-color: rgba(0, 0, 0, 0.8);
-            transition: background-color 0.3s ease;
-        }
-
-        .navbar:hover {
-            background-color: rgba(0, 0, 0, 1);
-        }
-
-        .navbar-brand img.logo-image {
-            width: 40px;
-            height: 40px;
-            object-fit: cover;
-            margin-right: 10px;
-            transition: transform 0.3s ease;
-        }
-
-        .navbar-brand:hover img.logo-image {
-            transform: scale(1.1);
-        }
-
-        /* Dropdown menú hover */
         .nav-item.dropdown:hover .dropdown-menu {
             display: block;
-            margin-top: 0;
         }
 
         .dropdown-menu {
             left: -100px;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
-        /* Sección izquierda (sidebar) */
-        .section-left {
-            background-color: #343a40;
-            color: #ffc107;
-            position: fixed;
-            top: 56px; /* Altura de la navbar fija */
-            left: 0;
-            height: calc(100vh - 56px); /* Altura total menos la navbar */
-            width: 220px;
-            padding-top: 20px;
-            z-index: 1030;
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .section-left {
-                position: static;
-                width: 100%;
-                height: auto;
-                display: flex;
-                overflow-x: auto;
-                padding-top: 10px;
-            }
-
-            .section-left a {
-                white-space: nowrap;
-            }
-        }
-
-        /* Ajustes generales */
-        main {
-            margin-left: 200px;
-            padding: 20px;
-            padding-top: 56px; /* Altura de la navbar fija */
-            transition: margin-left 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            main {
-                margin-left: 0;
-                padding-top: 20px;
-            }
-        }
-
-        /* Tarjetas */
-        .card {
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Modal de Búsqueda */
-        .modal-dialog {
-            max-width: 500px;
-        }
-
-        /* Carousel */
-        .carousel-item .card {
-            margin: 0 auto;
-        }
-
-        /* Footer */
-        footer {
-            background-color: #212529;
-            padding: 20px 0;
-        }
-
-        footer a {
-            color: #ffc107;
-            transition: color 0.3s ease;
-        }
-
-        footer a:hover {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        footer .social-icons i {
-            font-size: 1.5rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-            cursor: pointer;
-        }
-
-        footer .social-icons i:hover {
-            color: #ffc107;
-            transform: scale(1.2);
-        }
-
-        /* Resultados de búsqueda */
-        #resultadosBusqueda {
-            position: absolute;
-            background-color: #fff;
-            width: 100%;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: none;
-        }
-
-        /* Botón de ubicación */
-        #btnUbicacion {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Animaciones */
-        .fade-in {
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
     </style>
 </head>
 
 <body class="vh-100">
-<header class="header">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
-        <div class="container-fluid">
-            <h1 class="mb-0">
-                <a href="/"
-                   class="navbar-brand d-flex align-items-center fs-5 text-decoration-none">
-                    <img src="/images/logo.png"
-                         alt="Logo de la página web Retos"
-                         class="logo-image">
-                    ChallengeApp
-                </a>
-            </h1>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNav"
-                    aria-controls="navbarNav"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse"
-                 id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center position-relative">
-                    <li class="nav-item me-3 position-relative">
-                        <!-- Formulario de búsqueda de retos -->
-                        <form id="buscarRetoForm"
-                              class="d-flex"
-                              onsubmit="return false;">
-                            <input type="text"
-                                   class="form-control me-2"
-                                   id="criterioBusqueda"
-                                   name="criterioBusqueda"
-                                   placeholder="🔍 Buscar reto"
-                                   required>
-                            <button type="submit"
-                                    class="btn btn-outline-light">
-                                Buscar
-                            </button>
+    <header class="header">
+        <nav class="navbar navbar-expand-md">
+            <div class="container-fluid">
+                <h1>
+                    <a href="/" class="navbar-brand fs-5 text-decoration-none text-white">
+                        <img src="/images/logo.png" alt="Logo de la página web Retos" class="logo-image">
+                        ChallengeApp
+                    </a>
+                </h1>
+                <button class="navbar-toggler mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse pb-5" id="navbarNav">
+                    <ul class="navbar-nav ms-md-auto align-items-md-center">
+                        <li class="nav-item btn-search">
+                            <div class="modal-body">
+                                <!-- Formulario de búsqueda de retos -->
+                                <form id="buscarRetoForm" onsubmit="return false;">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="criterioBusqueda"
+                                            name="criterioBusqueda" placeholder="Buscar reto" required>
+                                    </div>
+                                </form>
+
+                                <!-- Contenedor para resultados de búsqueda -->
+                                <div id="resultadosBusqueda" class="mt-3 list-group"></div>
+                            </div>
+
+                        </li>
+                        <li class="nav-item ms-md-3" th:classappend="${estaLogueado} ? 'dropdown' : ''">
+                            <!-- Enlace al dashboard -->
+                            <a class="nav-link" href="/usuario/dashboard" th:id="${estaLogueado} ? 'userMenu' : ''"
+                                th:data-bs-toggle="${estaLogueado} ? '' : ''" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-1 col"></i>
+                            </a>
+
+                            <!-- Menú desplegable solo cuando el usuario está logueado -->
+                            <ul class="dropdown-menu dropdown-menu-end" th:if="${estaLogueado}"
+                                aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main class="vh-100">
+        <section class="section-left d-flex flex-column">
+            <div class="list-group-item list-group-item-action fs-3 p-0 text-warning">
+                <i class="bi bi-dash"></i>
+                General
+            </div>
+            <a href="/usuario/crearReto" class="list-group-item list-group-item-action text-warning ms-3"
+                th:if="${estaLogueado}">
+                <i class="bi bi-x-circle text-danger"></i>
+                <span class="m-2">
+                    Crear
+                    Reto
+                </span>
+            </a>
+            <a href="#" class="list-group-item list-group-item-action text-warning ms-3" th:if="${estaLogueado}"
+                data-bs-toggle="modal" data-bs-target="#modalAñadirAmigo">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span class="m-2">Buscar cerca de mí</span>
+            </a>
+            <a href="/verEstadisticas" class="list-group-item list-group-item-action text-warning ms-3">
+                <i class="bi bi-bar-chart-fill"></i>
+                <span class="m-2">Estadísticas</span>
+            </a>
+            <a href="#retosNovedad" class="list-group-item list-group-item-action text-warning ms-3">
+                <i class="bi bi-stars"></i>
+                <span class="m-2">Nuevos retos</span>
+            </a>
+            <a href="#retosPopulares" class="list-group-item list-group-item-action text-warning ms-3">
+                <i class="bi bi-award-fill"></i>
+                <span class="m-2">Retos Populares</span>
+            </a>
+
+        </section>
+
+        <!-- Modal de Búsqueda -->
+        <div class="modal fade" id="modalAñadirAmigo" tabindex="-1" aria-labelledby="modalAñadirAmigoLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" style="top: 20%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalAñadirAmigoLabel">Buscar retos cercanos</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/usuario/buscarRetosPorUbicacion" method="get">
+                            <!-- Input de ubicación -->
+                            <div class="mb-3 d-flex">
+                                <input type="text" id="ubicacionInput" name="ubicacion" class="form-control me-2"
+                                    placeholder="Introduce tu ubicación" required>
+                                <button type="button" class="btn btn-primary" id="btnUbicacion">
+                                    <i class="bi bi-geo-alt"></i>
+                                </button>
+                            </div>
+
+                            <!-- Barra de progreso para el radio de búsqueda -->
+                            <div class="mb-3">
+                                <label for="radioBusqueda" class="form-label">Radio de búsqueda (km):</label>
+                                <input type="range" class="form-range" id="radioBusqueda" name="radio" min="0" max="50"
+                                    step="1" value="5" oninput="actualizarValor(this.value)">
+                                <div class="d-flex justify-content-between">
+                                    <span>0</span>
+                                    <span>50</span>
+                                </div>
+                                <div id="valorRadio" class="text-center fw-bold mt-2">5 km</div>
+                            </div>
+
+                            <!-- Botón de búsqueda -->
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-geo-alt-fill"></i> Buscar retos
+                                </button>
+                            </div>
                         </form>
-                        <!-- Contenedor para resultados de búsqueda -->
-                        <div id="resultadosBusqueda"
-                             class="mt-2 list-group"></div>
-                    </li>
-                    <li class="nav-item ms-md-3">
-                        <!-- Enlace al dashboard -->
-                        <a class="nav-link d-flex align-items-center"
-                           href="/usuario/dashboard"
-                           th:id="${estaLogueado} ? 'userMenu' : ''"
-                           aria-expanded="false">
-                            <i class="bi bi-person-circle fs-4 me-2"></i>
-                            <span th:if="${usuario != null}"
-                                  th:text="${usuario.nombre}">Usuario</span>
-                        </a>
-                    </li>
-                    <li class="nav-item ms-md-3"
-                        th:if="${usuario != null}">
-                        <a class="nav-link d-flex align-items-center"
-                           href="/logout">
-                            <i class="bi bi-box-arrow-right fs-4 me-2"></i>
-                            Cerrar sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
 
-<main class="mt-5 pt-4">
-    <section class="section-left d-none d-md-flex flex-column mt-2">
-        <div class="list-group-item list-group-item-action fs-5 p-3 text-warning bg-dark border-0">
-            <i class="bi bi-house-door-fill me-2"></i>
-            General
-        </div>
-        <a href="/usuario/crearReto"
-           class="list-group-item list-group-item-action text-warning bg-dark border-0"
-           th:if="${estaLogueado}">
-            <i class="bi bi-plus-circle-fill text-success me-2"></i>
-            Crear Reto
-        </a>
-        <a href="#"
-           class="list-group-item list-group-item-action text-warning bg-dark border-0"
-           th:if="${estaLogueado}"
-           data-bs-toggle="modal"
-           data-bs-target="#modalAñadirAmigo">
-            <i class="bi bi-geo-alt-fill me-2"></i>
-            Buscar cerca de mí
-        </a>
-        <a href="/verEstadisticas"
-           class="list-group-item list-group-item-action text-warning bg-dark border-0">
-            <i class="bi bi-bar-chart-fill me-2"></i>
-            Estadísticas
-        </a>
-        <a href="#retosNovedad"
-           class="list-group-item list-group-item-action text-warning bg-dark border-0">
-            <i class="bi bi-stars me-2"></i>
-            Nuevos Retos
-        </a>
-        <a href="#retosPopulares"
-           class="list-group-item list-group-item-action text-warning bg-dark border-0">
-            <i class="bi bi-award-fill me-2"></i>
-            Retos Populares
-        </a>
-
-    </section>
-
-    <!-- Modal de Búsqueda -->
-    <div class="modal fade"
-         id="modalAñadirAmigo"
-         tabindex="-1"
-         aria-labelledby="modalAñadirAmigoLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header bg-warning text-dark">
-                    <h5 class="modal-title"
-                        id="modalAñadirAmigoLabel"><i class="bi bi-geo-alt-fill me-2"></i> Buscar Retos Cercanos</h5>
-                    <button type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/usuario/buscarRetosPorUbicacion"
-                          method="get">
-                        <!-- Input de ubicación -->
-                        <div class="mb-3 d-flex">
-                            <input type="text"
-                                   id="ubicacionInput"
-                                   name="ubicacion"
-                                   class="form-control me-2"
-                                   placeholder="📍 Introduce tu ubicación"
-                                   required>
-                            <button type="button"
-                                    class="btn btn-primary"
-                                    id="btnUbicacion">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </button>
-                        </div>
-
-                        <!-- Barra de progreso para el radio de búsqueda -->
-                        <div class="mb-3">
-                            <label for="radioBusqueda"
-                                   class="form-label">Radio de búsqueda (km):</label>
-                            <input type="range"
-                                   class="form-range"
-                                   id="radioBusqueda"
-                                   name="radio"
-                                   min="0"
-                                   max="50"
-                                   step="1"
-                                   value="5"
-                                   oninput="actualizarValor(this.value)">
-                            <div class="d-flex justify-content-between">
-                                <span>0 km</span>
-                                <span>50 km</span>
-                            </div>
-                            <div id="valorRadio"
-                                 class="text-center fw-bold mt-2">5 km
-                            </div>
-                        </div>
-
-                        <!-- Botón de búsqueda -->
-                        <div class="d-flex justify-content-center">
-                            <button type="submit"
-                                    class="btn btn-success">
-                                <i class="bi bi-search me-2"></i> Buscar Retos
-                            </button>
-                        </div>
-                    </form>
-
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Sección: Resultados de Búsqueda -->
-    <section class="container-fluid main-section mt-5"
-             th:if="${retosBusqueda!=null}">
-        <div>
-            <h1 class="text-warning text-center mb-4 fade-in">Resultados de Búsqueda</h1>
+        <section class="container-fluid main-section" th:if="${retosBusqueda!=null}">
+            <div>
+                <h1 class="text-warning">Resultados de búsqueda</h1>
 
-            <!-- Sección: Resultados búsqueda -->
-            <div class="mb-4">
-                <div th:if="${retosBusqueda.isEmpty()}">
-                    <p class="text-center">No se han encontrado retos.</p>
+                <!-- Sección: Resultados búsqueda -->
+                <div class="mb-4">
+                    <div th:if="${retosBusqueda.isEmpty()}">
+                        <p>No se han encontrado retos.</p>
+                    </div>
+                    <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-5 row-gap-2">
+                        <th:block th:each="reto : ${retosBusqueda}">
+                            <article class="card mx-4 mt-2 col" style="width: 15rem; height: 20rem;">
+                                <img th:src="${reto.url}"
+                                    class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
+                                <div class="card-body d-flex flex-column" style="overflow-y: auto;">
+                                    <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+                                    <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
+                                    <div class="mt-auto">
+                                        <a th:href="@{/usuario/reto/{id}(id=${reto.id})}" class="btn btn-primary w-100">
+                                            Ir
+                                            al Reto
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        </th:block>
+                    </div>
                 </div>
-                <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-                    <th:block th:each="reto : ${retosBusqueda}">
-                        <article class="card h-100 shadow-sm fade-in">
-                            <img th:src="@{/images/{image}(image=${reto.url})}"
-                                 class="card-img-top"
-                                 alt="Imagen de un reto">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title"
-                                    th:text="${reto.nombre}">Reto</h5>
-                                <p class="card-text"
-                                   th:text="${reto.descripcion}">Descripción del reto</p>
+            </div>
+        </section>
+
+        <section class="container-fluid main-section" th:if="${retosBusqueda==null}">
+            <h1 class="text-center text-warning">Retos</h1>
+            <!-- Sección: Retos Novedosos (Carrusel de retos) -->
+            <div class="mb-4" th:if="!${retosNovedosos.isEmpty()}">
+                <h2 id="retosNovedad" class="text-info">Retos Novedosos</h2>
+                <div id="retosNovedosos" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner d-flex">
+                        <th:block th:each="reto, stat : ${retosNovedosos}">
+                            <div class="carousel-item" th:class="${stat.index == 0 ? 'active' : ''}">
+                                <article class="card mx-2" style="width: 15rem; height: 20rem;">
+                                    <img th:src="${reto.url}"
+                                        class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
+                                    <div class="card-body d-flex flex-column" style="overflow-y: auto;">
+                                        <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+                                        <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
+                                        <div class="mt-auto">
+                                            <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
+                                                class="btn btn-primary w-100">Ir al Reto</a>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <!-- Sección: Retos Populares -->
+            <div class="mb-4" th:if="!${retosPopulares.isEmpty()}">
+                <h2 id="retosPopulares" class="text-info">Retos Más Populares</h2>
+                <div class="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 row-gap-2">
+                    <th:block th:each="reto, stat : ${retosPopulares}">
+                        <article class="card mx-2 mt-2" style="width: 12rem; height: 18rem;">
+                            <!-- Etiqueta para la posición (Nº 1, Nº 2, etc.) -->
+                            <span class="badge bg-dark position-absolute top-0 start-0 m-2" style="z-index: 1;"
+                                th:text="'Nº ' + ${stat.index + 1}"></span>
+                            <img th:src="${reto.url}"
+                                class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
+                            <div class="card-body d-flex flex-column" style="overflow-y: auto;">
+                                <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+                                <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
                                 <div class="mt-auto">
-                                    <!-- Formulario para unirse al reto -->
-                                    <form th:if="${estaLogueado} and !${estaUnido}"
-                                          action="/usuario/unirse"
-                                          method="get"
-                                          class="mb-2">
-                                        <input type="hidden"
-                                               name="retoId"
-                                               th:value="${reto.id}">
-                                        <button class="btn btn-primary w-100"
-                                                type="submit">
-                                            <i class="bi bi-plus-circle me-2"></i> Unirse al Reto
-                                        </button>
-                                    </form>
-                                    <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
-                                       class="btn btn-secondary w-100">
-                                        <i class="bi bi-arrow-right-circle me-2"></i> Ir al Reto
+                                    <a th:href="@{/usuario/reto/{id}(id=${reto.id})}" class="btn btn-primary w-100">
+                                        Ir
+                                        al Reto
                                     </a>
                                 </div>
                             </div>
@@ -430,322 +251,146 @@
                     </th:block>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Sección: Retos Novedosos (Carousel de retos) -->
-    <section class="container-fluid main-section mt-5"
-             th:if="${retosBusqueda==null}">
-        <h1 class="text-center text-warning mb-4 fade-in">Retos</h1>
-        <!-- Carousel de Retos Novedosos -->
-        <div class="mb-5" th:if="!${gruposRetosNovedosos.isEmpty()}">
-            <h2 id="retosNovedad" class="text-info text-center mb-3">Retos Novedosos</h2>
-            <div id="retosNovedososCarousel" class="carousel slide" data-bs-ride="carousel">
-
-                <!-- Indicadores del Carousel -->
-                <div class="carousel-indicators">
-                    <th:block th:each="grupo, stat : ${gruposRetosNovedosos}">
-                        <button type="button" data-bs-target="#retosNovedososCarousel"
-                                th:data-bs-slide-to="${stat.index}"
-                                th:classappend="${stat.index == 0} ? 'active'"
-                                th:aria-current="${stat.index == 0} ? 'true' : 'false'"
-                                th:aria-label="'Slide ' + (${stat.index} + 1)">
-                        </button>
-                    </th:block>
-                </div>
-
-                <div class="carousel-inner">
-                    <th:block th:each="grupo, stat : ${gruposRetosNovedosos}">
-                        <div class="carousel-item" th:classappend="${stat.index == 0} ? ' active'">
-                            <div class="row justify-content-center">
-                                <th:block th:each="reto : ${grupo}">
-                                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex">
-                                        <article class="card w-100 shadow-sm fade-in">
-                                            <img th:src="@{/images/{image}(image=${reto.url})}"
-                                                 class="card-img-top"
-                                                 alt="Imagen de un reto">
-                                            <div class="card-body d-flex flex-column">
-                                                <h5 class="card-title"
-                                                    th:text="${reto.nombre}">Reto</h5>
-                                                <p class="card-text"
-                                                   th:text="${reto.descripcion}">Descripción del reto</p>
-                                                <div class="mt-auto d-flex justify-content-between">
-                                                    <form th:if="${estaLogueado} and !${estaUnido}"
-                                                          action="/usuario/unirse"
-                                                          method="get">
-                                                        <input type="hidden" name="retoId" th:value="${reto.id}">
-                                                        <button class="btn btn-primary"
-                                                                type="submit">
-                                                            <i class="bi bi-plus-circle me-2"></i> Unirse
-                                                        </button>
-                                                    </form>
-                                                    <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
-                                                       class="btn btn-secondary">
-                                                        <i class="bi bi-arrow-right-circle me-2"></i> Ir al Reto
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </article>
+            <!-- Sección: Retos Privados de Amigos -->
+            <div class="mb-4" th:if="${estaLogueado} and !${retosPrivados.isEmpty()}">
+                <h2 id="retosPrivado" class="text-info">Retos Privados de Amigos</h2>
+                <div id="retosPrivados" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner d-flex">
+                        <th:block th:each="reto, stat : ${retosPrivados}">
+                            <div class="carousel-item" th:class="${stat.index == 0 ? 'active' : ''}">
+                                <article class="card mx-2" style="width: 15rem; height: 20rem;">
+                                    <img th:src="${reto.url}"
+                                        class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
+                                    <div class="card-body d-flex flex-column" style="overflow-y: auto;">
+                                        <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+                                        <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
+                                        <div class="mt-auto">
+                                            <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
+                                                class="btn btn-primary w-100">Ir al Reto</a>
+                                        </div>
                                     </div>
-                                </th:block>
+                                </article>
                             </div>
-                        </div>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+            <!-- Sección: Todos los Retos -->
+            <div class="mb-4">
+                <h2 class="text-info">Todos los Retos</h2>
+                <div th:if="${retos.isEmpty()}">
+                    <p>No hay retos disponibles.</p>
+                </div>
+                <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-5 row-gap-2">
+                    <th:block th:each="reto : ${retos}">
+                        <article class="card mx-4 mt-2 col" style="width: 15rem; height: 20rem;">
+                            <img th:src="@{${reto.url}}"
+                                class="card-img-top h-50 object-fit-cover" alt="Imagen de un reto">
+                            <div class="card-body d-flex flex-column" style="overflow-y: auto;">
+                                <h5 class="card-title" th:text="${reto.nombre}">Reto</h5>
+                                <p class="card-text" th:text="${reto.descripcion}">Descripción del reto</p>
+                                <div class="mt-auto">
+                                    <a th:href="@{/usuario/reto/{id}(id=${reto.id})}" class="btn btn-primary w-100">
+                                        Ir
+                                        al Reto
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
                     </th:block>
                 </div>
+            </div>
+        </section>
 
-                <!-- Controles del Carousel -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#retosNovedososCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#retosNovedososCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
+    </main>
+    <!-- Footer -->
+    <footer class="hidden bg-dark text-center position-sticky w-100 bottom-0 text-white">
+        <div>
+            <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
+            <p class="d-flex justify-content-center">
+                <a href="#" class="me-3">Términos de Uso</a>
+                |
+                <a href="#" class="ms-3">Política de Privacidad</a>
+            </p>
+            <div class="social-icons">
+                <i class="bi bi-whatsapp mx-2"></i>
+                <i class="bi bi-instagram mx-2"></i>
+                <i class="bi bi-twitter mx-2"></i>
             </div>
         </div>
+    </footer>
 
-        <!-- Sección: Retos Populares -->
-        <div class="mb-5"
-             th:if="!${retosPopulares.isEmpty()}">
-            <h2 id="retosPopulares"
-                class="text-info text-center mb-3">Retos Más Populares</h2>
-            <div class="row justify-content-center row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-                <th:block th:each="reto, stat : ${retosPopulares}">
-                    <article class="card position-relative shadow-sm fade-in">
-                        <!-- Etiqueta para la posición (Nº 1, Nº 2, etc.) -->
-                        <span class="badge bg-dark position-absolute top-0 start-0 m-2"
-                              th:text="'Nº ' + ${stat.index + 1}"></span>
-                        <img th:src="@{/images/{image}(image=${reto.url})}"
-                             class="card-img-top"
-                             alt="Imagen de un reto">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"
-                                th:text="${reto.nombre}">Reto</h5>
-                            <p class="card-text"
-                               th:text="${reto.descripcion}">Descripción del reto</p>
-                            <div class="mt-auto">
-                                <!-- Formulario para unirse al reto -->
-                                <form th:if="${estaLogueado} and !${estaUnido}"
-                                      action="/usuario/unirse"
-                                      method="get"
-                                      class="mb-2">
-                                    <input type="hidden"
-                                           name="retoId"
-                                           th:value="${reto.id}">
-                                    <button class="btn btn-primary w-100"
-                                            type="submit">
-                                        <i class="bi bi-plus-circle me-2"></i> Unirse al Reto
-                                    </button>
-                                </form>
-                                <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
-                                   class="btn btn-secondary w-100">
-                                    <i class="bi bi-arrow-right-circle me-2"></i> Ir al Reto
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                </th:block>
-            </div>
-        </div>
+    <script>
+        document.getElementById('criterioBusqueda').addEventListener('input', function () {
+            const criterio = this.value; // Obtiene el valor del campo de búsqueda
+            const resultadosBusqueda = document.getElementById('resultadosBusqueda');
 
-        <!-- Sección: Retos Privados de Amigos -->
-        <div class="mb-5"
-             th:if="${estaLogueado} and !${retosPrivados.isEmpty()}">
-            <h2 id="retosPrivado"
-                class="text-info text-center mb-3">Retos Privados de Amigos</h2>
-            <div id="retosPrivadosCarousel"
-                 class="carousel slide"
-                 data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <th:block th:each="grupo, stat : ${gruposRetosPrivados}">
-                        <div class="carousel-item" th:classappend="${stat.index == 0} ? ' active'">
-                            <div class="row justify-content-center">
-                                <th:block th:each="reto : ${grupo}">
-                                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex">
-                                        <article class="card w-100 shadow-sm fade-in">
-                                            <img th:src="@{/images/{image}(image=${reto.url})}"
-                                                 class="card-img-top"
-                                                 alt="Imagen de un reto">
-                                            <div class="card-body d-flex flex-column">
-                                                <h5 class="card-title"
-                                                    th:text="${reto.nombre}">Reto</h5>
-                                                <p class="card-text"
-                                                   th:text="${reto.descripcion}">Descripción del reto</p>
-                                                <div class="mt-auto d-flex justify-content-between">
-                                                    <form th:if="${estaLogueado} and !${estaUnido}"
-                                                          action="/usuario/unirse"
-                                                          method="get">
-                                                        <input type="hidden" name="retoId" th:value="${reto.id}">
-                                                        <button class="btn btn-primary"
-                                                                type="submit">
-                                                            <i class="bi bi-plus-circle me-2"></i> Unirse
-                                                        </button>
-                                                    </form>
-                                                    <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
-                                                       class="btn btn-secondary">
-                                                        <i class="bi bi-arrow-right-circle me-2"></i> Ir al Reto
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </article>
-                                    </div>
-                                </th:block>
-                            </div>
-                        </div>
-                    </th:block>
-                </div>
-                <!-- Controles del Carousel -->
-                <button class="carousel-control-prev" type="button" data-bs-target="#retosPrivadosCarousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Anterior</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#retosPrivadosCarousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Siguiente</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- Sección: Todos los Retos -->
-        <div class="mb-5">
-            <h2 class="text-info text-center mb-3">Todos los Retos</h2>
-            <div th:if="${retos.isEmpty()}">
-                <p class="text-center">No hay retos disponibles.</p>
-            </div>
-            <div class="row justify-content-center row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-                <th:block th:each="reto : ${retos}">
-                    <article class="card h-100 shadow-sm fade-in">
-                        <img th:src="@{/images/{image}(image=${reto.url})}"
-                             class="card-img-top"
-                             alt="Imagen de un reto">
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title"
-                                th:text="${reto.nombre}">Reto</h5>
-                            <p class="card-text"
-                               th:text="${reto.descripcion}">Descripción del reto</p>
-                            <div class="mt-auto">
-                                <!-- Formulario para unirse al reto -->
-                                <form th:if="${estaLogueado} and !${estaUnido}"
-                                      action="/usuario/unirse"
-                                      method="get"
-                                      class="mb-2">
-                                    <input type="hidden"
-                                           name="retoId"
-                                           th:value="${reto.id}">
-                                    <button class="btn btn-primary w-100"
-                                            type="submit">
-                                        <i class="bi bi-plus-circle me-2"></i> Unirse al Reto
-                                    </button>
-                                </form>
-                                <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
-                                   class="btn btn-secondary w-100">
-                                    <i class="bi bi-arrow-right-circle me-2"></i> Ir al Reto
-                                </a>
-                            </div>
-                        </div>
-                    </article>
-                </th:block>
-            </div>
-        </div>
-    </section>
-
-</main>
-
-<!-- Footer -->
-<footer class="bg-dark text-center text-white py-4">
-    <div class="container">
-        <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
-        <p>
-            <a href="#"
-               class="me-3 text-warning">Términos de Uso</a>
-            |
-            <a href="#"
-               class="ms-3 text-warning">Política de Privacidad</a>
-        </p>
-        <div class="social-icons mt-3">
-            <a href="#" class="text-warning me-3"><i class="bi bi-whatsapp"></i></a>
-            <a href="#" class="text-warning me-3"><i class="bi bi-instagram"></i></a>
-            <a href="#" class="text-warning"><i class="bi bi-twitter"></i></a>
-        </div>
-    </div>
-</footer>
-
-<!-- Scripts -->
-<script>
-    document.getElementById('criterioBusqueda').addEventListener('input', function () {
-        const criterio = this.value.trim(); // Obtiene el valor del campo de búsqueda
-        const resultadosBusqueda = document.getElementById('resultadosBusqueda');
-
-        if (criterio.length >= 3) { // Solo buscar si el criterio tiene al menos 3 caracteres
-            fetch(`/buscarRetos?criterioBusqueda=${encodeURIComponent(criterio)}`)
-                .then(response => response.json())
-                .then(data => {
-                    resultadosBusqueda.innerHTML = ''; // Limpiar resultados previos
-
-                    if (data.length === 0) {
-                        resultadosBusqueda.innerHTML = '<li class="list-group-item">No se encontraron retos.</li>';
-                    } else {
-                        data.forEach(reto => {
-                            const item = document.createElement('a');
-                            item.href = `/usuario/reto/${reto.id}`; // Enlace al detalle del reto
-                            item.classList.add('list-group-item', 'list-group-item-action');
-                            item.textContent = reto.nombre; // Mostrar nombre del reto
-                            resultadosBusqueda.appendChild(item);
-                        });
-                    }
-                    resultadosBusqueda.style.display = 'block'; // Asegura que los resultados se muestren
-                })
-                .catch(error => console.error('Error en la búsqueda:', error));
-        } else {
-            resultadosBusqueda.style.display = 'none'; // Oculta los resultados si no hay texto
-        }
-    });
-
-    document.addEventListener('click', function (event) {
-        const resultadosBusqueda = document.getElementById('resultadosBusqueda');
-        const buscador = document.getElementById('criterioBusqueda');
-
-        // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
-        if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
-            resultadosBusqueda.style.display = 'none';
-        } else if (buscador.contains(event.target)) {
-            resultadosBusqueda.style.display = 'block';
-        }
-    });
-
-    // Listener para el botón de obtener ubicación actual
-    document.getElementById('btnUbicacion').addEventListener('click', function () {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                // Usa un servicio o API para convertir lat/lon a una ubicación legible
-                fetch(`/usuario/buscarUbicacionActual?lat=${lat}&lon=${lon}`)
+            if (criterio.length >= 3) { // Solo buscar si el criterio tiene al menos 3 caracteres
+                fetch(`/buscarRetos?criterioBusqueda=${criterio}`)
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data); // Verificar cómo llega el objeto
-                        document.getElementById('ubicacionInput').value = data.nombre;
+                        resultadosBusqueda.innerHTML = ''; // Limpiar resultados previos
+
+                        if (data.length === 0) {
+                            resultadosBusqueda.innerHTML = '<li class="list-group-item">No se encontraron retos.</li>';
+                        } else {
+                            data.forEach(reto => {
+                                const item = document.createElement('a');
+                                item.href = `/usuario/reto/${reto.id}`; // Enlace al detalle del reto
+                                item.classList.add('list-group-item', 'list-group-item-action');
+                                item.textContent = reto.nombre; // Mostrar nombre del reto
+                                resultadosBusqueda.appendChild(item);
+                            });
+                        }
+                        resultadosBusqueda.style.display = 'block'; // Asegura que los resultados se muestren
                     })
-                    .catch(error => console.error('Error al obtener la ubicación actual:', error));
+                    .catch(error => console.error('Error en la búsqueda:', error));
+            } else {
+                resultadosBusqueda.style.display = 'none'; // Oculta los resultados si no hay texto
+            }
+        });
+        document.addEventListener('click', function (event) {
+            const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+            const buscador = document.getElementById('criterioBusqueda');
 
-            }, error => {
-                console.error('Error al obtener la geolocalización:', error);
-                alert('No se pudo obtener tu ubicación.');
-            });
-        } else {
-            alert('Geolocalización no soportada en este navegador.');
+            // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
+            if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
+                resultadosBusqueda.style.display = 'none';
+            } else {
+                resultadosBusqueda.style.display = 'block';
+            }
+        });
+
+        // Listener para el botón de obtener ubicación actual
+        document.getElementById('btnUbicacion').addEventListener('click', function () {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+
+                    // Usa un servicio o API para convertir lat/lon a una ubicación legible
+                    fetch(`/usuario/buscarUbicacionActual?lat=${lat}&lon=${lon}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data); // Verificar cómo llega el objeto
+                            document.getElementById('ubicacionInput').value = data.nombre;
+                        })
+                        .catch(error => console.error('Error al obtener la ubicación actual:', error));
+
+                });
+            } else {
+                alert('Geolocalización no soportada en este navegador.');
+            }
+        });
+
+
+        function actualizarValor(valor) {
+            document.getElementById("valorRadio").textContent = valor + " km";
         }
-    });
 
-    function actualizarValor(valor) {
-        document.getElementById("valorRadio").textContent = valor + " km";
-    }
-</script>
+    </script>
 
-<!-- Bootstrap Bundle con Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
