@@ -2,10 +2,7 @@ package es.uex.challengeapp.controller;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,235 +31,246 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
-	@Autowired
-	private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioService usuarioService;
 
-	@Autowired
-	private RetoService retoService;
+    @Autowired
+    private RetoService retoService;
 
-	@Autowired
-	private ParticipantesRetoService participantesRetoService;
+    @Autowired
+    private ParticipantesRetoService participantesRetoService;
 
-	@Autowired
-	private EstadisticaService estadisticaService;
+    @Autowired
+    private EstadisticaService estadisticaService;
 
-	@Autowired
-	private ProgresoRetoService progresoRetoService;
+    @Autowired
+    private ProgresoRetoService progresoRetoService;
 
-	@Autowired
-	private RecompensaService recompensaService;
+    @Autowired
+    private RecompensaService recompensaService;
 
-	@Autowired
-	private PuntoService puntoService;
+    @Autowired
+    private PuntoService puntoService;
 
-	@GetMapping("/")
-	public String home(Model model, HttpSession session) {
-		Usuario userActual = (Usuario) session.getAttribute("userActual");
-		model.addAttribute("estaLogueado", userActual != null);
+    @GetMapping("/")
+    public String home(Model model, HttpSession session) {
+        Usuario userActual = (Usuario) session.getAttribute("userActual");
+        model.addAttribute("estaLogueado", userActual != null);
 
-		List<Reto> retos = retoService.obtenerRetos(userActual);
-		List<Reto> retosNovedosos = retoService.obtenerRetosNovedosos(userActual);
-		List<Reto> retosPopulares = participantesRetoService.obtenerRetosMasParticipantes();
+        List<Reto> retos = retoService.obtenerRetos(userActual);
+        List<Reto> retosNovedosos = retoService.obtenerRetosNovedosos(userActual);
+        List<List<Reto>> gruposRetos = new ArrayList<>();
+        for (int i = 0; i < retosNovedosos.size(); i += 4) {
+            int end = Math.min(i + 4, retosNovedosos.size());
+            gruposRetos.add(retosNovedosos.subList(i, end));
+        }
 
-		model.addAttribute("retos", retos);
-		model.addAttribute("retosNovedosos", retosNovedosos);
-		model.addAttribute("retosPopulares", retosPopulares);
+        model.addAttribute("gruposRetosNovedosos", gruposRetos);
+        List<Reto> retosPopulares = participantesRetoService.obtenerRetosMasParticipantes();
 
-		if (userActual != null) {
-			List<Reto> retosPrivados = retoService.mostrarRetosPrivadosAmigos(userActual);
-			model.addAttribute("retosPrivados", retosPrivados);
-		}
+        model.addAttribute("usuario", userActual);
+        model.addAttribute("retos", retos);
+        model.addAttribute("retosNovedosos", retosNovedosos);
+        model.addAttribute("retosPopulares", retosPopulares);
 
-		estadisticaService.actualizarTodasLasEstadisticas();
+        if (userActual != null) {
+            List<Reto> retosPrivados = retoService.mostrarRetosPrivadosAmigos(userActual);
+            model.addAttribute("retosPrivados", retosPrivados);
+        }
 
-		return "index";
-	}
+        estadisticaService.actualizarTodasLasEstadisticas();
 
-	@GetMapping("/buscarRetos")
-	public ResponseEntity<List<RetoDTO>> buscarRetos(@RequestParam String criterioBusqueda) {
-		List<Reto> retos = retoService.buscarPorNombre(criterioBusqueda);
+        return "index";
+    }
 
-		List<RetoDTO> retosDTO = retos.stream()
-				.map(reto -> new RetoDTO(reto.getId(), reto.getNombre(), reto.getDescripcion()))
-				.collect(Collectors.toList());
+    @GetMapping("/buscarRetos")
+    public ResponseEntity<List<RetoDTO>> buscarRetos(@RequestParam String criterioBusqueda) {
+        List<Reto> retos = retoService.buscarPorNombre(criterioBusqueda);
 
-		return ResponseEntity.ok(retosDTO);
-	}
+        List<RetoDTO> retosDTO = retos.stream()
+                .map(reto -> new RetoDTO(reto.getId(), reto.getNombre(), reto.getDescripcion()))
+                .collect(Collectors.toList());
 
-	@PostMapping("/registro")
-	public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
-		Usuario registrado = usuarioService.registrarUsuario(usuario);
-		if (registrado != null) {
-			model.addAttribute("mensaje", "Usuario registrado con éxito. Inicia sesión.");
-			return "redirect:/login";
-		}
-		model.addAttribute("error", "Error al registrar usuario.");
-		return "registro";
-	}
+        return ResponseEntity.ok(retosDTO);
+    }
 
-	@GetMapping("/login")
-	public String mostrarFormularioLogin(Model model) {
-		model.addAttribute("usuario", new Usuario());
-		return "login";
-	}
+    @PostMapping("/registro")
+    public String registrarUsuario(@ModelAttribute Usuario usuario, Model model) {
+        Usuario registrado = usuarioService.registrarUsuario(usuario);
+        if (registrado != null) {
+            model.addAttribute("mensaje", "Usuario registrado con éxito. Inicia sesión.");
+            return "redirect:/login";
+        }
+        model.addAttribute("error", "Error al registrar usuario.");
+        return "registro";
+    }
 
-	@GetMapping("/logout")
-	public String cerrarSesion(HttpSession session) {
-		session.invalidate();
-		return "redirect:/";
-	}
+    @GetMapping("/login")
+    public String mostrarFormularioLogin(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "login";
+    }
 
-	@PostMapping("/")
-	public String login(@RequestParam String correo, @RequestParam String contrasena, Model model,
-			HttpSession session) {
-		Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
-		if (usuario != null) {
-			session.setAttribute("userActual", usuario);
-			return "redirect:/";
-		}
-		model.addAttribute("usuario", new Usuario());
-		model.addAttribute("error", "Correo o contraseña incorrectos.");
-		return "login";
-	}
+    @GetMapping("/logout")
+    public String cerrarSesion(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
 
-	@GetMapping("/verEstadisticas")
-	public String mostrarEstadisticasGenerales(Model model) {
-		// Obtener todos los usuarios y retos
-		List<Usuario> usuarios = usuarioService.obtenerTodosLosUsuarios();
-		List<Reto> retos = retoService.obtenerTodosLosRetos();
+    @PostMapping("/")
+    public String login(@RequestParam String correo, @RequestParam String contrasena, Model model,
+                        HttpSession session) {
+        Usuario usuario = usuarioService.autenticarUsuario(correo, contrasena);
+        if (usuario != null) {
+            session.setAttribute("userActual", usuario);
+            return "redirect:/";
+        }
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("error", "Correo o contraseña incorrectos.");
+        return "login";
+    }
 
-		// Estadísticas generales
-		long numeroUsuarios = usuarios.size();
-		long numeroUsuariosConRetosCompletados = usuarios.stream()
-				.filter(usuario -> !progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario).isEmpty()).count();
-		long numeroRetos = retos.size();
-		long numeroRetosCompletados = retos.stream().filter(
-				reto -> usuarios.stream().anyMatch(usuario -> progresoRetoService.estaCompletado(usuario, reto)))
-				.count();
+    @GetMapping("/verEstadisticas")
+    public String mostrarEstadisticasGenerales(Model model) {
+        // Obtener todos los usuarios y retos
+        List<Usuario> usuarios = usuarioService.obtenerTodosLosUsuarios();
+        List<Reto> retos = retoService.obtenerTodosLosRetos();
 
-		// Tiempo promedio para completar retos
-		double tiempoPromedioCompletado = usuarios.stream().mapToDouble(usuario -> {
-			Duration tiempo = progresoRetoService.obtenerTiempoTotalDeCompletado(usuario);
-			long totalRetosCompletados = progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario).size();
-			double tiempoEnHoras = (double) tiempo.toMinutes() / 60;
-			if (totalRetosCompletados > 0) {
-				return Math.round((tiempoEnHoras / totalRetosCompletados) * 100.0) / 100.0;
-			}
-			return 0;
-		}).average().orElse(0);
+        // Estadísticas generales
+        long numeroUsuarios = usuarios.size();
+        long numeroUsuariosConRetosCompletados = usuarios.stream()
+                .filter(usuario -> !progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario).isEmpty()).count();
+        long numeroRetos = retos.size();
+        long numeroRetosCompletados = retos.stream().filter(
+                        reto -> usuarios.stream().anyMatch(usuario -> progresoRetoService.estaCompletado(usuario, reto)))
+                .count();
 
-		// Ranking: Usuarios con más puntos
-		List<Usuario> usuariosPorPuntos = usuarios.stream()
-				.sorted((u1, u2) -> Integer.compare(puntoService.totalPuntosUsuario(u2),
-						puntoService.totalPuntosUsuario(u1)))
-				.limit(10) // Limitar a top 10
-				.toList();
+        // Tiempo promedio para completar retos
+        double tiempoPromedioCompletado = usuarios.stream().mapToDouble(usuario -> {
+            Duration tiempo = progresoRetoService.obtenerTiempoTotalDeCompletado(usuario);
+            long totalRetosCompletados = progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario).size();
+            double tiempoEnHoras = (double) tiempo.toMinutes() / 60;
+            if (totalRetosCompletados > 0) {
+                return Math.round((tiempoEnHoras / totalRetosCompletados) * 100.0) / 100.0;
+            }
+            return 0;
+        }).average().orElse(0);
 
-		// Ranking: Usuarios con más medallas
-		List<Usuario> usuariosPorMedallas = usuarios.stream().sorted((u1, u2) -> {
-			long medallasU1 = calcularPonderacionMedallas(u1);
-			long medallasU2 = calcularPonderacionMedallas(u2);
-			return Long.compare(medallasU2, medallasU1);
-		}).limit(10).toList();
+        // Ranking: Usuarios con más puntos
+        List<Usuario> usuariosPorPuntos = usuarios.stream()
+                .sorted((u1, u2) -> Integer.compare(puntoService.totalPuntosUsuario(u2),
+                        puntoService.totalPuntosUsuario(u1)))
+                .limit(10) // Limitar a top 10
+                .toList();
 
-		// Crear un desglose detallado de las medallas
-		List<Map<String, Object>> rankingMedallasDetalle = usuariosPorMedallas.stream().map(usuario -> {
-			Map<String, Object> detalle = new HashMap<>();
-			detalle.put("usuario", usuario);
-			detalle.put("diamantes", recompensaService.obtenerRecompensasDiamanteUsuario(usuario).size());
-			detalle.put("oros", recompensaService.obtenerRecompensasOroUsuario(usuario).size());
-			detalle.put("platas", recompensaService.obtenerRecompensasPlataUsuario(usuario).size());
-			detalle.put("bronces", recompensaService.obtenerRecompensasBronceUsuario(usuario).size());
-			detalle.put("total", calcularPonderacionMedallas(usuario));
-			return detalle;
-		}).toList();
+        // Ranking: Usuarios con más medallas
+        List<Usuario> usuariosPorMedallas = usuarios.stream().sorted((u1, u2) -> {
+            long medallasU1 = calcularPonderacionMedallas(u1);
+            long medallasU2 = calcularPonderacionMedallas(u2);
+            return Long.compare(medallasU2, medallasU1);
+        }).limit(10).toList();
 
-		// Ranking: Usuarios con más retos completados
-		List<Usuario> usuariosPorRetosCompletados = usuarios.stream()
-				.sorted((u1, u2) -> Integer.compare(progresoRetoService.obtenerRetosCompletadosPorUsuario(u2).size(),
-						progresoRetoService.obtenerRetosCompletadosPorUsuario(u1).size()))
-				.limit(10).toList();
+        // Crear un desglose detallado de las medallas
+        List<Map<String, Object>> rankingMedallasDetalle = usuariosPorMedallas.stream().map(usuario -> {
+            Map<String, Object> detalle = new HashMap<>();
+            detalle.put("usuario", usuario);
+            detalle.put("diamantes", recompensaService.obtenerRecompensasDiamanteUsuario(usuario).size());
+            detalle.put("oros", recompensaService.obtenerRecompensasOroUsuario(usuario).size());
+            detalle.put("platas", recompensaService.obtenerRecompensasPlataUsuario(usuario).size());
+            detalle.put("bronces", recompensaService.obtenerRecompensasBronceUsuario(usuario).size());
+            detalle.put("total", calcularPonderacionMedallas(usuario));
+            return detalle;
+        }).toList();
 
-		// Ranking: Promedio en retos simples y complejos
-		List<Usuario> usuariosPorPromedioSimples = usuarios.stream()
-				.sorted((u1, u2) -> Float.compare(calcularPromedioTiempoPorTipo(u2, Tipo.SIMPLE),
-						calcularPromedioTiempoPorTipo(u1, Tipo.SIMPLE)))
-				.limit(10).toList();
+        // Ranking: Usuarios con más retos completados
+        List<Usuario> usuariosPorRetosCompletados = usuarios.stream()
+                .sorted((u1, u2) -> Integer.compare(progresoRetoService.obtenerRetosCompletadosPorUsuario(u2).size(),
+                        progresoRetoService.obtenerRetosCompletadosPorUsuario(u1).size()))
+                .limit(10).toList();
 
-		List<Usuario> usuariosPorPromedioComplejos = usuarios.stream()
-				.sorted((u1, u2) -> Float.compare(calcularPromedioTiempoPorTipo(u2, Tipo.COMPLEJO),
-						calcularPromedioTiempoPorTipo(u1, Tipo.COMPLEJO)))
-				.limit(10).toList();
+        // Ranking: Promedio en retos simples y complejos
+        List<Usuario> usuariosPorPromedioSimples = usuarios.stream()
+                .sorted((u1, u2) -> Float.compare(calcularPromedioTiempoPorTipo(u2, Tipo.SIMPLE),
+                        calcularPromedioTiempoPorTipo(u1, Tipo.SIMPLE)))
+                .limit(10).toList();
 
-		// Popularidad de retos
-		List<Reto> retosMasPopulares = participantesRetoService.obtenerRetosMasParticipantes();
-		List<Reto> retosMenosPopulares = retos.stream()
-				.sorted(Comparator.comparingInt(
-						reto -> participantesRetoService.obtenerParticipantesDeReto(reto.getId().longValue()).size()))
-				.limit(10).toList();
+        List<Usuario> usuariosPorPromedioComplejos = usuarios.stream()
+                .sorted((u1, u2) -> Float.compare(calcularPromedioTiempoPorTipo(u2, Tipo.COMPLEJO),
+                        calcularPromedioTiempoPorTipo(u1, Tipo.COMPLEJO)))
+                .limit(10).toList();
 
-		// Añadir datos al modelo
-		model.addAttribute("numeroUsuarios", numeroUsuarios);
-		model.addAttribute("numeroUsuariosConRetosCompletados", numeroUsuariosConRetosCompletados);
-		model.addAttribute("numeroRetos", numeroRetos);
-		model.addAttribute("numeroRetosCompletados", numeroRetosCompletados);
-		model.addAttribute("tiempoPromedioCompletado", tiempoPromedioCompletado);
+        // Popularidad de retos
+        List<Reto> retosMasPopulares = participantesRetoService.obtenerRetosMasParticipantes();
+        List<Reto> retosMenosPopulares = retos.stream()
+                .sorted(Comparator.comparingInt(
+                        reto -> participantesRetoService.obtenerParticipantesDeReto(reto.getId().longValue()).size()))
+                .limit(10).toList();
 
-		model.addAttribute("usuariosPorPuntos", usuariosPorPuntos);
-		model.addAttribute("rankingMedallasDetalle", rankingMedallasDetalle);
-		model.addAttribute("usuariosPorRetosCompletados", usuariosPorRetosCompletados);
-		model.addAttribute("usuariosPorPromedioSimples", usuariosPorPromedioSimples);
-		model.addAttribute("usuariosPorPromedioComplejos", usuariosPorPromedioComplejos);
+        // Añadir datos al modelo
+        model.addAttribute("numeroUsuarios", numeroUsuarios);
+        model.addAttribute("numeroUsuariosConRetosCompletados", numeroUsuariosConRetosCompletados);
+        model.addAttribute("numeroRetos", numeroRetos);
+        model.addAttribute("numeroRetosCompletados", numeroRetosCompletados);
+        // Ejemplo en el controlador
+        String tiempoPromedioFormateado = String.format("%.5f", tiempoPromedioCompletado);
+        model.addAttribute("tiempoPromedioCompletado", tiempoPromedioCompletado);
+        model.addAttribute("tiempoPromedioFormateado", tiempoPromedioFormateado);
 
-		model.addAttribute("retosMasPopulares", retosMasPopulares);
-		model.addAttribute("retosMenosPopulares", retosMenosPopulares);
+        model.addAttribute("usuariosPorPuntos", usuariosPorPuntos);
+        model.addAttribute("rankingMedallasDetalle", rankingMedallasDetalle);
+        model.addAttribute("usuariosPorRetosCompletados", usuariosPorRetosCompletados);
+        model.addAttribute("usuariosPorPromedioSimples", usuariosPorPromedioSimples);
+        model.addAttribute("usuariosPorPromedioComplejos", usuariosPorPromedioComplejos);
 
-		// Añadir también los servicios que se van a usar
-		model.addAttribute("controller", this);
-		model.addAttribute("puntoService", puntoService);
-		model.addAttribute("progresoRetoService", progresoRetoService);
-		model.addAttribute("participantesRetoService", participantesRetoService);
+        model.addAttribute("retosMasPopulares", retosMasPopulares);
+        model.addAttribute("retosMenosPopulares", retosMenosPopulares);
 
-		return "estadisticas";
-	}
+        // Añadir también los servicios que se van a usar
+        model.addAttribute("controller", this);
+        model.addAttribute("puntoService", puntoService);
+        model.addAttribute("progresoRetoService", progresoRetoService);
+        model.addAttribute("participantesRetoService", participantesRetoService);
 
-	// MÉTODOS PRIVADOS AUXILIARES
-	private long calcularPonderacionMedallas(Usuario usuario) {
-		return recompensaService.obtenerRecompensasDiamanteUsuario(usuario).size() * 4
-				+ recompensaService.obtenerRecompensasOroUsuario(usuario).size() * 3
-				+ recompensaService.obtenerRecompensasPlataUsuario(usuario).size() * 2
-				+ recompensaService.obtenerRecompensasBronceUsuario(usuario).size();
-	}
+        return "estadisticas";
+    }
 
-	public float calcularPromedioTiempoPorTipo(Usuario usuario, Tipo tipo) {
-		List<Reto> retos = progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario);
-		List<Reto> retosFiltrados = retos.stream().filter(reto -> reto.getTipo() == tipo).toList();
+    // MÉTODOS PRIVADOS AUXILIARES
+    private long calcularPonderacionMedallas(Usuario usuario) {
+        return recompensaService.obtenerRecompensasDiamanteUsuario(usuario).size() * 4
+                + recompensaService.obtenerRecompensasOroUsuario(usuario).size() * 3
+                + recompensaService.obtenerRecompensasPlataUsuario(usuario).size() * 2
+                + recompensaService.obtenerRecompensasBronceUsuario(usuario).size();
+    }
 
-		if (retosFiltrados.isEmpty()) {
-			return 0;
-		}
+    public float calcularPromedioTiempoPorTipo(Usuario usuario, Tipo tipo) {
+        List<Reto> retos = progresoRetoService.obtenerRetosCompletadosPorUsuario(usuario);
+        List<Reto> retosFiltrados = retos.stream().filter(reto -> reto.getTipo() == tipo).toList();
 
-		double totalTiempo = retosFiltrados.stream().mapToDouble(reto -> {
-			ParticipantesReto participacion = participantesRetoService.obtenerParticipacionReto(usuario, reto);
-			Instant inicio = null;
+        if (retosFiltrados.isEmpty()) {
+            return 0;
+        }
 
-			if (participacion != null && participacion.getFechaUnion() != null) {
-				inicio = participacion.getFechaUnion().toInstant();
-			} else {
-				inicio = reto.getFechaCreacion().toInstant();
-			}
+        double totalTiempo = retosFiltrados.stream().mapToDouble(reto -> {
+            ParticipantesReto participacion = participantesRetoService.obtenerParticipacionReto(usuario, reto);
+            Instant inicio = null;
 
-			ProgresoReto progreso = progresoRetoService.buscarProgresoReto(usuario, reto);
-			if (progreso.getFechaActualizacion() != null && inicio != null) {
-				Duration duracion = Duration.between(inicio, progreso.getFechaActualizacion().toInstant());
-				return duracion.toMinutes();
-			}
+            if (participacion != null && participacion.getFechaUnion() != null) {
+                inicio = participacion.getFechaUnion().toInstant();
+            } else {
+                inicio = reto.getFechaCreacion().toInstant();
+            }
 
-			return 0;
-		}).sum();
+            ProgresoReto progreso = progresoRetoService.buscarProgresoReto(usuario, reto);
+            if (progreso.getFechaActualizacion() != null && inicio != null) {
+                Duration duracion = Duration.between(inicio, progreso.getFechaActualizacion().toInstant());
+                return duracion.toMinutes();
+            }
 
-		float promedioEnHoras = (float) (totalTiempo / retosFiltrados.size()) / 60;
-		return Math.round(promedioEnHoras * 100.0f) / 100.0f;
-	}
+            return 0;
+        }).sum();
+
+        float promedioEnHoras = (float) (totalTiempo / retosFiltrados.size()) / 60;
+        return Math.round(promedioEnHoras * 100.0f) / 100.0f;
+    }
 
 }

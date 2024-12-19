@@ -2,7 +2,7 @@
 <html lang="es" class="no-js" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-      <title>Retos</title>
+      <title>Retos - ChallengeApp</title>
 
       <!-- Metadatos generales -->
       <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
@@ -19,7 +19,6 @@
       <meta property="og:url" content="https://retos.com">
 
       <!-- Estilos CSS -->
-      <link rel="stylesheet" href="/css/stylesReto.css">
       <link rel="stylesheet" href="/css/normalize.css">
       <link rel="stylesheet" href="/css/stylesCommons.css">
 
@@ -42,42 +41,283 @@
             .dropdown-menu {
                   left: -100px;
             }
+
+            body {
+                  font-family: 'Roboto', sans-serif;
+                  background-color: #f8f9fa;
+            }
+
+            /* Navbar personalización */
+            .navbar {
+                  background-color: rgba(0, 0, 0, 0.8);
+                  transition: background-color 0.3s ease;
+            }
+
+            .navbar:hover {
+                  background-color: rgba(0, 0, 0, 1);
+            }
+
+            .navbar-brand img.logo-image {
+                  width: 40px;
+                  height: 40px;
+                  object-fit: cover;
+                  margin-right: 10px;
+                  transition: transform 0.3s ease;
+            }
+
+            .navbar-brand:hover img.logo-image {
+                  transform: scale(1.1);
+            }
+
+            /* Sección izquierda (sidebar) */
+            .section-left {
+                  background-color: #343a40;
+                  color: #ffc107;
+                  position: fixed;
+                  top: 56px; /* Altura de la navbar fija */
+                  left: 0;
+                  height: calc(100vh - 56px); /* Altura total menos la navbar */
+                  width: 220px;
+                  padding-top: 20px;
+                  z-index: 1030;
+                  transition: all 0.3s ease;
+                  border-right: 2px solid #495057; /* Separación visual más prominente */
+                  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra para profundidad */
+            }
+
+            @media (max-width: 768px) {
+                  .section-left {
+                        position: fixed;
+                        top: 56px;
+                        left: -220px;
+                        height: calc(100vh - 56px);
+                        width: 220px;
+                        overflow-y: auto;
+                  }
+
+                  .section-left.show {
+                        left: 0;
+                  }
+
+                  .sidebar-toggle {
+                        display: block;
+                        position: fixed;
+                        top: 15px;
+                        left: 15px;
+                        background-color: #ffc107;
+                        border: none;
+                        color: #343a40;
+                        padding: 10px;
+                        border-radius: 5px;
+                        z-index: 1040;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                  }
+
+                  main {
+                        margin-left: 0;
+                        padding-top: 70px;
+                  }
+            }
+
+            /* Ajustes generales */
+            main {
+                  margin-left: 220px;
+                  padding: 20px;
+                  padding-top: 56px; /* Altura de la navbar fija */
+                  transition: margin-left 0.3s ease;
+            }
+
+            @media (max-width: 768px) {
+                  main {
+                        margin-left: 0;
+                        padding-top: 70px;
+                  }
+            }
+
+            /* Tarjetas */
+            .card {
+                  transition: transform 0.3s, box-shadow 0.3s;
+                  background-color: #343a40;
+                  color: #ffc107;
+                  border: none;
+            }
+
+            .card:hover {
+                  transform: translateY(-10px);
+                  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                  background-color: #495057;
+            }
+
+            /* Footer */
+            footer {
+                  background-color: #212529;
+                  padding: 20px 0;
+            }
+
+            footer a {
+                  color: #ffc107;
+                  transition: color 0.3s ease;
+            }
+
+            footer a:hover {
+                  color: #fff;
+                  text-decoration: none;
+            }
+
+            footer .social-icons i {
+                  font-size: 1.5rem;
+                  transition: color 0.3s ease, transform 0.3s ease;
+                  cursor: pointer;
+            }
+
+            footer .social-icons i:hover {
+                  color: #ffc107;
+                  transform: scale(1.2);
+            }
+
+            /* Resultados de búsqueda */
+            #resultadosBusqueda {
+                  position: absolute;
+                  background-color: #fff;
+                  width: 100%;
+                  border-radius: 0.5rem;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                  z-index: 1000;
+                  display: none;
+                  max-height: 300px;
+                  overflow-y: auto;
+            }
+
+            /* Animaciones */
+            .fade-in {
+                  animation: fadeIn 1s ease-in-out;
+            }
+
+            @keyframes fadeIn {
+                  from {
+                        opacity: 0;
+                  }
+
+                  to {
+                        opacity: 1;
+                  }
+            }
+
+            /* Estilos de la sección lateral */
+            .section-left a {
+                  color: #ffc107;
+                  padding: 15px 20px;
+                  text-decoration: none;
+                  display: block;
+                  transition: background-color 0.3s ease;
+            }
+
+            .section-left a:hover {
+                  background-color: #495057;
+            }
+
+            .section-left .active {
+                  background-color: #495057;
+            }
+
+            /* Botón de toggle para sidebar */
+            .sidebar-toggle {
+                  display: none;
+            }
+
+            @media (max-width: 768px) {
+                  .sidebar-toggle {
+                        display: block;
+                  }
+            }
+
+            /* Botones personalizados */
+            .btn-filter {
+                  background-color: transparent;
+                  border-color: #ffc107;
+                  color: #ffc107;
+                  transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            .btn-filter:hover {
+                  background-color: #ffc107;
+                  color: #343a40;
+            }
+
+            /* Ajustes para tablas */
+            table {
+                  background-color: #343a40;
+                  color: #ffc107;
+            }
+
+            th,
+            td {
+                  vertical-align: middle;
+            }
+
+            thead th {
+                  background-color: #495057;
+            }
+
+            tbody tr:nth-child(even) {
+                  background-color: #3a3f47;
+            }
+
+            tbody tr:hover {
+                  background-color: #495057;
+            }
       </style>
 
 </head>
 
 <body>
+      <!-- Botón para togglear el sidebar en móviles -->
+      <button class="sidebar-toggle d-md-none"><i class="bi bi-list"></i></button>
+
+      <!-- Barra Lateral (Sidebar) -->
+      <aside class="section-left d-none d-md-block">
+            <a href="/usuario/perfil" class="active"><i class="bi bi-person-circle me-2"></i> Perfil</a>
+            <a href="/usuario/configuracion"><i class="bi bi-gear me-2"></i> Configuración</a>
+            <a href="/usuario/ayuda"><i class="bi bi-question-circle me-2"></i> Ayuda</a>
+            <a href="/usuario/acerca"><i class="bi bi-info-circle me-2"></i> Acerca de</a>
+      </aside>
+
       <header class="header">
-
-            <nav class="navbar navbar-expand-md">
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top">
                   <div class="container-fluid">
-
-                        <h1><a href="/" class="navbar-brand fs-5 text-decoration-none text-white"><img
-                                          src="/images/logo.png" alt="Logo de la página web Retos" class="logo-image">
-                                    ChallengeApp</a>
+                        <h1 class="mb-0">
+                              <a href="/" class="navbar-brand d-flex align-items-center fs-5 text-decoration-none">
+                                    <img src="/images/logo.png" alt="Logo de ChallengeApp" class="logo-image">
+                                    ChallengeApp
+                              </a>
                         </h1>
-                        <button class="navbar-toggler mb-5" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                              aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                               <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse pb-5" id="navbarNav">
-                              <ul class="navbar-nav ms-md-auto align-items-md-center">
-                                    <li class="nav-item btn-search">
-                                          <form class="d-flex" role="search">
-                                                <input class="form-control me-2" type="search" placeholder="Buscar Reto"
-                                                      aria-label="Search">
-                                                <button class="btn btn-outline-success" type="submit">Buscar
-                                                </button>
+                              <ul class="navbar-nav ms-auto align-items-center position-relative">
+                                    <li class="nav-item me-3 position-relative">
+                                          <!-- Formulario de búsqueda de retos -->
+                                          <form id="buscarRetoForm" class="d-flex" role="search" onsubmit="return false;">
+                                                <div class="input-group">
+                                                      <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                                      <input type="search" class="form-control me-2" id="criterioBusqueda"
+                                                            name="criterioBusqueda" placeholder="🔍 Buscar Reto" aria-label="Search" required>
+                                                </div>
+                                                <button type="submit" class="btn btn-outline-light ms-2">Buscar</button>
                                           </form>
+                                          <!-- Contenedor para resultados de búsqueda -->
+                                          <div id="resultadosBusqueda" class="mt-2 list-group"></div>
                                     </li>
 
                                     <li class="nav-item ms-md-3" th:classappend="${estaLogueado} ? 'dropdown' : ''">
                                           <!-- Enlace al dashboard -->
-                                          <a class="nav-link" href="/usuario/dashboard"
-                                                th:id="${estaLogueado} ? 'userMenu' : ''"
-                                                th:data-bs-toggle="${estaLogueado} ? '' : ''" aria-expanded="false">
-                                                <i class="bi bi-person-circle fs-1 col"></i>
+                                          <a class="nav-link d-flex align-items-center" href="/usuario/dashboard"
+                                                th:id="${estaLogueado} ? 'userMenu' : ''" aria-expanded="false">
+                                                <i class="bi bi-person-circle fs-4 me-2"></i>
+                                                <span th:if="${usuario != null}" th:text="${usuario.nombre}">Usuario</span>
                                           </a>
 
                                           <!-- Menú desplegable solo cuando el usuario está logueado -->
@@ -92,38 +332,128 @@
             </nav>
       </header>
 
-      <main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
-            <div class="card p-4 shadow-lg w-50">
-                  <h2 class="text-center">Mis Retos</h2>
-                  <div th:each="reto : ${retos}" class="list-group mt-4">
-                        <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
-                              class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                              <span th:text="${reto.nombre}">Nombre del Reto</span>
-                              <!-- ME LO MUESTRA SIEMPRE AZUL A PESAR DE QUE CAPTURA BIEN EL ESTADO -->
-                              <span th:classappend="${reto.estado.name() == 'FALLIDO' ? 'badge bg-danger' :
-                      reto.estado.name() == 'COMPLETADO' ? 'badge bg-success' :
-                      reto.estado.name() == 'EN_PROGRESO' ? 'badge bg-warning text-dark' :
-                      'badge bg-primary'}" th:text="${reto.estado}">Estado</span>
-                        </a>
+      <main class="container-fluid my-5 vh-100 fade-in">
+            <div class="text-center mb-5 text-white">
+                  <h2>Mis Retos</h2>
+            </div>
+            <div class="row justify-content-center">
+                  <div class="col-md-8">
+                        <div class="card p-4 shadow-lg">
+                              <h2 class="text-center mb-4">Mis Retos</h2>
+                              <div th:each="reto : ${retos}" class="list-group mt-4">
+                                    <a th:href="@{/usuario/reto/{id}(id=${reto.id})}"
+                                          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                          <span th:text="${reto.nombre}">Nombre del Reto</span>
+                                          <span class="badge" th:class="${reto.estado.name() == 'FALLIDO' ? 'bg-danger' :
+                                                reto.estado.name() == 'COMPLETADO' ? 'bg-success' :
+                                                reto.estado.name() == 'EN_PROGRESO' ? 'bg-warning text-dark' :
+                                                'bg-primary'}"
+                                                th:text="${reto.estado}">Estado</span>
+                                    </a>
+                              </div>
+                        </div>
                   </div>
             </div>
       </main>
 
-      <footer class="footer bg-dark text-white text-center py-3 w-100 position-sticky bottom-0">
+      <footer class="footer bg-dark text-white text-center py-3 w-100">
             <div>
                   <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
                   <p class="d-flex justify-content-center">
-                        <a href="#" class="me-3">Términos de Uso</a> |
+                        <a href="#" class="me-3">Términos de Uso</a>
+                        |
                         <a href="#" class="ms-3">Política de Privacidad</a>
                   </p>
                   <div class="social-icons">
-                        <i class="bi bi-whatsapp mx-2"></i>
-                        <i class="bi bi-instagram mx-2"></i>
-                        <i class="bi bi-twitter mx-2"></i>
+                        <a href="#" class="text-warning me-3"><i class="bi bi-whatsapp"></i></a>
+                        <a href="#" class="text-warning me-3"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="text-warning"><i class="bi bi-twitter"></i></a>
                   </div>
             </div>
       </footer>
 
+      <!-- Scripts -->
+      <script>
+            // Toggle Sidebar en dispositivos móviles
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            const sidebar = document.querySelector('.section-left');
+
+            sidebarToggle.addEventListener('click', () => {
+                  sidebar.classList.toggle('show');
+            });
+
+            // Cerrar resultados de búsqueda al hacer clic fuera
+            document.addEventListener('click', function(event) {
+                  const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+                  const buscador = document.getElementById('criterioBusqueda');
+
+                  // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
+                  if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
+                        resultadosBusqueda.style.display = 'none';
+                  } else if (buscador.contains(event.target)) {
+                        resultadosBusqueda.style.display = 'block';
+                  }
+            });
+
+            // Manejo de mensajes de alerta que desaparecen después de 3 segundos
+            document.addEventListener("DOMContentLoaded", function() {
+                  const alerta = document.getElementById("mensajeAlerta");
+                  if (alerta) {
+                        setTimeout(() => {
+                              alerta.style.display = 'none';
+                        }, 3000); // 3 segundos
+                  }
+            });
+
+            // Script para manejar la búsqueda de retos
+            document.getElementById('buscarRetoForm').addEventListener('submit', function(event) {
+                  event.preventDefault();
+                  const criterioBusqueda = document.getElementById('criterioBusqueda').value.trim();
+
+                  if (criterioBusqueda.length === 0) {
+                        document.getElementById('resultadosBusqueda').innerHTML = ''; // Limpiar resultados si no hay texto
+                        return;
+                  }
+
+                  fetch(`/usuario/retos/buscar?criterioBusqueda=${encodeURIComponent(criterioBusqueda)}`)
+                        .then(response => response.json())
+                        .then(retos => {
+                              const resultadosContainer = document.getElementById('resultadosBusqueda');
+                              resultadosContainer.innerHTML = ''; // Limpiar resultados previos
+
+                              if (retos.length === 0) {
+                                    resultadosContainer.innerHTML = '<div class="list-group-item">No se encontraron retos.</div>';
+                              } else {
+                                    retos.forEach(reto => {
+                                          const item = document.createElement('div');
+                                          item.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-center');
+
+                                          const nombreSpan = document.createElement('span');
+                                          nombreSpan.textContent = reto.nombre;
+
+                                          const enlace = document.createElement('a');
+                                          enlace.href = `/usuario/reto/${reto.id}`;
+                                          enlace.classList.add('btn', 'btn-primary', 'btn-sm');
+                                          enlace.textContent = 'Ver Reto';
+
+                                          item.appendChild(nombreSpan);
+                                          item.appendChild(enlace);
+                                          resultadosContainer.appendChild(item);
+                                    });
+                              }
+                              resultadosContainer.style.display = 'block'; // Asegura que los resultados se muestren
+                        })
+                        .catch(error => console.error('Error al buscar retos:', error));
+            });
+
+            // Manejo del botón de filtrar por periodo (Funcionalidad por implementar)
+            document.querySelector('.btn-filter').addEventListener('click', function() {
+                  // Aquí puedes implementar una modal o redireccionar a una página de filtros
+                  alert('Funcionalidad de filtro por periodo aún no implementada.');
+            });
+      </script>
+
+      <!-- Bootstrap Bundle con Popper -->
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>

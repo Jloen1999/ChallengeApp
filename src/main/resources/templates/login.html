@@ -1,72 +1,221 @@
 <!doctype html>
 <html lang="es"
-      class="no-js"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      class="no-js">
+
 <head>
     <title>Inicio de sesión - ChallengeApp</title>
 
     <!-- Metadatos generales -->
-    <meta name="author"
-          content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
-    <meta name="description"
-          content="Página de inicio">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type"
-          content="text/html;charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible"
-          content="ie=edge">
+    <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
+    <meta name="description" content="Página de inicio">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <!-- Metadatos para móviles -->
-    <meta property="og:title"
-          content="Página de Retos">
-    <meta property="og:image"
-          content="/images/logo.png">
-    <meta property="og:image:alt"
-          content="Logo de la página sobre Retos">
-    <meta property="og:type"
-          content="website">
-    <meta property="og:url"
-          content="https://retos.com">
+    <meta property="og:title" content="Página de Retos">
+    <meta property="og:image" content="/images/logo.png">
+    <meta property="og:image:alt" content="Logo de la página sobre Retos">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://retos.com">
 
     <!-- Estilos CSS -->
-    <link rel="stylesheet"
-          href="/css/stylesSignInUp.css">
-    <link rel="stylesheet"
-          href="/css/normalize.css">
-    <link rel="stylesheet"
-          href="/css/stylesCommons.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/stylesSignInUp.css">
+    <link rel="stylesheet" href="/css/stylesCommons.css">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
-    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css"
-          rel="stylesheet">
-
     <!-- Bootstrap Icons -->
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <!-- Fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
           rel="stylesheet">
 
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar personalización */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar:hover {
+            background-color: rgba(0, 0, 0, 1);
+        }
+
+        .navbar-brand img.logo-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img.logo-image {
+            transform: scale(1.1);
+        }
+
+        /* Dropdown menú hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        .dropdown-menu {
+            left: -100px;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #212529;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #ffc107;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer .social-icons i {
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        footer .social-icons i:hover {
+            color: #ffc107;
+            transform: scale(1.2);
+        }
+
+        /* Resultados de búsqueda */
+        #resultadosBusqueda {
+            position: absolute;
+            background-color: #fff;
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Botón de ubicación */
+        #btnUbicacion {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ajustes generales */
+        main {
+            padding: 20px;
+            padding-top: 70px; /* Altura de la navbar fija */
+            min-height: calc(100vh - 140px); /* Altura total menos navbar y footer */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Tarjetas */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animaciones */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Formulario de Login */
+        .login-form {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .login-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .login-form .form-control:focus {
+            box-shadow: none;
+            border-color: #ffc107;
+        }
+
+        .login-form .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .login-form .btn-primary:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        .login-form .form-label {
+            font-weight: 500;
+        }
+
+        @media (max-width: 576px) {
+            main {
+                padding: 10px;
+            }
+
+            .login-form {
+                padding: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
 <body class="vh-100">
 <header class="header">
-
-    <nav class="navbar navbar-expand-md">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top">
         <div class="container-fluid">
-
-            <h1><a href="/"
-                   class="navbar-brand fs-5 text-decoration-none text-white"><img src="/images/logo.png"
-                                                                                  alt="Logo de la página web Retos"
-                                                                                  class="logo-image"> ChallengeApp</a>
+            <h1 class="mb-0">
+                <a href="/"
+                   class="navbar-brand d-flex align-items-center fs-5 text-decoration-none">
+                    <img src="/images/logo.png"
+                         alt="Logo de la página web Retos"
+                         class="logo-image">
+                    ChallengeApp
+                </a>
             </h1>
-            <button class="navbar-toggler mb-5"
+            <button class="navbar-toggler"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarNav"
@@ -75,55 +224,84 @@
                     aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse pb-5"
+            <div class="collapse navbar-collapse"
                  id="navbarNav">
-                <ul class="navbar-nav ms-md-auto align-items-md-center">
-                    <li class="nav-item btn-search">
-                        <form class="d-flex"
-                              role="search">
-                            <input class="form-control me-2"
-                                   type="search"
-                                   placeholder="Buscar Reto"
-                                   aria-label="Search">
-                            <button class="btn btn-outline-success"
-                                    type="submit">Buscar
+                <ul class="navbar-nav ms-auto align-items-center position-relative">
+                    <li class="nav-item me-3 position-relative">
+                        <!-- Formulario de búsqueda de retos -->
+                        <form id="buscarRetoForm"
+                              class="d-flex"
+                              role="search"
+                              onsubmit="return false;">
+                            <input type="search"
+                                   class="form-control me-2"
+                                   id="criterioBusqueda"
+                                   name="criterioBusqueda"
+                                   placeholder="🔍 Buscar Reto"
+                                   aria-label="Search"
+                                   required>
+                            <button type="submit"
+                                    class="btn btn-outline-light">
+                                Buscar
                             </button>
                         </form>
+                        <!-- Contenedor para resultados de búsqueda -->
+                        <div id="resultadosBusqueda"
+                             class="mt-2 list-group"></div>
                     </li>
 
-                    <li class="nav-item icon-profile ms-md-3">
-                        <a class="nav-link"
-                           href="/usuario/dashboard">
-                            <i class="bi bi-person-circle fs-1 col"></i></a>
+                    <li class="nav-item ms-md-3">
+                        <!-- Enlace al dashboard -->
+                        <a class="nav-link d-flex align-items-center"
+                           href="/usuario/dashboard"
+                           th:id="${estaLogueado} ? 'userMenu' : ''"
+                           aria-expanded="false">
+                            <i class="bi bi-person-circle fs-4 me-2"></i>
+                            <span th:if="${usuario != null}"
+                                  th:text="${usuario.nombre}">Usuario</span>
+                        </a>
+                    </li>
+                    <li class="nav-item ms-md-3" th:if="${nombreUsuario != null}">
+                        <a class="nav-link d-flex align-items-center"
+                           href="/logout">
+                            <i class="bi bi-box-arrow-right fs-4 me-2"></i>
+                            Cerrar sesión
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </header>
-<main class="vh-100 mx-4 pt-4 d-flex justify-content-center">
-    <div class="card p-4 shadow-lg w-50 h-75">
-        <h2 class="text-center mb-4">Inicia Sesión</h2>
+<main>
+    <div class="login-form fade-in">
+        <h2 class="text-center mb-4 text-warning">Inicia Sesión</h2>
         <form th:action="@{/}" th:object="${usuario}" method="post">
             <div class="mb-3">
-                <label for="email"
-                       class="form-label">Correo Electrónico</label>
-                <input type="email"
-                       class="form-control"
-                       id="email"
-                       th:field="*{correo}"
-                       placeholder="correo@example.com"
-                       required>
+                <label for="email" class="form-label">Correo Electrónico</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-envelope-fill"></i></span>
+                    <input type="email"
+                           class="form-control"
+                           id="email"
+                           th:field="*{correo}"
+                           placeholder="correo@example.com"
+                           aria-label="Correo Electrónico"
+                           required>
+                </div>
             </div>
             <div class="mb-3">
-                <label for="password"
-                       class="form-label">Contraseña</label>
-                <input type="password"
-                       class="form-control"
-                       id="password"
-                       th:field="*{contrasena}"
-                       placeholder="Contraseña"
-                       required>
+                <label for="password" class="form-label">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                    <input type="password"
+                           class="form-control"
+                           id="password"
+                           th:field="*{contrasena}"
+                           placeholder="Contraseña"
+                           aria-label="Contraseña"
+                           required>
+                </div>
             </div>
             <button type="submit" class="btn btn-primary w-100 mt-3">Iniciar sesión</button>
             <p class="text-center mt-3">¿No tienes cuenta? <a href="/usuario/registro"
@@ -134,25 +312,102 @@
     </div>
 </main>
 
-<footer class="bg-dark text-white text-center w-100 position-sticky bottom-0">
-    <div>
+<!-- Footer -->
+<footer class="bg-dark text-center text-white py-4">
+    <div class="container">
         <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
-        <p class="d-flex justify-content-center">
+        <p>
             <a href="#"
-               class="me-3">Términos de Uso</a>
+               class="me-3 text-warning">Términos de Uso</a>
             |
             <a href="#"
-               class="ms-3">Política de Privacidad</a></p>
-        <div class="social-icons">
-            <i class="bi bi-whatsapp mx-2"></i>
-            <i class="bi bi-instagram mx-2"></i>
-            <i class="bi bi-twitter mx-2"></i>
+               class="ms-3 text-warning">Política de Privacidad</a>
+        </p>
+        <div class="social-icons mt-3">
+            <a href="#" class="text-warning me-3"><i class="bi bi-whatsapp"></i></a>
+            <a href="#" class="text-warning me-3"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="text-warning"><i class="bi bi-twitter"></i></a>
         </div>
     </div>
 </footer>
 
+<!-- Scripts -->
+<script>
+    document.getElementById('criterioBusqueda').addEventListener('input', function () {
+        const criterio = this.value.trim(); // Obtiene el valor del campo de búsqueda
+        const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+
+        if (criterio.length >= 3) { // Solo buscar si el criterio tiene al menos 3 caracteres
+            fetch(`/buscarRetos?criterioBusqueda=${encodeURIComponent(criterio)}`)
+                .then(response => response.json())
+                .then(data => {
+                    resultadosBusqueda.innerHTML = ''; // Limpiar resultados previos
+
+                    if (data.length === 0) {
+                        resultadosBusqueda.innerHTML = '<li class="list-group-item">No se encontraron retos.</li>';
+                    } else {
+                        data.forEach(reto => {
+                            const item = document.createElement('a');
+                            item.href = `/usuario/reto/${reto.id}`; // Enlace al detalle del reto
+                            item.classList.add('list-group-item', 'list-group-item-action');
+                            item.textContent = reto.nombre; // Mostrar nombre del reto
+                            resultadosBusqueda.appendChild(item);
+                        });
+                    }
+                    resultadosBusqueda.style.display = 'block'; // Asegura que los resultados se muestren
+                })
+                .catch(error => console.error('Error en la búsqueda:', error));
+        } else {
+            resultadosBusqueda.style.display = 'none'; // Oculta los resultados si no hay texto
+        }
+    });
+
+    document.addEventListener('click', function (event) {
+        const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+        const buscador = document.getElementById('criterioBusqueda');
+
+        // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
+        if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
+            resultadosBusqueda.style.display = 'none';
+        } else if (buscador.contains(event.target)) {
+            resultadosBusqueda.style.display = 'block';
+        }
+    });
+
+    // Listener para el botón de obtener ubicación actual
+    document.getElementById('btnUbicacion').addEventListener('click', function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                // Usa un servicio o API para convertir lat/lon a una ubicación legible
+                fetch(`/usuario/buscarUbicacionActual?lat=${lat}&lon=${lon}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data); // Verificar cómo llega el objeto
+                        document.getElementById('ubicacionInput').value = data.nombre;
+                    })
+                    .catch(error => console.error('Error al obtener la ubicación actual:', error));
+
+            }, error => {
+                console.error('Error al obtener la geolocalización:', error);
+                alert('No se pudo obtener tu ubicación.');
+            });
+        } else {
+            alert('Geolocalización no soportada en este navegador.');
+        }
+    });
+
+    function actualizarValor(valor) {
+        document.getElementById("valorRadio").textContent = valor + " km";
+    }
+</script>
+
+<!-- Bootstrap Bundle con Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </body>
+
 </html>

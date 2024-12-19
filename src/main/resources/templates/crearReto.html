@@ -1,313 +1,599 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" class="no-js">
 
 <head>
-      <title>Retos</title>
+    <title>Retos - ChallengeApp</title>
 
-      <!-- Metadatos generales -->
-      <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
-      <meta name="description" content="Página de inicio">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Metadatos generales -->
+    <meta name="author" content="Jose Luis Obiang Ela Nanguang, Alfredo Mituy Okenve Obiang">
+    <meta name="description" content="Página de inicio">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-      <!-- Metadatos para móviles -->
-      <meta property="og:title" content="Página de Retos">
-      <meta property="og:image" content="/images/logo.png">
-      <meta property="og:image:alt" content="Logo de la página sobre Retos">
-      <meta property="og:type" content="website">
-      <meta property="og:url" content="https://retos.com">
+    <!-- Metadatos para móviles -->
+    <meta property="og:title" content="Página de Retos">
+    <meta property="og:image" content="/images/logo.png">
+    <meta property="og:image:alt" content="Logo de la página sobre Retos">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://retos.com">
 
-      <!-- Estilos CSS -->
-      <link rel="stylesheet" href="/css/stylesReto.css">
-      <link rel="stylesheet" href="/css/normalize.css">
-      <link rel="stylesheet" href="/css/stylesCommons.css">
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/stylesReto.css">
+    <link rel="stylesheet" href="/css/stylesCommons.css">
 
-      <!-- Bootstrap CSS -->
-      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-      <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-      <!-- Bootstrap Icons -->
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-      <!-- Fuentes -->
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-            rel="stylesheet">
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-      <style>
-            .nav-item.dropdown:hover .dropdown-menu {
-                  display: block;
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar personalización */
+        .navbar {
+            background-color: rgba(0, 0, 0, 0.8);
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar:hover {
+            background-color: rgba(0, 0, 0, 1);
+        }
+
+        .navbar-brand img.logo-image {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-brand:hover img.logo-image {
+            transform: scale(1.1);
+        }
+
+        /* Dropdown menú hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+
+        .dropdown-menu {
+            left: -100px;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #212529;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #ffc107;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        footer .social-icons i {
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        footer .social-icons i:hover {
+            color: #ffc107;
+            transform: scale(1.2);
+        }
+
+        /* Resultados de búsqueda */
+        #resultadosBusqueda {
+            position: absolute;
+            background-color: #fff;
+            width: 100%;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        /* Botón de ubicación */
+        #btnUbicacion {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ajustes generales */
+        main {
+            padding: 20px;
+            padding-top: 70px; /* Altura de la navbar fija */
+            min-height: calc(100vh - 140px); /* Altura total menos navbar y footer */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Tarjetas */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animaciones */
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
             }
 
-            .dropdown-menu {
-                  left: -100px;
+            to {
+                opacity: 1;
             }
-      </style>
+        }
 
+        /* Modal de Búsqueda */
+        .modal-dialog {
+            max-width: 600px;
+        }
+
+        /* Botón Añadir Reto */
+        .btn-add-challenge {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-add-challenge:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        /* Botones en tarjetas */
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #bb2d3b;
+            border-color: #b02a37;
+        }
+
+        /* Formulario de Creación de Reto */
+        .challenge-form {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+            width: 100%;
+            max-width: 800px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .challenge-form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .challenge-form .form-control:focus {
+            box-shadow: none;
+            border-color: #ffc107;
+        }
+
+        .challenge-form .btn-primary {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .challenge-form .btn-primary:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        .challenge-form .form-label {
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .challenge-form {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            main {
+                padding: 10px;
+            }
+
+            .challenge-form {
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-      <header class="header">
+    <header class="header">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+            <div class="container-fluid">
+                <h1 class="mb-0">
+                    <a href="/" class="navbar-brand d-flex align-items-center fs-5 text-decoration-none">
+                        <img src="/images/logo.png" alt="Logo de la página web Retos" class="logo-image">
+                        ChallengeApp
+                    </a>
+                </h1>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto align-items-center position-relative">
+                        <li class="nav-item me-3 position-relative">
+                            <!-- Formulario de búsqueda de retos -->
+                            <form id="buscarRetoForm" class="d-flex" role="search" onsubmit="return false;">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="search" class="form-control me-2" id="criterioBusqueda"
+                                        name="criterioBusqueda" placeholder="🔍 Buscar Reto" aria-label="Search" required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-light ms-2">Buscar</button>
+                            </form>
+                            <!-- Contenedor para resultados de búsqueda -->
+                            <div id="resultadosBusqueda" class="mt-2 list-group"></div>
+                        </li>
 
-            <nav class="navbar navbar-expand-md">
-                  <div class="container-fluid">
+                        <li class="nav-item ms-md-3" th:classappend="${estaLogueado} ? 'dropdown' : ''">
+                            <!-- Enlace al dashboard -->
+                            <a class="nav-link d-flex align-items-center" href="/usuario/dashboard"
+                                th:id="${estaLogueado} ? 'userMenu' : ''" aria-expanded="false">
+                                <i class="bi bi-person-circle fs-4 me-2"></i>
+                                <span th:if="${usuario != null}" th:text="${usuario.nombre}">Usuario</span>
+                            </a>
 
-                        <h1><a href="/" class="navbar-brand fs-5 text-decoration-none text-white"><img
-                                          src="/images/logo.png" alt="Logo de la página web Retos" class="logo-image">
-                                    ChallengeApp</a>
-                        </h1>
-                        <button class="navbar-toggler mb-5" type="button" data-bs-toggle="collapse"
-                              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                              aria-label="Toggle navigation">
-                              <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse pb-5" id="navbarNav">
-                              <ul class="navbar-nav ms-md-auto align-items-md-center">
-                                    <li class="nav-item btn-search">
-                                          <form class="d-flex" role="search">
-                                                <input class="form-control me-2" type="search" placeholder="Buscar Reto"
-                                                      aria-label="Search">
-                                                <button class="btn btn-outline-success" type="submit">Buscar
-                                                </button>
-                                          </form>
-                                    </li>
-
-                                    <li class="nav-item ms-md-3" th:classappend="${estaLogueado} ? 'dropdown' : ''">
-                                          <!-- Enlace al dashboard -->
-                                          <a class="nav-link" href="/usuario/dashboard"
-                                                th:id="${estaLogueado} ? 'userMenu' : ''"
-                                                th:data-bs-toggle="${estaLogueado} ? '' : ''" aria-expanded="false">
-                                                <i class="bi bi-person-circle fs-1 col"></i>
-                                          </a>
-
-                                          <!-- Menú desplegable solo cuando el usuario está logueado -->
-                                          <ul class="dropdown-menu dropdown-menu-end" th:if="${estaLogueado}"
-                                                aria-labelledby="userMenu">
-                                                <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
-                                          </ul>
-                                    </li>
-                              </ul>
-                        </div>
-                  </div>
-            </nav>
-      </header>
-
-      <main class="vh-100 mx-4">
-            <div class="container my-5 card p-4 shadow-lg">
-                  <h2 class="text-center">Crear Nuevo Reto</h2>
-                  <div class="mb-3">
-                        <label for="tipoReto" class="form-label"><b>Tipo de Reto</b></label>
-                        <select class="form-select" id="tipoReto" required onchange="mostrarCampos()">
-                              <option value="ninguno">Elegir tipo de reto</option>
-                              <option value="SIMPLE">Reto Simple</option>
-                              <option value="COMPLEJO">Reto Complejo</option>
-                        </select>
-                  </div>
-                  <form id="camposSimples" style="display: none;" class="mt-4" th:action="@{/usuario/crearReto}"
-                        th:object="${retoSimple}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="tipoReto" id="tipoRetoHidden" value="SIMPLE">
-                        <!-- Campos comunes para Reto -->
-                        <div class="mb-3">
-                              <label for="nombreReto" class="form-label">Nombre del Reto</label>
-                              <input type="text" class="form-control" id="nombreReto" th:field="*{nombre}" required>
-                        </div>
-                        <div class="mb-3">
-                              <label for="descripcion" class="form-label">Descripción</label>
-                              <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"
-                                    required></textarea>
-                        </div>
-                        <div class="mb-3">
-                              <label for="duracion" class="form-label">Duración (días)</label>
-                              <input type="number" class="form-control" id="duracion" th:field="*{duracion}" required>
-                        </div>
-                        <div class="mb-3">
-                              <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="habilitarCantidad"
-                                          onchange="toggleCantidad()">
-                                    <label class="form-check-label" for="habilitarCantidad">
-                                          Habilitar cantidad de pasos
-                                    </label>
-                              </div>
-                        </div>
-                        <div class="mb-3" id="cantidadPasos" style="display: none;">
-                              <label for="cantidad" class="form-label">Cantidad</label>
-                              <input type="number" class="form-control" id="cantidad" th:field="*{cantidad}" min="1"
-                                    value="1">
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                              <p class="mb-0">Configurar privacidad:</p>
-                              <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="configurarPrivacidad"
-                                          th:field="*{visibilidad}" value="true"
-                                          onchange="this.checked ? this.value='false' : this.value='true'">
-                                    <label class="form-check-label" for="configurarPrivacidad">
-                                          Reto privado
-                                    </label>
-                              </div>
-                        </div>
-
-
-                        <!-- Campo para seleccionar la imagen -->
-                        <div class="mb-3">
-                              <label for="imagenReto" class="form-label">Imagen del Reto</label>
-                              <input type="file" class="form-control" id="imagenReto" name="imagenReto" accept="image/*"
-                                    required>
-                        </div>
-
-
-
-                        <button type="submit" class="btn btn-primary w-100">Crear Reto</button>
-
-                        <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
-                        <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
-                  </form>
-                  <form id="camposComplejos" style="display: none;" class="mt-4" th:action="@{/usuario/crearReto}"
-                        th:object="${retoComplejo}" method="post" enctype="multipart/form-data">
-                        <input type="hidden" name="tipoReto" id="tipoRetoHidden" value="COMPLEJO">
-                        <div class="mb-3">
-                              <label for="nombreReto" class="form-label">Nombre del Reto</label>
-                              <input type="text" class="form-control" id="nombreReto" th:field="*{nombre}" required>
-                        </div>
-                        <div class="mb-3">
-                              <label for="descripcion" class="form-label">Descripción</label>
-                              <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"
-                                    required></textarea>
-                        </div>
-                        <div class="mb-3">
-                              <label for="duracion" class="form-label">Duración (días)</label>
-                              <input type="number" class="form-control" id="duracion" th:field="*{duracion}" required>
-                        </div>
-
-                        <!-- Subtareas -->
-                        <div class="mb-3">
-                              <label class="form-label">Subtareas</label>
-                              <div id="subtareas-container">
-                                    <!-- Aquí se agregarán las subtareas dinámicamente -->
-                                    <div th:each="subtarea, iterStat : *{subtareas}" class="subtarea-item">
-                                          <input type="text" class="form-control mb-2"
-                                                th:field="*{subtareas[__${iterStat.index}__].descripcion}"
-                                                placeholder="Descripción la subtarea" required>
-                                          <button type="button" class="btn btn-danger"
-                                                onclick="removeSubtarea(this)">Eliminar</button>
-                                    </div>
-                              </div>
-                              <button type="button" class="btn btn-secondary mt-2" onclick="addSubtarea()">Añadir
-                                    Subtarea</button>
-                        </div>
-
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                              <p class="mb-0">Configurar privacidad:</p>
-                              <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="configurarPrivacidad"
-                                          th:field="*{visibilidad}" value="false"
-                                          onchange="this.checked ? this.value='false' : this.value='true'">
-                                    <label class="form-check-label" for="configurarPrivacidad">
-                                          Reto privado
-                                    </label>
-                              </div>
-                        </div>
-
-
-                        <!-- Campo para seleccionar la imagen -->
-                        <div class="mb-3">
-                              <label for="imagenReto" class="form-label">Imagen del Reto</label>
-                              <input type="file" class="form-control" id="imagenReto" name="imagenReto" accept="image/*"
-                                    required>
-                        </div>
-
-
-                        <button type="submit" class="btn btn-primary w-100">Crear Reto</button>
-
-                        <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center"></p>
-                        <p th:if="${error}" th:text="${error}" class="text-danger text-center"></p>
-                  </form>
+                            <!-- Menú desplegable solo cuando el usuario está logueado -->
+                            <ul class="dropdown-menu dropdown-menu-end" th:if="${estaLogueado}" aria-labelledby="userMenu">
+                                <li><a class="dropdown-item" href="/logout">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
-      </main>
+        </nav>
+    </header>
 
-
-
-      <footer class="bg-dark text-white text-center w-100 position-sticky bottom-0 hidden">
-            <div>
-                  <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
-                  <p class="d-flex justify-content-center">
-                        <a href="#" class="me-3">Términos de Uso</a>
-                        |
-                        <a href="#" class="ms-3">Política de Privacidad</a>
-                  </p>
-                  <div class="social-icons">
-                        <i class="bi bi-whatsapp mx-2"></i>
-                        <i class="bi bi-instagram mx-2"></i>
-                        <i class="bi bi-twitter mx-2"></i>
-                  </div>
+    <main class="container my-5 fade-in">
+        <div class="challenge-form">
+            <h2 class="text-center mb-4 text-warning">Crear Nuevo Reto</h2>
+            <div class="mb-3">
+                <label for="tipoReto" class="form-label"><b>Tipo de Reto</b></label>
+                <select class="form-select" id="tipoReto" required onchange="mostrarCampos()">
+                    <option value="ninguno">Elegir tipo de reto</option>
+                    <option value="SIMPLE">Reto Simple</option>
+                    <option value="COMPLEJO">Reto Complejo</option>
+                </select>
             </div>
-      </footer>
+            <!-- Formulario para Reto Simple -->
+            <form id="camposSimples" style="display: none;" class="mt-4" th:action="@{/usuario/crearReto}"
+                th:object="${retoSimple}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="tipoReto" id="tipoRetoHidden" value="SIMPLE">
+                <!-- Campos comunes para Reto -->
+                <div class="mb-3">
+                    <label for="nombreRetoSimple" class="form-label">Nombre del Reto</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                        <input type="text" class="form-control" id="nombreRetoSimple" th:field="*{nombre}" required
+                            placeholder="Nombre del Reto">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcionSimple" class="form-label">Descripción</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-chat-dots-fill"></i></span>
+                        <textarea class="form-control" id="descripcionSimple" th:field="*{descripcion}" rows="3"
+                            required placeholder="Descripción del Reto"></textarea>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="duracionSimple" class="form-label">Duración (días)</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-calendar-fill"></i></span>
+                        <input type="number" class="form-control" id="duracionSimple" th:field="*{duracion}" required
+                            min="1" placeholder="Número de días">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="habilitarCantidadSimple"
+                            onchange="toggleCantidadSimple()">
+                        <label class="form-check-label" for="habilitarCantidadSimple">
+                            Habilitar cantidad de pasos
+                        </label>
+                    </div>
+                </div>
+                <div class="mb-3" id="cantidadPasosSimple" style="display: none;">
+                    <label for="cantidadSimple" class="form-label">Cantidad</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-plus-circle-fill"></i></span>
+                        <input type="number" class="form-control" id="cantidadSimple" th:field="*{cantidad}" min="1"
+                            value="1" placeholder="Cantidad de pasos">
+                    </div>
+                </div>
 
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="mb-0">Configurar privacidad:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="configurarPrivacidadSimple"
+                            th:field="*{visibilidad}" value="true"
+                            onchange="this.checked ? this.value='false' : this.value='true'">
+                        <label class="form-check-label" for="configurarPrivacidadSimple">
+                            Reto privado
+                        </label>
+                    </div>
+                </div>
 
-      <script>
-            let subtareaIndex = 0; // Índice inicial
+                <!-- Campo para seleccionar la imagen -->
+                <div class="mb-3">
+                    <label for="imagenRetoSimple" class="form-label">Imagen del Reto</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-image-fill"></i></span>
+                        <input type="file" class="form-control" id="imagenRetoSimple" name="imagenReto" accept="image/*"
+                            required>
+                    </div>
+                </div>
 
-            function addSubtarea() {
-                  const container = document.getElementById('subtareas-container');
+                <button type="submit" class="btn btn-primary w-100">Crear Reto</button>
 
-                  // Crear un nuevo contenedor para la subtarea
-                  const subtareaDiv = document.createElement('div');
-                  subtareaDiv.classList.add('subtarea-item');
+                <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center mt-3"></p>
+                <p th:if="${error}" th:text="${error}" class="text-danger text-center mt-3"></p>
+            </form>
 
-                  subtareaDiv.innerHTML = `
-        <input type="text" class="form-control mb-2" name="subtareas[${subtareaIndex}].descripcion" 
-            placeholder="Descripción de la subtarea" required>
-        <button type="button" class="btn btn-danger" onclick="removeSubtarea(this)">Eliminar</button>
-    `;
+            <!-- Formulario para Reto Complejo -->
+            <form id="camposComplejos" style="display: none;" class="mt-4" th:action="@{/usuario/crearReto}"
+                th:object="${retoComplejo}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="tipoReto" id="tipoRetoHiddenComplejo" value="COMPLEJO">
+                <div class="mb-3">
+                    <label for="nombreRetoComplejo" class="form-label">Nombre del Reto</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-card-text"></i></span>
+                        <input type="text" class="form-control" id="nombreRetoComplejo" th:field="*{nombre}" required
+                            placeholder="Nombre del Reto Complejo">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="descripcionComplejo" class="form-label">Descripción</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-chat-dots-fill"></i></span>
+                        <textarea class="form-control" id="descripcionComplejo" th:field="*{descripcion}" rows="3"
+                            required placeholder="Descripción del Reto Complejo"></textarea>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="duracionComplejo" class="form-label">Duración (días)</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-calendar-fill"></i></span>
+                        <input type="number" class="form-control" id="duracionComplejo" th:field="*{duracion}" required
+                            min="1" placeholder="Número de días">
+                    </div>
+                </div>
 
-                  container.appendChild(subtareaDiv);
-                  subtareaIndex++; // Incrementar el índice
+                <!-- Subtareas -->
+                <div class="mb-3">
+                    <label class="form-label">Subtareas</label>
+                    <div id="subtareas-container">
+                        <!-- Aquí se agregarán las subtareas dinámicamente -->
+                        <div th:each="subtarea, iterStat : *{subtareas}" class="subtarea-item mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-clipboard-plus-fill"></i></span>
+                                <input type="text" class="form-control" th:field="*{subtareas[__${iterStat.index}__].descripcion}"
+                                    placeholder="Descripción de la subtarea" required>
+                                <button type="button" class="btn btn-danger"
+                                    onclick="removeSubtarea(this)"><i class="bi bi-trash-fill"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="addSubtareaComplejo()">
+                        <i class="bi bi-plus-circle-fill me-2"></i>Añadir Subtarea
+                    </button>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="mb-0">Configurar privacidad:</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="configurarPrivacidadComplejo"
+                            th:field="*{visibilidad}" value="false"
+                            onchange="this.checked ? this.value='false' : this.value='true'">
+                        <label class="form-check-label" for="configurarPrivacidadComplejo">
+                            Reto privado
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Campo para seleccionar la imagen -->
+                <div class="mb-3">
+                    <label for="imagenRetoComplejo" class="form-label">Imagen del Reto</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-image-fill"></i></span>
+                        <input type="file" class="form-control" id="imagenRetoComplejo" name="imagenReto" accept="image/*"
+                            required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">Crear Reto</button>
+
+                <p th:if="${mensaje}" th:text="${mensaje}" class="text-success text-center mt-3"></p>
+                <p th:if="${error}" th:text="${error}" class="text-danger text-center mt-3"></p>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-center text-white py-4">
+        <div class="container">
+            <p>&copy; 2024-2025 ChallengeApp. Todos los derechos reservados.</p>
+            <p>
+                <a href="#" class="me-3 text-warning">Términos de Uso</a>
+                |
+                <a href="#" class="ms-3 text-warning">Política de Privacidad</a>
+            </p>
+            <div class="social-icons mt-3">
+                <a href="#" class="text-warning me-3"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" class="text-warning me-3"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="text-warning"><i class="bi bi-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        let subtareaIndexComplejo = 0; // Índice inicial para subtareas del reto complejo
+
+        function addSubtareaComplejo() {
+            const container = document.getElementById('subtareas-container');
+
+            // Crear un nuevo contenedor para la subtarea
+            const subtareaDiv = document.createElement('div');
+            subtareaDiv.classList.add('subtarea-item', 'mb-2');
+
+            subtareaDiv.innerHTML = `
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-clipboard-plus-fill"></i></span>
+                    <input type="text" class="form-control" name="subtareas[${subtareaIndexComplejo}].descripcion"
+                        placeholder="Descripción de la subtarea" required>
+                    <button type="button" class="btn btn-danger" onclick="removeSubtarea(this)"><i class="bi bi-trash-fill"></i></button>
+                </div>
+            `;
+
+            container.appendChild(subtareaDiv);
+            subtareaIndexComplejo++; // Incrementar el índice
+        }
+
+        function removeSubtarea(button) {
+            const subtareaDiv = button.parentElement.parentElement;
+            subtareaDiv.remove();
+        }
+
+        function mostrarCampos() {
+            var tipoReto = document.getElementById("tipoReto").value;
+            var camposSimples = document.getElementById("camposSimples");
+            var camposComplejos = document.getElementById("camposComplejos");
+
+            if (tipoReto === "SIMPLE") {
+                camposSimples.style.display = "block";
+                camposComplejos.style.display = "none";
+            } else if (tipoReto === "COMPLEJO") {
+                camposSimples.style.display = "none";
+                camposComplejos.style.display = "block";
+            } else {
+                camposSimples.style.display = "none";
+                camposComplejos.style.display = "none";
             }
+        }
 
-            function removeSubtarea(button) {
-                  const subtareaDiv = button.parentElement;
-                  subtareaDiv.remove();
+        function toggleCantidadSimple() {
+            var habilitarCantidad = document.getElementById("habilitarCantidadSimple").checked;
+            var cantidadPasos = document.getElementById("cantidadPasosSimple");
+
+            if (habilitarCantidad) {
+                cantidadPasos.style.display = "block";
+            } else {
+                cantidadPasos.style.display = "none";
+                document.getElementById("cantidadSimple").value = 1; // Resetear al valor por defecto
             }
+        }
 
-
-            function mostrarCampos() {
-                  var tipoReto = document.getElementById("tipoReto").value;
-                  var camposSimples = document.getElementById("camposSimples");
-                  var camposComplejos = document.getElementById("camposComplejos");
-
-                  if (tipoReto === "SIMPLE") {
-                        camposSimples.style.display = "block";
-                        camposComplejos.style.display = "none";
-                  } else if (tipoReto === "COMPLEJO") {
-                        camposSimples.style.display = "none";
-                        camposComplejos.style.display = "block";
-                  } else {
-                        camposSimples.style.display = "none";
-                        camposComplejos.style.display = "none";
-                  }
-            }
-
-            function toggleCantidad() {
-                  var habilitarCantidad = document.getElementById("habilitarCantidad").checked;
-                  var cantidadPasos = document.getElementById("cantidadPasos");
-
-                  if (habilitarCantidad) {
-                        cantidadPasos.style.display = "block";
-                  } else {
-                        cantidadPasos.style.display = "none";
-                        document.getElementById("cantidad").value = 1; // Reset to default value
-                  }
-            }
-            // Llamamos a la función para manejar el estado inicial
+        // Inicializar el estado de los campos
+        document.addEventListener("DOMContentLoaded", function () {
             mostrarCampos();
-      </script>
+        });
+    </script>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
+    <!-- Scripts para búsqueda de retos -->
+    <script>
+        document.getElementById('criterioBusqueda').addEventListener('input', function () {
+            const criterio = this.value.trim(); // Obtener el valor del campo de búsqueda
+            const resultadosBusqueda = document.getElementById('resultadosBusqueda');
 
+            if (criterio.length >= 3) { // Solo buscar si el criterio tiene al menos 3 caracteres
+                fetch(`/buscarRetos?criterioBusqueda=${encodeURIComponent(criterio)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        resultadosBusqueda.innerHTML = ''; // Limpiar resultados previos
 
+                        if (data.length === 0) {
+                            resultadosBusqueda.innerHTML = '<div class="list-group-item">No se encontraron retos.</div>';
+                        } else {
+                            data.forEach(reto => {
+                                const item = document.createElement('a');
+                                item.href = `/usuario/reto/${reto.id}`; // Enlace al detalle del reto
+                                item.classList.add('list-group-item', 'list-group-item-action');
+                                item.textContent = reto.nombre; // Mostrar nombre del reto
+                                resultadosBusqueda.appendChild(item);
+                            });
+                        }
+                        resultadosBusqueda.style.display = 'block'; // Asegurar que los resultados se muestren
+                    })
+                    .catch(error => console.error('Error en la búsqueda:', error));
+            } else {
+                resultadosBusqueda.style.display = 'none'; // Ocultar los resultados si no hay texto
+            }
+        });
+
+        // Cerrar resultados de búsqueda al hacer clic fuera
+        document.addEventListener('click', function (event) {
+            const resultadosBusqueda = document.getElementById('resultadosBusqueda');
+            const buscador = document.getElementById('criterioBusqueda');
+
+            // Si el clic es fuera del campo de búsqueda y de los resultados, los oculta
+            if (!buscador.contains(event.target) && !resultadosBusqueda.contains(event.target)) {
+                resultadosBusqueda.style.display = 'none';
+            } else if (buscador.contains(event.target)) {
+                resultadosBusqueda.style.display = 'block';
+            }
+        });
+    </script>
+
+    <!-- Bootstrap Bundle con Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 </body>
 
 </html>
